@@ -2,18 +2,23 @@ import os
 import pickle
 import numpy as np
 import faiss
-from typing import List, Any, Optional, cast
+from typing import List, Any, Optional
 from src.embedding import EmbeddingPipeline
+from src.manifest import save_manifest
 
 
 class FaissVectorStore:
-    def __init__(self, persist_dir: str, embedding_model: str = "all-MiniLM-L6-v2"):
+    def __init__(
+        self,
+        persist_dir: str,
+        embedding_model: str = "all-MiniLM-L6-v2",
+    ):
         self.persist_dir = persist_dir
         self.embedding_pipeline = EmbeddingPipeline(model_name=embedding_model)
         self.index: Optional[faiss.Index] = None
         self.metadata: List[dict] = []
 
-    def build_from_documents(self, documents: List[Any]) -> bool:
+    def build_from_documents(self, documents: List[Any], data_dir: str = "data") -> bool:
         os.makedirs(self.persist_dir, exist_ok=True)
         chunks = self.embedding_pipeline.chunk_documents(documents)
         if not chunks:
@@ -27,6 +32,7 @@ class FaissVectorStore:
             for chunk in chunks
         ]
         self._save()
+        save_manifest(self.persist_dir, data_dir)
         return True
 
     def _save(self):

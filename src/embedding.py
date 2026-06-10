@@ -3,8 +3,6 @@ from typing import List, Any
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from sentence_transformers import SentenceTransformer
 
-from src.data_loader import load_all_documents
-
 
 class EmbeddingPipeline:
     def __init__(
@@ -16,10 +14,6 @@ class EmbeddingPipeline:
         self.model_name = model_name
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
-        self.documents = load_all_documents("data")
-        print(
-            f"[DEBUG] Loaded {len(self.documents)} documents. model :{model_name} chunk_size:{chunk_size} chunk_overlap:{chunk_overlap}"
-        )
         self.model = SentenceTransformer(model_name)
 
     def chunk_documents(self, documents: List[Any]) -> List[Any]:
@@ -45,6 +39,7 @@ class EmbeddingPipeline:
 
 # Example usage
 if __name__ == "__main__":
+    from src.data_loader import load_all_documents
     docs = load_all_documents("data")
     emb_pipe = EmbeddingPipeline()
     chunks = emb_pipe.chunk_documents(docs)

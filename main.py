@@ -10,12 +10,12 @@ if __name__ == "__main__":
     if store.build_from_documents(docs):
         store.load()
         print(
-            store.query("What is Evaluation of Information-Retrieval Systems?", top_k=3)
+            store.query("who is the CEO of etech?", top_k=3)
         )
     else:
         print("[WARN] Skipping vector store query because no documents were loaded.")
     rag_search = RAGSearch()
-    query = "What is Evaluation of Information-Retrieval Systems?"
+    query = "who is the CEO of etech?"
     result = rag_search.search_and_summarize(query, top_k=3)
     print("\nSummary:", result["summary"])
     if result["sources"]:

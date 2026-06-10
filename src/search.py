@@ -1,5 +1,6 @@
-import os
 from dotenv import load_dotenv
+from src import manifest
+from src.data_loader import load_all_documents
 from src.vectorstore import FaissVectorStore
 from langchain_groq import ChatGroq
 
@@ -10,18 +11,14 @@ class RAGSearch:
     def __init__(
         self,
         persist_dir: str = "faiss_store",
+        data_dir: str = "data",
         embedding_model: str = "all-MiniLM-L6-v2",
         llm_model: str = "llama-3.3-70b-versatile",
     ):
-        self.vectorstore = FaissVectorStore(persist_dir, embedding_model)
-        # Load or build vectorstore
-        faiss_path = os.path.join(persist_dir, "faiss.index")
-        meta_path = os.path.join(persist_dir, "metadata.pkl")
-        if not (os.path.exists(faiss_path) and os.path.exists(meta_path)):
-            from src.data_loader import load_all_documents
-
-            docs = load_all_documents("data")
-            if not self.vectorstore.build_from_documents(docs):
+        self.vectorstore = FaissVectorStore(persist_dir, embedding_model=embedding_model)
+        if manifest.needs_rebuild(persist_dir, data_dir):
+            docs = load_all_documents(data_dir)
+            if not self.vectorstore.build_from_documents(docs, data_dir=data_dir):
                 print(
                     "[WARN] Search initialized without a vector index because no documents were available."
                 )

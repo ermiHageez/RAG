@@ -17,3 +17,13 @@ typesense
 
 tqdm
 tiktoken
+
+unstructured
+easyocr
+PyMuPDF
+fastapi
+uvicorn
+pydantic
+mcp
+pandas
+openpyxl
