@@ -1,118 +1,89 @@
 import os
-from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 from dotenv import load_dotenv
 
 load_dotenv()
 
-PPA_URL = os.getenv("PPA_URL", "https://www.ppa.gov.et")
-EGP_URL = os.getenv("EGP_URL", "https://www.egp.gov.et")
-
-KEYWORDS = [
-    "ጨረታ", "tender", "ERP", "ERP Implementation",
-    "System Modernization", "Database Management",
-    "Security System", "ICT", "Network Infrastructure",
-]
-
-MOCK_TENDERS: List[Dict[str, Any]] = [
-    {
-        "title": "Supply and Installation of Security Surveillance System",
-        "description": "Tender for security cameras and access control for government building",
-        "deadline": (datetime.now() + timedelta(days=30)).isoformat(),
-        "url": f"{PPA_URL}/tenders/001",
-        "procurement_category": "Security Systems",
-        "source": "mock",
-    },
-    {
-        "title": "ERP System Implementation for Public Enterprise",
-        "description": "End-to-end ERP solution including finance, HR, and procurement modules",
-        "deadline": (datetime.now() + timedelta(days=45)).isoformat(),
-        "url": f"{PPA_URL}/tenders/002",
-        "procurement_category": "ERP Implementation",
-        "source": "mock",
-    },
-    {
-        "title": "Network Infrastructure Upgrade for Ministry Building",
-        "description": "Upgrade of existing network infrastructure including switches, routers, and fiber",
-        "deadline": (datetime.now() + timedelta(days=21)).isoformat(),
-        "url": f"{EGP_URL}/tenders/101",
-        "procurement_category": "ICT Infrastructure",
-        "source": "mock",
-    },
-    {
-        "title": "Database Management System Maintenance",
-        "description": "Annual maintenance contract for enterprise database systems",
-        "deadline": (datetime.now() + timedelta(days=60)).isoformat(),
-        "url": f"{EGP_URL}/tenders/102",
-        "procurement_category": "Database Management",
-        "source": "mock",
-    },
-    {
-        "title": "የኮምፒውተር እና የኔትወርክ መሳሪያዎች ግዢ (Computer and Network Equipment Purchase)",
-        "description": "Tender for procurement of computers, servers, and networking equipment",
-        "deadline": (datetime.now() + timedelta(days=14)).isoformat(),
-        "url": f"{PPA_URL}/tenders/003",
-        "procurement_category": "ICT Equipment",
-        "source": "mock",
-    },
-]
+PPA_URL = os.getenv("PPA_URL", "https://www.2merkato.com").rstrip("/")
+EGP_URL = os.getenv("EGP_URL", "https://addisbiz.com").rstrip("/")
 
 
-def _match_keywords(text: str) -> bool:
-    text_lower = text.lower()
-    for kw in KEYWORDS:
-        if kw.lower() in text_lower:
-            return True
-    return False
+def _keyword_filter(items: List[Dict[str, Any]], keyword: Optional[str]) -> List[Dict[str, Any]]:
+    if not keyword:
+        return items
+    kw = keyword.lower()
+    matched = [i for i in items if kw in i["title"].lower() or kw in i["description"].lower()]
+    return matched if matched else items
 
 
-def _scrape_ppa(sector: Optional[str]) -> List[Dict[str, Any]]:
-    import httpx
+def _scrape_2merkato_news(keyword: Optional[str]) -> List[Dict[str, Any]]:
+    import requests
     from bs4 import BeautifulSoup
 
-    tenders = []
+    seen_urls = set()
+    items = []
     try:
-        resp = httpx.get(f"{PPA_URL}/tenders", timeout=15.0)
+        resp = requests.get(f"{PPA_URL}/news", timeout=12)
         resp.raise_for_status()
-        soup = BeautifulSoup(resp.text, "lxml")
-        for item in soup.select(".tender-item, .procurement-item, tr"):
-            title_el = item.select_one(".tender-title, h3, a")
+        soup = BeautifulSoup(resp.text, "html.parser")
+        articles = soup.select("article")
+        for art in articles[:10]:
+            title_el = art.select_one("h2 a, h3 a, .article-title a")
             if not title_el:
                 continue
             title = title_el.get_text(strip=True)
-            if sector and sector.lower() not in title.lower():
-                if not _match_keywords(title):
-                    continue
-            desc_el = item.select_one(".tender-description, p")
-            deadline_el = item.select_one(".tender-deadline, .deadline")
-            link_el = item.select_one("a[href]")
-            tenders.append({
+            link = title_el.get("href", "")
+            if link and not link.startswith("http"):
+                link = f"{PPA_URL}{link}"
+            if link in seen_urls:
+                continue
+            seen_urls.add(link)
+            desc_el = art.select_one(".article-intro, .nspText, .itemText, .catItemIntroText")
+            items.append({
                 "title": title,
                 "description": desc_el.get_text(strip=True) if desc_el else "",
-                "deadline": deadline_el.get_text(strip=True) if deadline_el else "",
-                "url": f"{PPA_URL}{link_el['href']}" if link_el and link_el.get("href") else PPA_URL,
+                "deadline": "",
+                "url": link,
                 "procurement_category": "General",
-                "source": "ppa.gov.et",
+                "source": "2merkato.com",
             })
     except Exception as e:
-        print(f"[WARN] PPA scrape failed: {e}")
-    return tenders
+        print(f"[WARN] 2merkato news scrape failed: {e}")
+    return _keyword_filter(items, keyword)
+
+
+def _scrape_addisbiz_opportunities(keyword: Optional[str]) -> List[Dict[str, Any]]:
+    import requests
+    from bs4 import BeautifulSoup
+
+    items = []
+    try:
+        resp = requests.get(f"{EGP_URL}/business-news", timeout=12)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+        articles = soup.select("article")
+        for art in articles[:10]:
+            title_el = art.select_one(".entry-title a")
+            if not title_el:
+                continue
+            title = title_el.get_text(strip=True)
+            link = title_el.get("href", "")
+            desc_el = art.select_one(".entry-content p, .post-content p")
+            items.append({
+                "title": title,
+                "description": desc_el.get_text(strip=True) if desc_el else "",
+                "deadline": "",
+                "url": link,
+                "procurement_category": "General",
+                "source": "addisbiz.com",
+            })
+    except Exception as e:
+        print(f"[WARN] AddisBiz scrape failed: {e}")
+    return _keyword_filter(items, keyword)
 
 
 def fetch_active_tenders(sector: Optional[str] = None) -> List[Dict[str, Any]]:
     results = []
-
-    live_results = _scrape_ppa(sector)
-    results.extend(live_results)
-
-    if not results:
-        print("[INFO] No live tenders fetched, using mock data")
-        for tender in MOCK_TENDERS:
-            if sector:
-                combined = f"{tender['title']} {tender['description']} {tender['procurement_category']}"
-                if sector.lower() in combined.lower():
-                    results.append(tender)
-            else:
-                results.append(tender)
-
+    results.extend(_scrape_2merkato_news(sector))
+    results.extend(_scrape_addisbiz_opportunities(sector))
     return results

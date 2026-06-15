@@ -1,3 +1,4 @@
+from typing import Any, Optional
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.state import CompiledStateGraph
 from src.agents.state import AgentState
@@ -8,6 +9,10 @@ from src.agents.knowledge import run_knowledge_agent
 from src.agents.sales_intelligence import sales_intelligence_agent
 from src.agents.content import content_agent
 from src.agents.approval import approval_agent
+from src.memory.base import MemoryStore
+from src.memory.conversation_memory import ConversationMemory
+from src.memory.lead_memory import LeadMemory
+from src.memory.tender_memory import TenderMemory
 
 
 def _route_after_supervisor(state: AgentState) -> list[str]:
@@ -47,12 +52,54 @@ def format_n8n_payload(state: AgentState) -> dict:
     }
 
 
-def build_agent() -> CompiledStateGraph:
+def build_agent(
+    memory_store: Optional[MemoryStore] = None,
+    knowledge_base: Optional[Any] = None,
+) -> CompiledStateGraph:
     builder = StateGraph(AgentState)
 
-    builder.add_node("supervisor_agent", supervisor_agent)
-    builder.add_node("lead_agent", lead_agent)
-    builder.add_node("tender_agent", tender_agent)
+    if memory_store:
+        conv_memory = ConversationMemory(memory_store, knowledge_base=knowledge_base)
+        lead_memory = LeadMemory(memory_store)
+        tender_memory = TenderMemory(memory_store)
+
+        original_supervisor = supervisor_agent
+        original_lead = lead_agent
+        original_tender = tender_agent
+
+        def _memory_aware_supervisor(state: AgentState) -> dict:
+            result = original_supervisor(state)
+            conv_memory.add_interaction(
+                state.get("query", "default"),
+                state.get("query", ""),
+                {"route": result.get("route", [])},
+            )
+            return result
+
+        def _memory_aware_lead(state: AgentState) -> dict:
+            result = original_lead(state)
+            leads = result.get("qualified_leads", [])
+            if leads:
+                existing = lead_memory.get_leads()
+                lead_memory.save_leads(leads)
+                result["qualified_leads"] = lead_memory.deduplicate()
+            return result
+
+        def _memory_aware_tender(state: AgentState) -> dict:
+            result = original_tender(state)
+            tenders = result.get("qualified_tenders", [])
+            if tenders:
+                tender_memory.save_tenders(tenders)
+            return result
+
+        builder.add_node("supervisor_agent", _memory_aware_supervisor)
+        builder.add_node("lead_agent", _memory_aware_lead)
+        builder.add_node("tender_agent", _memory_aware_tender)
+    else:
+        builder.add_node("supervisor_agent", supervisor_agent)
+        builder.add_node("lead_agent", lead_agent)
+        builder.add_node("tender_agent", tender_agent)
+
     builder.add_node("knowledge_agent", run_knowledge_agent)
     builder.add_node("sales_intelligence_agent", sales_intelligence_agent)
     builder.add_node("content_agent", content_agent)

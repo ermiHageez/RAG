@@ -1,6 +1,4 @@
 from src.agents.state import AgentState
-from mcp_server.tools.tenders import fetch_active_tenders
-from src.rag.vectorstore import get_vectorstore
 
 
 def _score_relevance(tender: dict, vectorstore) -> float:
@@ -20,6 +18,8 @@ def _score_relevance(tender: dict, vectorstore) -> float:
 
 
 def tender_agent(state: AgentState) -> dict:
+    from src.rag.vectorstore import get_vectorstore
+    from mcp_server.tools.tenders import fetch_active_tenders
     tenders = fetch_active_tenders()
 
     vectorstore = get_vectorstore()

@@ -1,25 +1,24 @@
 import os
-from src.data_loader import load_all_documents
-from src.vectorstore import FaissVectorStore
-from src.search import RAGSearch
+from src.rag.data_loader import load_all_documents
+from src.rag.vectorstore import FaissVectorStore
+from src.rag.retriever import Retriever
 
-# Example usage
 if __name__ == "__main__":
     docs = load_all_documents("data")
     store = FaissVectorStore("faiss_store")
     if store.build_from_documents(docs):
         store.load()
-        print(
-            store.query("who is the CEO of etech?", top_k=3)
-        )
+        if store.index is not None:
+            print(f"FAISS index rebuilt: {store.index.ntotal} entries, dimension {store.index.d}")
+        else:
+            print("FAISS index rebuilt, but index metadata is unavailable.")
+
+        retriever = Retriever(store)
+        results = retriever.retrieve("who is the CEO of etech?", top_k=5, rerank_top_k=3)
+        print(f"\nQuery results: {len(results)}")
+        for r in results:
+            meta = r.get("metadata", {})
+            text = meta.get("text", "")[:120]
+            print(f"  [{r['distance']:.3f}] {text}...")
     else:
-        print("[WARN] Skipping vector store query because no documents were loaded.")
-    rag_search = RAGSearch()
-    query = "who is the CEO of etech?"
-    result = rag_search.search_and_summarize(query, top_k=3)
-    print("\nSummary:", result["summary"])
-    if result["sources"]:
-        print("\nSources:")
-        for i, src in enumerate(result["sources"], 1):
-            doc_name = os.path.basename(src["document"])
-            print(f"  [{i}] {doc_name} — Page {src['page']}")
+        print("[WARN] No documents loaded, skipping.")

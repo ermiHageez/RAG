@@ -1,6 +1,5 @@
 from src.agents.llm import get_router_llm
 from src.agents.state import AgentState
-from mcp_server.tools.search import discover_ethiopian_enterprises
 
 DEFAULT_SECTORS = [
     "banking finance Ethiopia",
@@ -24,6 +23,7 @@ def _deduplicate(leads: list[dict]) -> list[dict]:
 
 
 def lead_agent(state: AgentState) -> dict:
+    from mcp_server.tools.search import discover_ethiopian_enterprises
     query = state.get("query", "")
 
     sectors = DEFAULT_SECTORS

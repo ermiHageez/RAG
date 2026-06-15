@@ -13,8 +13,11 @@
 | **Sprint 3** — Orchestration & Graph Routing | 🟢 Complete | 2 | 2 |
 | **Sprint 4** — Sales & Marketing Alignment | 🟢 Complete | 2 | 2 |
 | **Sprint 5** — Infrastructure Deployment | 🟢 Complete | 2 | 2 |
-| **Sprint 6** — Local Multi-Agent (v3) | 🔴 Pending | 0 | 7 |
-| **Total** | **—** | **11** | **18** |
+| **Sprint 6** — Local Multi-Agent (v3) | 🟢 Complete | 7 | 7 |
+| **Sprint 7** — Sales Assistant & Doc-Gen | 🟢 Complete | 6 | 6 |
+| **Sprint 8** — Marketing Pipeline | 🟢 Complete | 5 | 5 |
+| **Sprint 9** — pgvector Knowledge Base & Postgres Memory | 🟡 In Progress | 0 | 6 |
+| **Total** | **—** | **29** | **35** |
 
 ---
 
@@ -54,13 +57,42 @@
 ### [Sprint 6: Local Multi-Agent Migration (v3)](./sprint-06-local-multi-agent/)
 | # | Step | File | Status |
 |---|------|------|--------|
-| 6.1 | LLM Factory & Embedding Migration | [01-llm-factory-and-embedding.md](./sprint-06-local-multi-agent/01-llm-factory-and-embedding.md) | 🔴 Pending |
-| 6.2 | RAG Layer Refactor | [02-rag-layer-refactor.md](./sprint-06-local-multi-agent/02-rag-layer-refactor.md) | 🔴 Pending |
-| 6.3 | Multi-Agent Architecture | [03-multi-agent-architecture.md](./sprint-06-local-multi-agent/03-multi-agent-architecture.md) | 🔴 Pending |
-| 6.4 | LangGraph Workflow & State | [04-langgraph-workflow-and-state.md](./sprint-06-local-multi-agent/04-langgraph-workflow-and-state.md) | 🔴 Pending |
-| 6.5 | Memory Layer | [05-memory-layer.md](./sprint-06-local-multi-agent/05-memory-layer.md) | 🔴 Pending |
-| 6.6 | Evaluation Layer | [06-evaluation-layer.md](./sprint-06-local-multi-agent/06-evaluation-layer.md) | 🔴 Pending |
-| 6.7 | Dependency Cleanup & Testing | [07-dependency-cleanup-and-testing.md](./sprint-06-local-multi-agent/07-dependency-cleanup-and-testing.md) | 🔴 Pending |
+| 6.1 | LLM Factory & Embedding Migration | [01-llm-factory-and-embedding.md](./sprint-06-local-multi-agent/01-llm-factory-and-embedding.md) | 🟢 Complete |
+| 6.2 | RAG Layer Refactor | [02-rag-layer-refactor.md](./sprint-06-local-multi-agent/02-rag-layer-refactor.md) | 🟢 Complete |
+| 6.3 | Multi-Agent Architecture | [03-multi-agent-architecture.md](./sprint-06-local-multi-agent/03-multi-agent-architecture.md) | 🟢 Complete |
+| 6.4 | LangGraph Workflow & State | [04-langgraph-workflow-and-state.md](./sprint-06-local-multi-agent/04-langgraph-workflow-and-state.md) | 🟢 Complete |
+| 6.5 | Memory Layer | [05-memory-layer.md](./sprint-06-local-multi-agent/05-memory-layer.md) | 🟢 Complete |
+| 6.6 | Evaluation Layer | [06-evaluation-layer.md](./sprint-06-local-multi-agent/06-evaluation-layer.md) | 🟢 Complete |
+| 6.7 | Dependency Cleanup & Testing | [07-dependency-cleanup-and-testing.md](./sprint-06-local-multi-agent/07-dependency-cleanup-and-testing.md) | 🟢 Complete |
+
+### [Sprint 7: Sales Assistant & Doc-Gen](./sprint-07-sales-assistant/)
+| # | Step | File | Status |
+|---|------|------|--------|
+| 7.1 | Sales Engine & State Machine | [01-sales-engine.md](./sprint-07-sales-assistant/01-sales-engine.md) | 🟢 Complete |
+| 7.2 | Phase Prompts | [02-sales-prompts.md](./sprint-07-sales-assistant/02-sales-prompts.md) | 🟢 Complete |
+| 7.3 | Doc-Gen HTML Proposal Generator | [03-doc-gen-pdf.md](./sprint-07-sales-assistant/03-doc-gen-pdf.md) | 🟢 Complete |
+| 7.4 | API Endpoints (6 new) | [04-api-endpoints.md](./sprint-07-sales-assistant/04-api-endpoints.md) | 🟢 Complete |
+| 7.5 | Dependencies & Documentation | [05-dependencies-docs.md](./sprint-07-sales-assistant/05-dependencies-docs.md) | 🟢 Complete |
+| 7.6 | End-to-End Testing | [06-e2e-testing.md](./sprint-07-sales-assistant/06-e2e-testing.md) | 🟢 Complete |
+
+### [Sprint 8: Marketing Pipeline](./sprint-08-marketing/)
+| # | Step | File | Status |
+|---|------|------|--------|
+| 8.1 | Email Template Engine | [01-template-management.md](./sprint-08-marketing/01-template-management.md) | 🟢 Complete |
+| 8.2 | Email Content Generation | [02-email-content-generation.md](./sprint-08-marketing/02-email-content-generation.md) | 🟢 Complete |
+| 8.3 | Campaign Status Tracking | [03-campaign-tracking.md](./sprint-08-marketing/03-campaign-tracking.md) | 🟢 Complete |
+| 8.4 | Follow-Up Automation | [04-follow-up-automation.md](./sprint-08-marketing/04-follow-up-automation.md) | 🟢 Complete |
+| 8.5 | Analytics Dashboard | [05-analytics-dashboard.md](./sprint-08-marketing/05-analytics-dashboard.md) | 🟢 Complete |
+
+### [Sprint 9: pgvector Knowledge Base & Postgres Memory](./sprint-09-pgvector-migration/)
+| # | Step | File | Status |
+|---|------|------|--------|
+| 9.1 | pgvector Connection & Schema | [01-pgvector-connection.md](./sprint-09-pgvector-migration/01-pgvector-connection.md) | 🟡 In Progress |
+| 9.2 | Knowledge Base CRUD | [02-knowledge-base.md](./sprint-09-pgvector-migration/02-knowledge-base.md) | 🔴 Pending |
+| 9.3 | PostgresMemoryStore | [03-postgres-memory.md](./sprint-09-pgvector-migration/03-postgres-memory.md) | 🔴 Pending |
+| 9.4 | RAG Integration | [04-rag-integration.md](./sprint-09-pgvector-migration/04-rag-integration.md) | 🔴 Pending |
+| 9.5 | build_agent() Wiring | [05-build-agent-wiring.md](./sprint-09-pgvector-migration/05-build-agent-wiring.md) | 🔴 Pending |
+| 9.6 | Testing | [06-testing.md](./sprint-09-pgvector-migration/06-testing.md) | 🔴 Pending |
 
 ---
 

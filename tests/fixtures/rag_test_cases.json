@@ -1,0 +1,29 @@
+[
+    {
+        "name": "etech_ceo_query",
+        "input": "Who is the CEO of eTech?",
+        "output": [
+            {"text": "eTech is a software development company. CEO: Shimelis Gebremedhin."},
+            {"text": "eTech provides ERP solutions for banks."}
+        ],
+        "expected": ["Shimelis Gebremedhin"]
+    },
+    {
+        "name": "etech_capabilities",
+        "input": "What products does eTech offer?",
+        "output": [
+            {"text": "eTech's products include eHealth, eSACCO, eShare, eRide, and ERP systems."},
+            {"text": "Annual report 2024 financial statements."}
+        ],
+        "expected": ["eHealth", "eSACCO", "eShare", "eRide", "ERP"]
+    },
+    {
+        "name": "irrelevant_query",
+        "input": "What is the weather in Tokyo?",
+        "output": [
+            {"text": "eTech provides ERP solutions for banks."},
+            {"text": "Tokyo has a humid subtropical climate."}
+        ],
+        "expected": []
+    }
+]

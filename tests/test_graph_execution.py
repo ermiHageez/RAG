@@ -5,20 +5,16 @@ from src.agents.graph import build_agent
 
 @pytest.fixture(autouse=True)
 def mock_externals(monkeypatch, mock_vectorstore):
-    def mock_search(query: str):
-        return [{"name": "Test Corp", "sector": "Finance", "location": "Addis", "contact": "", "description": "Test", "source": "mock"}]
-
-    def mock_tenders(sector=None):
-        return [{"title": "Test Tender", "description": "Test", "deadline": "2026-12-31T00:00:00", "url": "https://test.et", "category": "Finance", "source": "mock", "relevance_score": 0.9}]
+    mock_search = lambda query: [{"name": "Test Corp", "sector": "Finance", "location": "Addis", "contact": "", "description": "Test", "source": "mock"}]
+    mock_tenders = lambda sector=None: [{"title": "Test Tender", "description": "Test", "deadline": "2026-12-31T00:00:00", "url": "https://test.et", "category": "Finance", "source": "mock", "relevance_score": 0.9}]
 
     import mcp_server.tools.search as search_mod
     import mcp_server.tools.tenders as tenders_mod
+    import src.agents.knowledge.knowledge_agent as ka_mod
 
     monkeypatch.setattr(search_mod, "discover_ethiopian_enterprises", mock_search)
     monkeypatch.setattr(tenders_mod, "fetch_active_tenders", mock_tenders)
-
-    import src.agents.knowledge.knowledge_agent as _ka_mod
-    monkeypatch.setattr(_ka_mod, "_get_retriever", lambda: MagicMock(
+    monkeypatch.setattr(ka_mod, "_get_retriever", lambda: MagicMock(
         retrieve=lambda q, top_k=5, rerank_top_k=3: [
             {"metadata": {"text": "eTech provides ERP solutions", "source": {}}, "distance": 0.5}
         ]

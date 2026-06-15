@@ -13,8 +13,8 @@ def mock_ollama():
         mock_chat.return_value = mock_llm
 
         mock_emb_model = MagicMock()
-        mock_emb_model.embed_documents.return_value = [[0.1] * 384]
-        mock_emb_model.embed_query.return_value = [0.1] * 384
+        mock_emb_model.embed_documents.return_value = [[0.1] * 1024]
+        mock_emb_model.embed_query.return_value = [0.1] * 1024
         mock_emb.return_value = mock_emb_model
 
         yield

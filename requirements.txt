@@ -24,5 +24,7 @@ mcp
 pandas
 openpyxl
 httpx
+requests
 beautifulsoup4
 lxml
+ddgs

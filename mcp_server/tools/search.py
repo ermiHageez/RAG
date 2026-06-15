@@ -1,71 +1,69 @@
-import os
-import json
-from typing import Any, Dict, List, Optional
-from dotenv import load_dotenv
-
-load_dotenv()
-
-MOCK_RESPONSES: Dict[str, List[Dict[str, str]]] = {
-    "bank": [
-        {"name": "Mock Bank of Ethiopia", "sector": "Finance", "location": "Addis Ababa", "description": "Leading commercial bank", "contact": "info@mockbank.et"},
-        {"name": "Mock Credit & Savings", "sector": "Finance", "location": "Addis Ababa", "description": "Microfinance institution", "contact": "contact@mocksavings.et"},
-    ],
-    "insurance": [
-        {"name": "Mock Insurance SC", "sector": "Insurance", "location": "Addis Ababa", "description": "Full-service insurance provider", "contact": "info@mockinsurance.et"},
-    ],
-    "logistics": [
-        {"name": "Mock Logistics PLC", "sector": "Logistics", "location": "Addis Ababa", "description": "Freight and supply chain management", "contact": "ops@mocklogistics.et"},
-    ],
-    "manufacturing": [
-        {"name": "Mock Manufacturing PLC", "sector": "Manufacturing", "location": "Addis Ababa", "description": "Industrial goods manufacturer", "contact": "sales@mockmfg.et"},
-    ],
-    "government": [
-        {"name": "Mock Ministry of Tech", "sector": "Government", "location": "Addis Ababa", "description": "Government technology authority", "contact": "info@mockministry.gov.et"},
-    ],
-    "default": [
-        {"name": "Mock Enterprise 1", "sector": "General", "location": "Addis Ababa", "description": "Ethiopian enterprise", "contact": "info@mock1.et"},
-        {"name": "Mock Enterprise 2", "sector": "General", "location": "Addis Ababa", "description": "Ethiopian enterprise", "contact": "info@mock2.et"},
-    ],
-}
+import urllib.parse
+from typing import Any, Dict, List
+from ddgs import DDGS
+import requests
+from bs4 import BeautifulSoup
 
 
-def _mock_search(query: str) -> List[Dict[str, str]]:
-    query_lower = query.lower()
-    for sector_key, results in MOCK_RESPONSES.items():
-        if sector_key in query_lower:
-            return results
-    return MOCK_RESPONSES["default"]
-
-
-def _google_search(query: str) -> List[Dict[str, str]]:
-    import httpx
-
-    api_key = os.getenv("GOOGLE_API_KEY")
-    cse_id = os.getenv("GOOGLE_CSE_ID")
-
-    if not api_key or not cse_id:
-        print("[WARN] GOOGLE_API_KEY or GOOGLE_CSE_ID not set, falling back to mock")
-        return _mock_search(query)
-
-    url = "https://www.googleapis.com/customsearch/v1"
-    params = {"key": api_key, "cx": cse_id, "q": query, "num": 5}
-    try:
-        resp = httpx.get(url, params=params, timeout=15.0)
-        resp.raise_for_status()
-        data = resp.json()
-        results = []
-        for item in data.get("items", []):
+def primary_duckduckgo_search(query: str, max_results: int = 5) -> List[Dict[str, str]]:
+    """Primary search engine: DuckDuckGo."""
+    results = []
+    with DDGS() as ddgs:
+        for item in ddgs.text(query, max_results=max_results):
             results.append({
-                "name": item.get("title", ""),
-                "sector": _guess_sector(item.get("title", ""), item.get("snippet", "")),
-                "location": "Addis Ababa",
-                "description": item.get("snippet", ""),
-                "contact": "",
+                "title": item.get("title", ""),
+                "url": item.get("href", ""),
+                "snippet": item.get("body", ""),
             })
-        return results
-    except Exception as e:
-        print(f"[WARN] Google search failed ({e}), falling back to mock")
-        return _mock_search(query)
+    return results
+
+
+def fallback_google_scraper(query: str, max_results: int = 5) -> List[Dict[str, str]]:
+    """Fallback engine: zero-auth Google organic scrape via BeautifulSoup."""
+    encoded = urllib.parse.quote_plus(query)
+    url = f"https://www.google.com/search?q={encoded}&num={max_results}"
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        )
+    }
+    resp = requests.get(url, headers=headers, timeout=8)
+    resp.raise_for_status()
+
+    soup = BeautifulSoup(resp.text, "html.parser")
+    results = []
+    for g in soup.select("div.g")[:max_results]:
+        title_el = g.select_one("h3")
+        link_el = g.select_one("a")
+        snippet_el = g.select_one("div[style*='-webkit-line-clamp'], .VwiC3b")
+        if title_el and link_el:
+            results.append({
+                "title": title_el.get_text(),
+                "url": link_el.get("href", ""),
+                "snippet": snippet_el.get_text() if snippet_el else "No context available.",
+            })
+    return results
+
+
+def resilient_web_search(query: str, max_results: int = 5) -> List[Dict[str, str]]:
+    """Unified search with automatic failover: DDGS → Google scrape."""
+    print(f"[SearchRouter] Primary: DuckDuckGo for '{query}'")
+    try:
+        return primary_duckduckgo_search(query, max_results)
+    except Exception as ddg_err:
+        print(f"[SearchRouter] DuckDuckGo failed ({ddg_err}), falling back to Google scrape")
+        try:
+            return fallback_google_scraper(query, max_results)
+        except Exception as google_err:
+            print(f"[SearchRouter] Google scrape also failed ({google_err})")
+            return [
+                {
+                    "title": "Search unavailable",
+                    "url": "",
+                    "snippet": f"All search engines exhausted. DDG: {ddg_err}. Google: {google_err}",
+                }
+            ]
 
 
 def _guess_sector(title: str, snippet: str) -> str:
@@ -80,13 +78,26 @@ def _guess_sector(title: str, snippet: str) -> str:
         return "Government"
     if any(w in text for w in ["tech", "software", "it ", "digital"]):
         return "Technology"
+    if any(w in text for w in ["agriculture", "farm", "agro"]):
+        return "Agriculture"
+    if any(w in text for w in ["hotel", "tourism", "hospitality"]):
+        return "Hospitality"
     return "General"
 
 
 def discover_ethiopian_enterprises(query: str) -> List[Dict[str, Any]]:
-    api_key = os.getenv("GOOGLE_API_KEY")
-    api_key_set = bool(api_key and os.getenv("GOOGLE_CSE_ID"))
-
-    if api_key_set:
-        return _google_search(query)
-    return _mock_search(query)
+    """Compatibility wrapper used by lead_agent. Returns enriched result format."""
+    raw = resilient_web_search(query, max_results=5)
+    results = []
+    for item in raw:
+        title = item.get("title", "")
+        snippet = item.get("snippet", "")
+        results.append({
+            "name": title,
+            "sector": _guess_sector(title, snippet),
+            "location": "Ethiopia",
+            "description": snippet,
+            "contact": "",
+            "link": item.get("url", ""),
+        })
+    return results
