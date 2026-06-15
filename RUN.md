@@ -1,6 +1,6 @@
 # eTech Marketing & Sales Agent — Setup & Run Guide
 
-> Full project: **11/11 sprints complete** 🟢
+> Local multi-agent system with Ollama, LangGraph, MCP, FAISS, N8N
 
 ---
 
@@ -8,21 +8,24 @@
 
 ```bash
 python --version              # Must be 3.11+
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-pip install pytest             # dev dependency for tests
+uv sync                       # Installs from pyproject.toml/uv.lock
 ```
+
+Dependencies managed via `uv` (no pip). Key packages:
+- `langgraph`, `langchain-ollama`, `langchain-community`
+- `faiss-cpu`, `langchain-text-splitters`
+- `fastapi`, `uvicorn`, `pydantic`
+- `httpx`, `beautifulsoup4`, `lxml`
 
 ---
 
 ## 2. Configure `.env`
 
-Copy `.env.example` to `.env` and fill in:
+Copy `.env.example` to `.env` (minimal — Ollama needs no key):
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `GROQ_API_KEY` | **Yes** | Get from https://console.groq.com |
+| `OLLAMA_BASE_URL` | No | Default: `http://localhost:11434` |
 | `GOOGLE_API_KEY` | No | Google Custom Search API key |
 | `GOOGLE_CSE_ID` | No | Google Custom Search Engine ID |
 | `N8N_WEBHOOK_URL` | No | n8n webhook endpoint |
@@ -33,146 +36,182 @@ Without Google keys, search falls back to mock data. Without n8n URL, the n8n ho
 
 ---
 
-## 3. Prepare Data
+## 3. Pull Ollama Models (Required)
 
-Place your source files in `data/`:
-
-```
-data/
-├── customer_list.xlsx           # 105 Ethiopian customer records
-├── 2022-2023-Annual-Report.pdf  # eTech annual magazine (scanned)
-└── comapny profile 2026.pptx    # eTech company profile (scanned)
-```
-
-**Delete stale FAISS index before first run:**
+All inference runs locally through Ollama:
 
 ```bash
-rm -rf faiss_store/
+ollama pull qwen3-embedding:4b   # 2.5 GB — embedding
+ollama pull gemma3:4b            # 3.3 GB — router (supervisor)
+ollama pull qwen3:8b             # 5.2 GB — reasoning (lead/tender/sales)
+ollama pull llama3.1:8b          # 4.9 GB — content drafting
+
+# Verify
+ollama list
 ```
+
+Stop Ollama if already running to free RAM for other models.
 
 ---
 
 ## 4. Build the FAISS Index
 
+The index is now built with `qwen3-embedding:4b` (1024-dim). If a legacy 384-dim index exists, back it up:
+
 ```bash
-python main.py
+mv faiss_store faiss_store_backup   # backup legacy (384-dim)
 ```
 
-This loads all files from `data/`, chunks them, generates embeddings via `all-MiniLM-L6-v2`, and saves to `faiss_store/`.
+Then rebuild:
 
-**Notes:**
-- First run downloads the SentenceTransformer model (~90MB) — takes a minute
-- Scanned PDF/PPTX fall back to easyocr — **very slow** on weak PCs. For testing, keep only `customer_list.xlsx` in `data/`
-- If OCR hangs or crashes, remove the PDF/PPTX and re-run
+```bash
+uv run python ingest.py
+```
+
+This loads files from `data/`, chunks them, generates embeddings via `get_embedding_model()`, and saves to `faiss_store/`. Place source files in `data/`:
+
+```
+data/
+├── customer_list.xlsx
+├── 2022-2023-Annual-Report.pdf
+└── comapny profile 2026.pptx
+```
 
 ---
 
-## 5. Run Tests
+## 5. Run Tests (No API Keys, No Network)
 
-### 5a. Test MCP Tools (no LLM, no API keys needed)
+All tests mock Ollama responses — run offline:
 
 ```bash
-python -c "
+uv run pytest -v
+```
+
+Expected: **52 passed**
+
+| File | Tests | What it covers |
+|------|-------|----------------|
+| `test_agent_state.py` | 10 | Merge/override reducers, TypedDict defaults |
+| `test_content_drafting.py` | 4 | Email validation, personalization scoring |
+| `test_e2e_pipeline.py` | 7 | Full graph end-to-end with all mocks |
+| `test_graph_execution.py` | 5 | Graph routing, parallel nodes, approval gate |
+| `test_lead_node.py` | 4 | Lead deduplication (case-insensitive, empty, etc.) |
+| `test_mcp_tools.py` | 10 | Search, tenders, n8n hook with validation |
+| `test_rag_retrieval.py` | 2 | Retriever construction, empty index fallback |
+| `test_supervisor_routing.py` | 6 | Route parsing (JSON, plain text, empty) |
+| `test_tender_node.py` | 2 | Relevance scoring with/without FAISS index |
+
+---
+
+## 6. Validate with Real Models (Phase 4.5)
+
+> **Before production use**, validate against actual Ollama models.
+
+### 6a. Model Layer
+
+```bash
+uv run python -c "
+from src.agents.llm import (
+    get_embedding_model, get_router_llm,
+    get_reasoning_llm, get_content_llm
+)
+print(get_embedding_model().embed_query('construction tender'))
+print(get_router_llm().invoke('Classify: find tenders'))
+print(get_reasoning_llm().invoke('Analyze this lead'))
+print(get_content_llm().invoke('Write a sales email'))
+"
+```
+
+### 6b. RAG Layer (after rebuilding FAISS index)
+
+```bash
+uv run python -c "
+from src.rag.vectorstore import FaissVectorStore
+store = FaissVectorStore('faiss_store')
+store.load()
+print(store.query('construction company'))
+"
+```
+
+### 6c. Full Agent
+
+```bash
+uv run python -c "
+from src.agents.graph import build_agent
+agent = build_agent()
+result = agent.invoke({'query': 'Find construction companies interested in industrial generators'})
+print('Leads:', len(result['qualified_leads']))
+print('Tenders:', len(result['qualified_tenders']))
+print('Knowledge chunks:', len(result['knowledge_context']))
+print('Sales intel:', result['sales_intelligence'])
+print('Email drafted:', result['draft_email']['subject'] if result['draft_email'] else 'No')
+print('Approval:', result['approval']['status'])
+print('N8N payload keys:', list(result['n8n_payload'].keys()))
+"
+```
+
+### 6d. MCP Tools
+
+```bash
+uv run python -c "
 from mcp_server.tools.search import discover_ethiopian_enterprises
 from mcp_server.tools.tenders import fetch_active_tenders
 from mcp_server.tools.n8n_hook import trigger_n8n_marketing_pipeline
-
-print('=== Search ===')
-print(discover_ethiopian_enterprises('bank'))
-
-print('=== Tenders ===')
-print(fetch_active_tenders('Security'))
-
-print('=== n8n Hook ===')
-print(trigger_n8n_marketing_pipeline({
-    'lead_name': 'TestCorp',
-    'tender_requirements': 'Security system installation',
-    'validated_email': 'test@corp.et',
-    'email_body': 'Dear TestCorp, ...'
+print('Search:', discover_ethiopian_enterprises('bank'))
+print('Tenders:', fetch_active_tenders('Security'))
+print('n8n:', trigger_n8n_marketing_pipeline({
+    'lead_name': 'TestCorp', 'tender_requirements': 'Security system',
+    'validated_email': 'test@corp.et', 'email_body': 'Dear TestCorp, ...'
 }))
 "
 ```
 
-### 5b. Test the Full Agent (needs FAISS + GROQ_API_KEY)
+---
+
+## 7. Run the API Server
 
 ```bash
-python -c "
-from src.agent.graph import build_agent
-agent = build_agent()
-result = agent.invoke({'query': 'find bank leads and security tenders'})
-print('Leads found:     ', len(result['found_leads']))
-print('Tenders found:   ', len(result['active_tender_listings']))
-print('Sales intel items:', len(result['sales_intel']))
-print('Email drafts:    ', len(result['email_drafts']))
-print('n8n batch size:  ', result['n8n_payload']['total'])
-print()
-print('--- Sales Report ---')
-print(result['sales_report'])
-"
+uv run uvicorn src.api:app --host 0.0.0.0 --port 8001
 ```
-
-### 5c. Test Individual Nodes
 
 ```bash
-# Tender identification
-python -c "
-from src.agent.nodes.tender_identification import identify_tenders
-from src.agent.state import AgentState
-state = AgentState(query='', rag_context=[], found_leads=[],
-    active_tender_listings=[], sales_intel=[], sales_report=None,
-    email_drafts=[], n8n_payload=None)
-result = identify_tenders(state)
-print('Tenders:', len(result['active_tender_listings']))
-for t in result['active_tender_listings']:
-    print(f'  [{t[\"relevance_score\"]}] {t[\"title\"]}')
-"
-
-# Lead discovery
-python -c "
-from src.agent.nodes.lead_discovery import discover_leads
-from src.agent.state import AgentState
-state = AgentState(query='', rag_context=[], found_leads=[],
-    active_tender_listings=[], sales_intel=[], sales_report=None,
-    email_drafts=[], n8n_payload=None)
-result = discover_leads(state)
-print('Leads:', len(result['found_leads']))
-for l in result['found_leads']:
-    print(f'  {l[\"name\"]} ({l[\"sector\"]})')
-"
+curl -X POST http://localhost:8001/agent/run \
+  -H "Content-Type: application/json" \
+  -d '{"query":"find bank leads and security tenders"}'
 ```
 
-### 5d. Run the Pytest Suite
+Expected response shape:
 
-```bash
-pytest tests/ -v
-```
-
-All tests mock external dependencies — **no API keys or network needed**. Expected:
-
-```
-tests/test_agent_state.py ......                                       [ 15%]
-tests/test_tender_node.py ...                                         [ 23%]
-tests/test_lead_node.py ....                                          [ 33%]
-tests/test_content_drafting.py ......                                 [ 48%]
-tests/test_mcp_tools.py .........                                     [ 71%]
-tests/test_e2e_pipeline.py ...........                                [100%]
-
-11 passed
+```json
+{
+  "success": true,
+  "result": {
+    "query": "...",
+    "qualified_leads": [...],
+    "qualified_tenders": [...],
+    "knowledge_context": [...],
+    "sales_intelligence": {...},
+    "draft_email": {...},
+    "approval": {"status": "pending", ...},
+    "n8n_payload": {...}
+  }
+}
 ```
 
 ---
 
-## 6. Run the MCP Server
+## 8. Run the MCP Server
 
 ```bash
 # stdio mode (for IDE/LangGraph integration)
-python -m mcp_server.run
+uv run python -m mcp_server.run
 
 # SSE mode (for Docker / network access)
-python -m mcp_server.run --sse --port 8000
+uv run python -m mcp_server.run --sse --port 8000
 ```
 
 Registered tools:
+
 | Tool | Description |
 |------|-------------|
 | `discover_ethiopian_enterprises` | Search Ethiopian companies by sector |
@@ -181,7 +220,7 @@ Registered tools:
 
 ---
 
-## 7. Docker Deployment
+## 9. Docker Deployment
 
 ```bash
 # Build the image
@@ -213,11 +252,9 @@ docker compose down
 | `agent-api` | 8001 | `POST /agent/run` | LangGraph agent via FastAPI |
 | `n8n` | 5678 | `http://localhost:5678` | n8n workflow automation |
 
-Volumes persist FAISS index (`faiss_data`) and n8n data (`n8n_data`).
-
 ---
 
-## 8. n8n Workflow Integration
+## 10. n8n Workflow Integration
 
 1. Open `http://localhost:5678` in browser
 2. Create account (first-run setup)
@@ -229,18 +266,45 @@ The n8n workflow reads customer data from Google Sheets, generates personalized 
 
 ---
 
-## 9. Quick Troubleshooting
+## 11. Quick Troubleshooting
 
 | Symptom | Likely Cause | Fix |
-|---------|-------------|-----|
-| `sentence-transformers` slow/hangs | First-run model download | Wait ~1 minute |
-| OCR too slow / crashes | Scanned PDF/PPTX on weak PC | Remove them, keep only XLSX |
-| `faiss_store/` has stale data | Index built with different files | `rm -rf faiss_store/` then `python main.py` |
-| All MCP results are mock | Missing API keys | Set `GOOGLE_API_KEY` + `GOOGLE_CSE_ID` in `.env` |
-| `pytest` not found | pytest not installed | `pip install pytest` |
+|---------|-------------|------|
+| `uv run pytest` fails | Missing deps or lockfile stale | `uv sync` |
+| Ollama connection refused | Ollama not running | `ollama serve` in another terminal |
+| Dimension mismatch in FAISS | Index built with old model | `mv faiss_store faiss_store_backup && uv run python ingest.py` |
+| All MCP results are mock | Missing Google API keys | Set `GOOGLE_API_KEY` + `GOOGLE_CSE_ID` in `.env` |
+| API returns 500, `sentence_transformers` error | Old `src/api.py` still imports legacy | Verify import is `from src.agents.graph import build_agent` |
+| Models too slow | Too many loaded at once | Run only needed models, use smaller quantizations |
 | Docker healthcheck failing | Service not ready | Wait 30s, check `docker compose logs` |
-| LangGraph import error | Missing langchain packages | `pip install langgraph langchain-groq langchain-core` |
-| `n8n_payload` is `None` | No email drafts generated | Check GROQ_API_KEY is set and FAISS has data |
+
+---
+
+## Architecture Overview
+
+```
+User Query
+    │
+    ▼
+Supervisor (gemma3:4b) — routes query to:
+    ├── Lead Agent (qwen3:8b) — discovers + deduplicates enterprises
+    ├── Tender Agent (qwen3:8b) — fetches + scores tenders
+    └── Knowledge Agent (qwen3-embedding:4b) — RAG retrieval
+    │
+    ▼
+Sales Intelligence (qwen3:8b) — cross-references leads/tenders/knowledge
+    │
+    ▼
+Content Agent (llama3.1:8b) — drafts personalized email
+    │
+    ▼
+Approval Gate — checks draft quality
+    │
+    ▼
+N8N Payload → n8n webhook → Google Sheets → Gemini → Gmail
+```
+
+All model assignments in `src/agents/llm.py` — the only place model names are configured.
 
 ---
 
@@ -248,56 +312,51 @@ The n8n workflow reads customer data from Google Sheets, generates personalized 
 
 ```
 ├── RUN.md                         ← You are here
-├── .env.example                   ← Template for secrets
-├── requirements.txt               ← Python dependencies
-├── Dockerfile                     ← Multi-stage build
-├── docker-compose.yml             ← 3-service orchestration
-├── entrypoint.sh                  ← Container startup
-├── .dockerignore                  ← Build exclusions
-├── main.py                        ← Index builder script
+├── .env.example                   ← Ollama-based config
+├── pyproject.toml                 ← uv dependencies
+├── ingest.py                      ← FAISS index builder
+├── Dockerfile
+├── docker-compose.yml
 │
-├── data/                          ← Your source documents
-│   ├── customer_list.xlsx
-│   ├── 2022-2023-Annual-Report.pdf
-│   └── comapny profile 2026.pptx
+├── data/                          ← Source documents
 │
 ├── src/
-│   ├── api.py                     ← FastAPI HTTP wrapper
-│   ├── data_loader.py             ← Document loader (XLSX/PDF/PPTX)
-│   ├── vectorstore.py             ← FAISS index
-│   ├── embedding.py               ← SentenceTransformer pipeline
-│   ├── search.py                  ← RAG search + summarizer
-│   ├── ocr_loader.py              ← OCR fallback for scanned docs
-│   └── agent/
-│       ├── state.py               ← AgentState TypedDict
-│       ├── graph.py               ← LangGraph compiled graph
-│       ├── store.py               ← Singleton vectorstore
-│       └── nodes/
-│           ├── base.py            ← retrieve_context + format_n8n_payload
-│           ├── tender_identification.py
-│           ├── lead_discovery.py
-│           ├── sales_intel.py     ← Sprint 4
-│           └── content_drafting.py ← Sprint 4
+│   ├── api.py                     ← FastAPI (uses src.agents.graph)
+│   ├── search.py                  ← RAG search + summarizer (new)
+│   ├── agents/
+│   │   ├── llm.py                 ← Model factory (single source of truth)
+│   │   ├── state.py               ← AgentState TypedDict
+│   │   ├── graph.py               ← LangGraph compiled graph
+│   │   ├── supervisor.py          ← Route parser
+│   │   ├── lead/                  ← Lead discovery + dedup
+│   │   ├── tender/                ← Tender scoring
+│   │   ├── knowledge/             ← RAG retrieval
+│   │   ├── sales_intelligence/    ← Cross-ref analysis
+│   │   ├── content/               ← Email drafting + validation
+│   │   └── approval/              ← Approval gate
+│   ├── rag/
+│   │   ├── embedding.py           ← OllamaEmbeddings pipeline
+│   │   ├── vectorstore.py         ← FAISS load/save/query
+│   │   ├── retriever.py           ← Two-stage retrieval + rerank
+│   │   └── reranker.py            ← Abstract + NoOpReranker
+│   └── evaluation/
+│       ├── base.py                ← Evaluator ABC
+│       ├── rag_eval.py            ← RAG precision evaluator
+│       ├── agent_eval.py          ← Routing accuracy evaluator
+│       ├── content_eval.py        ← Content quality evaluator
+│       └── benchmarks.py          ← Benchmark suite
 │
 ├── mcp_server/
 │   ├── run.py                     ← Entry point (stdio/SSE)
-│   ├── server.py                  ← FastMCP tool registrations
+│   ├── server.py                  ← FastMCP registrations
 │   └── tools/
 │       ├── search.py              ← Google CSE + mock fallback
 │       ├── tenders.py             ← PPA/eGP scraper + mock data
 │       └── n8n_hook.py            ← POST with retry + validation
 │
 ├── tests/
-│   ├── conftest.py                ← Mock FAISS + fixtures
-│   ├── test_agent_state.py        ← Reducer unit tests
-│   ├── test_tender_node.py        ← Tender identification tests
-│   ├── test_lead_node.py          ← Lead dedup tests
-│   ├── test_content_drafting.py   ← Email validation + scoring
-│   ├── test_mcp_tools.py          ← All 3 MCP tool tests
-│   └── test_e2e_pipeline.py       ← 11 full pipeline scenarios
+│   ├── conftest.py                ← mock_ollama fixture (384-dim)
+│   ├── 16 test files              ← 52 total tests
 │
-├── n8nemail/
-│   └── AI email Automation.json   ← Importable n8n workflow
-│
-└── faiss_store/                   ← Generated (delete to rebuild)
+└── faiss_store/                   ← Generated (1024-dim qwen3-embedding)
 ```

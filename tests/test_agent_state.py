@@ -1,4 +1,4 @@
-from src.agent.state import AgentState, _merge_lists, _override
+from src.agents.state import AgentState, _merge_lists, _override
 
 
 def test_merge_lists_both_empty():
@@ -29,22 +29,57 @@ def test_override_none_both():
     assert _override(None, None) is None
 
 
-def test_agent_state_defaults(empty_state):
-    assert empty_state["query"] == ""
-    assert empty_state["found_leads"] == []
-    assert empty_state["sales_report"] is None
+def test_agent_state_defaults():
+    state = AgentState(
+        query="",
+        route=[],
+        qualified_leads=[],
+        qualified_tenders=[],
+        knowledge_context=[],
+        sales_intelligence=None,
+        draft_email=None,
+        requires_human_approval=None,
+        approval_reason=None,
+        n8n_payload=None,
+    )
+    assert state["query"] == ""
+    assert state["qualified_leads"] == []
+    assert state["sales_intelligence"] is None
 
 
 def test_agent_state_with_data():
     state = AgentState(
         query="find bank leads",
-        rag_context=["context1"],
-        found_leads=[{"name": "Test"}],
-        active_tender_listings=[],
-        sales_intel=[],
-        sales_report="report",
-        email_drafts=[],
+        route=["lead"],
+        qualified_leads=[{"company_name": "Test"}],
+        qualified_tenders=[],
+        knowledge_context=[],
+        sales_intelligence={"summary": "test"},
+        draft_email=None,
+        requires_human_approval=False,
+        approval_reason="OK",
         n8n_payload={"batch": []},
     )
     assert state["query"] == "find bank leads"
-    assert state["sales_report"] == "report"
+    assert state["route"] == ["lead"]
+    assert state["sales_intelligence"]["summary"] == "test"
+    assert state["requires_human_approval"] is False
+
+
+def test_merge_lists_reducer():
+    state = AgentState(
+        query="test",
+        route=["lead"],
+        qualified_leads=[{"a": 1}],
+        qualified_tenders=[],
+        knowledge_context=[],
+        sales_intelligence=None,
+        draft_email=None,
+        requires_human_approval=None,
+        approval_reason=None,
+        n8n_payload=None,
+    )
+    merged = _merge_lists(state["qualified_leads"], [{"b": 2}])
+    assert len(merged) == 2
+    assert merged[0] == {"a": 1}
+    assert merged[1] == {"b": 2}

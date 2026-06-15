@@ -2,18 +2,14 @@ langchain
 langchain-core
 langchain-community
 langchain-text-splitters
-langchain-groq
-langchain-openai
+langchain-ollama
 langgraph
 
 pypdf
 pymupdf
-sentence-transformers
 faiss-cpu
-chromadb
 
 python-dotenv
-typesense
 
 tqdm
 tiktoken
@@ -27,3 +23,6 @@ pydantic
 mcp
 pandas
 openpyxl
+httpx
+beautifulsoup4
+lxml

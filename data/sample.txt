@@ -1,0 +1,5 @@
+eTech is an Ethiopian technology company providing enterprise solutions.
+Core services include ERP implementation, network infrastructure, security systems,
+database management, and annual maintenance contracts.
+eTech serves banks, insurance companies, government ministries, and manufacturing firms.
+The company is based in Addis Ababa, Ethiopia.

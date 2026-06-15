@@ -1,6 +1,23 @@
 from typing import Any
 import pytest
-from src.agent.state import AgentState
+from unittest.mock import patch, MagicMock
+from langchain_core.messages import AIMessage
+
+
+@pytest.fixture(autouse=True)
+def mock_ollama():
+    with patch("src.agents.llm.ChatOllama") as mock_chat, \
+         patch("src.agents.llm.OllamaEmbeddings") as mock_emb:
+        mock_llm = MagicMock()
+        mock_llm.invoke.return_value = AIMessage(content='{"route": ["lead", "tender", "knowledge"]}')
+        mock_chat.return_value = mock_llm
+
+        mock_emb_model = MagicMock()
+        mock_emb_model.embed_documents.return_value = [[0.1] * 384]
+        mock_emb_model.embed_query.return_value = [0.1] * 384
+        mock_emb.return_value = mock_emb_model
+
+        yield
 
 
 class MockFaissIndex:
@@ -29,20 +46,6 @@ class MockFaissVectorStore:
 
 
 @pytest.fixture
-def empty_state() -> AgentState:
-    return AgentState(
-        query="",
-        rag_context=[],
-        found_leads=[],
-        active_tender_listings=[],
-        sales_intel=[],
-        sales_report=None,
-        email_drafts=[],
-        n8n_payload=None,
-    )
-
-
-@pytest.fixture
 def sample_leads() -> list[dict]:
     return [
         {"name": "Sample Bank SC", "sector": "Finance", "location": "Addis Ababa", "contact": "info@samplebank.et", "description": "Commercial bank", "source": "mock"},
@@ -61,6 +64,16 @@ def sample_tenders() -> list[dict]:
 @pytest.fixture
 def mock_vectorstore(monkeypatch) -> MockFaissVectorStore:
     store = MockFaissVectorStore()
-    import src.agent.store
-    monkeypatch.setattr(src.agent.store, "get_vectorstore", lambda: store)
+    import src.rag.vectorstore as rag_vs
+    monkeypatch.setattr(rag_vs, "get_vectorstore", lambda: store)
     return store
+
+
+@pytest.fixture
+def mock_old_vectorstore(monkeypatch) -> None:
+    import src.rag.vectorstore as rag_vs
+    store = MockFaissVectorStore()
+    monkeypatch.setattr(rag_vs.FaissVectorStore, "load", lambda self: None)
+    monkeypatch.setattr(rag_vs.FaissVectorStore, "query", lambda self, q, top_k=5: [
+        {"metadata": {"text": "eTech provides ERP solutions for banks", "source": {}}, "distance": 0.5}
+    ])

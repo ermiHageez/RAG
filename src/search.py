@@ -1,8 +1,9 @@
 from dotenv import load_dotenv
 from src import manifest
 from src.data_loader import load_all_documents
-from src.vectorstore import FaissVectorStore
-from langchain_groq import ChatGroq
+from src.rag.vectorstore import FaissVectorStore
+from src.agents.llm import get_reasoning_llm, get_embedding_model
+
 
 load_dotenv()
 
@@ -12,23 +13,23 @@ class RAGSearch:
         self,
         persist_dir: str = "faiss_store",
         data_dir: str = "data",
-        embedding_model: str = "all-MiniLM-L6-v2",
+        get_embedding_model=get_embedding_model,
         llm_model: str = "llama-3.3-70b-versatile",
     ):
-        self.vectorstore = FaissVectorStore(persist_dir, embedding_model=embedding_model)
+        self.vectorstore = FaissVectorStore(persist_dir)
         if manifest.needs_rebuild(persist_dir, data_dir):
             docs = load_all_documents(data_dir)
             if not self.vectorstore.build_from_documents(docs, data_dir=data_dir):
                 print(
                     "[WARN] Search initialized without a vector index because no documents were available."
                 )
-                self.llm = ChatGroq(model=llm_model)
-                print(f"[INFO] Groq LLM initialized: {llm_model}")
-                return
+            self.llm = get_reasoning_llm()
+            print(f"[INFO] Local LLM initialized")
+            return
         else:
             self.vectorstore.load()
-        self.llm = ChatGroq(model=llm_model)
-        print(f"[INFO] Groq LLM initialized: {llm_model}")
+        self.llm = get_reasoning_llm()
+        print(f"[INFO] Local LLM initialized")
 
     def search_and_summarize(self, query: str, top_k: int = 5) -> dict:
         if self.vectorstore.index is None:

@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from src.agent.graph import build_agent
+from src.agents.graph import build_agent
 
 app = FastAPI(title="eTech Agent API", version="0.1.0")
 
