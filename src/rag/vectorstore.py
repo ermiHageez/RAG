@@ -2,18 +2,22 @@ import os
 import pickle
 import numpy as np
 import faiss
-from typing import List, Any, Optional, cast
-from src.embedding import EmbeddingPipeline
+from typing import Any, List, Optional
+from src.rag.embedding import EmbeddingPipeline
+from src.manifest import save_manifest
 
 
 class FaissVectorStore:
-    def __init__(self, persist_dir: str, embedding_model: str = "all-MiniLM-L6-v2"):
+    def __init__(
+        self,
+        persist_dir: str,
+    ):
         self.persist_dir = persist_dir
-        self.embedding_pipeline = EmbeddingPipeline(model_name=embedding_model)
+        self.embedding_pipeline = EmbeddingPipeline()
         self.index: Optional[faiss.Index] = None
         self.metadata: List[dict] = []
 
-    def build_from_documents(self, documents: List[Any]) -> bool:
+    def build_from_documents(self, documents: List[Any], data_dir: str = "data") -> bool:
         os.makedirs(self.persist_dir, exist_ok=True)
         chunks = self.embedding_pipeline.chunk_documents(documents)
         if not chunks:
@@ -27,6 +31,7 @@ class FaissVectorStore:
             for chunk in chunks
         ]
         self._save()
+        save_manifest(self.persist_dir, data_dir)
         return True
 
     def _save(self):
@@ -48,9 +53,7 @@ class FaissVectorStore:
     def query(self, query: str, top_k: int = 5) -> List[dict]:
         if self.index is None:
             return []
-        query_emb = self.embedding_pipeline.embed_chunks(
-            [type("Chunk", (), {"page_content": query, "metadata": {}})()]
-        )
+        query_emb = self.embedding_pipeline.embed_query(query)
         distances, indices = self.index.search(query_emb.astype(np.float32), top_k)
         results = []
         for i, idx in enumerate(indices[0]):
@@ -62,3 +65,15 @@ class FaissVectorStore:
                     }
                 )
         return results
+
+
+_VECTORSTORE: FaissVectorStore | None = None
+
+
+def get_vectorstore(persist_dir: str = "faiss_store") -> FaissVectorStore:
+    global _VECTORSTORE
+    if _VECTORSTORE is None:
+        store = FaissVectorStore(persist_dir)
+        store.load()
+        _VECTORSTORE = store
+    return _VECTORSTORE

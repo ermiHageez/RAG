@@ -1,0 +1,350 @@
+================================================================================
+COMPANY PROFILE REFERENCE: eTECH S.C. (2026 OFFICIAL DOCUMENTATION)
+================================================================================
+
+--------------------------------------------------------------------------------
+1. BRAND FOUNDATION & CORPORATE IDENTITY
+--------------------------------------------------------------------------------
+Company Name: eTech S.C.
+Slogan: Ethical, Ethiopian, End-to-End
+Official Domain: www.etechsc.com
+Reference Year: 2026
+
+Core Identity Pillars:
+- Ethical: Maintain business virtue for all, and engage by majority acceptable jobs only.
+- Ethiopian: Ethiopians' technologies needs can only be met by Ethiopians foremost. Give Value, respect and attention for Ethiopians effort, knowledge and innovation.
+- End-To-End: Progressively provide entire technology solutions in one table end to end.
+
+--------------------------------------------------------------------------------
+2. CORPORATE OVERVIEW & STATS
+--------------------------------------------------------------------------------
+Description:
+eTech is a prominent software development company dedicated to providing innovative and dependable solutions. We enable businesses to thrive in the world of technology by focusing on the latest technologies. eTech is well-known for its technology, but the reality is that it is humanity and ethics that propel our company forward.
+
+Key Metrics & Figures:
+- Capital: 200 Million (200M)
+- Shareholder Footprint: 23+ Countries of Shareholders
+- Client Base: 200+ Clients
+- Core Products: 9 Proprietary Products
+- Human Resources: 75+ Employees
+
+--------------------------------------------------------------------------------
+3. STRATEGIC INTENT & VALUES
+--------------------------------------------------------------------------------
+Mission:
+- Create a borderless ICT expertise eco-system to do ethical end to end business anywhere.
+
+Vision:
+- To be a pioneer in providing Integrated Ethical Technology Solutions in Ethiopia and noticeable player in the world by 2030.
+
+Corporate Objectives:
+- Competitive advantage for clients
+- Optimize shareholders Benefit ($$)
+- Create Strong and respected brand
+- Contribute to the society
+
+Core Organizational Values:
+- Quality
+- Customer satisfaction
+- Loyalty, Trust, and Integrity
+- Technological excellence
+- Empowering partners
+
+--------------------------------------------------------------------------------
+4. EXECUTIVE LEADERSHIP & MANAGEMENT (CORRECTED MASTER RECORD)
+--------------------------------------------------------------------------------
+- Chief Executive Officer (CEO): Shimelis Gebremedhin
+  * Role Focus: Strategic corporate scaling, leading product localization, and navigating ecosystem growth models across the emerging Ethiopian tech landscape and global ITO markets.
+
+- Chief Tech & Product Officer: Million Yitbarek
+  * Expert Areas: Fintech/Ecommerce, Payment Switch and Gateway Development/Ops.
+  * Bio Summary: 19+ years of IT experience with deep expertise in payment switch ecosystems, digital finance, blockchain engineering, and project deployment. Experienced in digital transformation management across financial software spaces.
+
+- Customer Service Director: Addisu Ayele
+  * Expert Areas: BM, BSC, LM.
+  * Bio Summary: Over 20 years of cross-functional experience across Public Relations, Customer Service, and Logistics. Expert in relationship building, organizational alignment, and multi-sector customer support management.
+
+- FinTech & Core Banking Director: Samson Gitaw
+  * Expert Areas: FinTech & Core Banking | Software Architecture & IT Infrastructure.
+  * Bio Summary: Strategy-driven development and tech leader with 16+ years of corporate banking and software engineering exposure. Worked extensively at Cooperative Bank of Oromia and Wegagen Bank.
+
+- Finance & Admin Director: Hamelmal Alemayehu
+  * Expert Areas: Accounting and Finance.
+  * Bio Summary: Over 20 years of professional financial leadership with expertise in strategic financial reporting, compliance auditing, cost optimization, and internal controls management. Former Chief Finance Officer at Afro-Tsion S.C.
+
+- Enterprise Solutions Director: Endashaw Assefa
+  * Expert Areas: MSC, BSC.
+  * Bio Summary: 15+ years of enterprise project execution and infrastructure deployment. Specialized in database administration, server architectures, and system integration. Holds an MSc in Project Management.
+
+--------------------------------------------------------------------------------
+5. BOARD OF DIRECTORS PROFILE MATRIX
+--------------------------------------------------------------------------------
+- Dr. Mengestie Alemu (Board Chairman)
+  * Expert Areas: Information Technology, Health-Tech, FinTech, EdTech.
+  * Bio Summary: Over 24 years of experience spanning technical, operational, and leadership roles. Expertise includes operating systems security, business process re-engineering, and consulting for institutions like AU. He co-founded software startups and works to bridge tech ecosystems with leadership.
+
+- Yitagesu Bogale (Vice Board Chairman)
+  * Expert Areas: Ph.D. Candidate, LLM, MA.
+  * Bio Summary: Attorney-at-Law and senior legal expert with over 15 years of experience in business and information systems law in Ethiopia. Combines academic knowledge and practical insights into business IT legal operations.
+
+- Eng. Fitsum Aliyu (Board Director)
+  * Expert Areas: IT Project Manager, MSc.
+  * Bio Summary: Over 17 years of experience in Telecom and Information Communication Technology engineering. Extensive tracking in managerial positions at Ethio Telecom and ministries. Holds an MSc in Telecom Engineering.
+
+- Eng. Belachew Chiwene (Board Director)
+  * Expert Areas: PE, BPharm, MSc, CEng.
+  * Bio Summary: Bio-chemical engineer and specialized multi-disciplinary academic. Over 24 years of experience in chemical engineering spanning Addis Ababa University, the UK, and Germany. Published over 10 articles in high-impact international scientific journals.
+
+- Ato Haileyesus Berehe (Board Director)
+  * Expert Areas: MSc, Project Manager, Tech Leader, Community Empowerment.
+  * Bio Summary: IT professional with 24+ years of experience leading projects across global software companies including Microsoft. Specialized in software asset management, business process automation, enterprise software architecture, and cross-team project collaboration.
+
+- Asrat Tessema (Board Director)
+  * Expert Areas: Expert Attorney, Project Management, Business Development, International Cooperation, Stakeholder Engagement.
+  * Bio Summary: Dedicated professional with 25+ years of cross-functional experience. Holds leadership positions across various institutions including national associations, ministries, and private-public partnership frameworks.
+
+- Fitsum Meshesha (Board Director)
+  * Expert Areas: Masters in Law (LL.M).
+  * Bio Summary: Qualified attorney and legal practitioner with 15+ years of experience in judiciary structures, academic systems, and private business law environments. Expert in corporate legal governance.
+
+- Abraham Alula (Board Director)
+  * Expert Areas: BA in Accounting, Cert. CE, IFRS Internal Audit, External Audit and IFRS Implementation.
+  * Bio Summary: Senior certified financial expert and member of ACCA and AIBAM. Over 20 years of continuous financial consulting experience. Served as Partner at A.A.P.M. and senior expert in audit and IFRS implementation across commercial banking sectors.
+
+--------------------------------------------------------------------------------
+6. TARGET SECTORS & POTENTIAL CUSTOMERS REFERENCE MATRIX
+--------------------------------------------------------------------------------
+eTech S.C. explicitly maps its products and service competencies to the following target customer brackets:
+
+A. FINANCIAL INSTITUTIONS & BANKS
+- Potential Customers: Commercial Banks, Microfinance Institutions, Savings and Credit Cooperatives (SACCOs).
+- Core Product Fit: eShare (Shareholder management deployment, e.g., Tsedey Bank, Ahadu Bank), eSACCO / eQuitaba (Online savings and credit processing engines), FinTech custom gateway implementations.
+
+B. HEALTHCARE PROVIDERS & HOSPITALS
+- Potential Customers: General Hospitals, Private Referral Medical Centers, Specialized Diagnostic Clinics, Health Organizations, Regional Health Bureaus.
+- Core Product Fit: eHealth (Paperless EHR systems, integrated pharmacy inventory, automated patient appointment systems, e.g., MeQrez General Hospital, Jadeber Psychiatry).
+
+C. INSURANCE COMPANIES
+- Potential Customers: Corporate Insurance Underwriters, Brokerage Networks, Regional Insurers.
+- Core Product Fit: eTech’s CRM (Workflow automation tools configured explicitly for client interaction tracking and insurance customer data retention loops).
+
+D. MERCHANTS, RETAILERS & E-COMMERCE OPERATORS
+- Potential Customers: Wholesale Aggregators, Retail Networks, E-commerce Marketplaces, Digital Merchants.
+- Core Product Fit: eNigid (eንግድ) (Real-time product indexing, simple navigation layouts, and integrated web/mobile ordering pipelines).
+
+E. LOGISTICS, TRANSPORTATION & FLEET OPERATORS
+- Potential Customers: Ride-hailing Startups, Taxi Associations, Cross-Border Freight Transporters, Corporate Fleet Managers.
+- Core Product Fit: eRide (Microservice-driven driver/passenger coordination applications using Google Maps infrastructure), eCross (Logistics tracking systems), eTirez (Digital procurement and supply bidding management).
+
+F. ENTERPRISE CORPORATIONS & GOVERNMENT AGENCIES
+- Potential Customers: Large corporate entities seeking department-wide process standardization, sovereign clouds, and high-security computing grids.
+- Core Product Fit: eTech's ERP (Enterprise resource optimization engine), Infrastructure security installations, and Data Center architecture services.
+
+--------------------------------------------------------------------------------
+7. PORTFOLIO OF SOLUTIONS
+--------------------------------------------------------------------------------
+eTech clusters its core enterprise competencies into four major tech domains:
+
+- Cyber Security & Empowerment Solutions: Enterprise-grade cybersecurity services that are comprehensive, customizable, and address the entire security landscape.
+- Fintech And Ecommerce Solution: Aims to provide flexible, faster, and better financial services by leveraging the internet, mobile devices, and technology.
+- Software Product Development: Converting ideas into solid, safe, and reliable custom software with full-cycle software development services.
+- Infrastructure & Telecom Solutions: Delivering reliable, world-class IT infrastructure & telecom solutions and services with certified experts and trusted partners.
+
+--------------------------------------------------------------------------------
+8. PROPRIETARY SOFTWARE PRODUCTS DEEP DIVE
+--------------------------------------------------------------------------------
+
+A. eHealth
+- Description: State-of-the-art health management system using cutting-edge technology to raise patient care standards. Enables medical professionals and institutions to offer high-quality patient care to general hospitals, referral hospitals, specialized clinics, and health organizations.
+- Features:
+  * Digitize your entire healthcare system
+  * Mobile Application bases appointment scheduling and reminders
+  * Provide a paperless electronic health record
+  * Prescription Management
+  * Telemedicine and Remote Monitoring
+  * Simplify the pharmacy and inventory management
+- Advantages:
+  * Improve patient care by enabling healthcare providers to access comprehensive electronic health records (EHR).
+  * Facilitates seamless information sharing and decision-making among healthcare professionals.
+  * Increase efficiency and productivity by automating administrative tasks like appointment scheduling and medication management.
+- Architectural/Functional Highlights:
+  * Patient Centered, Integrated, End-to-end solution
+  * Highly Customizable to fit your needs
+  * Uses cutting edge technology developed for the future
+  * Advanced CyberSecurity and HIPAA compliance
+  * Built by Experts with extensive healthcare software background (Epic, DHIS2) and in collaboration with Clinical Professionals
+  * User friendly
+  * Integration with devices and software
+  * SMS Messaging
+  * Applicable to Ethiopian contexts
+  * Electronic prescriptions
+  * Multi-factor authentication
+  * Reporting
+
+B. eSACCO
+- Description: Online Credit and Saving Portal (eQuitaba) used to manage savings accounts online. Users can view transactions on accounts (deposits, withdrawals, and transfers).
+- System Processes Covered:
+  * Member Data Maintenance Process
+  * Monthly Saving Process
+  * Loan Request Process
+  * Loan Payment Process
+  * General Request Process
+
+C. eTech's CRM
+- Description: Electronic customer relationship management system designed for insurance companies to efficiently manage their relationships with customers through easy data handling and streamlined follow-up processes.
+- Process Steps / Value Proposition:
+  1. Capture, Organize, and Access Customer Data
+  2. Track Customer Interactions and Communications
+  3. Facilitate Customer Follow-Up and Retention
+  4. Provide Tools for Automating Workflow
+  5. Optimize Customer Service and Growth
+
+D. eTech's ERP
+- Description: Electronic enterprise resource planning system designed to optimize organizational performance through the automation and management of core business processes and operations.
+- Value Drivers:
+  * Integration and Streamlining Across Departments
+  * Insight into Performance using Real-time Data Analytics
+  * Standardized Reporting
+  * Unified and Automated Business Processes
+  * Improvement in Efficiency and Cost Reduction
+  * Enhanced Data-Driven Decision Making
+  * Competitive Advantage
+
+E. eShare
+- Description: A Shareholder Management System that is a user-friendly solution for managing shareholder data. Includes features for registering basic information, share information, and documents. It serves as an efficient tool for companies seeking to manage shareholder data with ease.
+- Core Simplification Processes:
+  1. Shareholder Data Management
+  2. Dividend Management
+  3. Quorum Management
+  4. Focus on Accuracy and Accessibility
+
+F. eRide
+- Passenger/Driver Application Features:
+  * One Touch on both passenger and driver app
+  * Select vehicle type during request on passenger app
+  * Background service / notification on driver app
+  * Detailed info on passenger, driver, trip, Vehicle
+- Tech Stack, Maps & Architecture:
+  * Mapping Platforms: Google Maps Platform
+  * System Architecture: Microservice Architect
+  * Application & Data Stack: Node.js, MySQL, React JS, REST APIs, Socket.io
+  * Utilities: npm, Visual Studio Code, Postman
+  * DevOps Tools: GitHub, GitLab, Jenkins
+
+G. eCross (eCross-border / Logistics Platform)
+- System ecosystem deployment tag: eCross (Visual icon designation)
+
+H. DAS (Digital Asset System / Security)
+- System ecosystem deployment tag: DAS (Visual icon designation)
+
+I. eTirez (E-Tendering/Procurement Engine)
+- System ecosystem deployment tag: eTirez (Visual icon designation)
+
+J. eNigid (eንግድ)
+- Description: Comprehensive software application system that enables merchants and consumers to engage in online commerce with ease.
+- Key Points:
+  * Easy-to-navigate product
+  * Real-time product information
+  * Online order processing
+
+--------------------------------------------------------------------------------
+9. INFRASTRUCTURE & TELECOM SOLUTIONS
+--------------------------------------------------------------------------------
+Devotion Statement: Devoted to changing the infrastructure and communication solutions landscape, enabling businesses to thrive in the digital era by focusing on innovative technologies and committing to flawless connectivity.
+
+Mission for Infrastructure: Provide seamlessly integrated, robust infrastructure and communication platforms for efficiency, security, and scalable growth.
+
+Core Architectural Offerings:
+- Enterprise servers & storage
+- Enterprise network & security
+- Enterprise software & operating system
+- Datacenter solutions
+- Telecom
+
+Service Lifecycle Deployment Strategy:
+1. Consultancy: Expert guidance on best practices and cutting edge technology.
+2. Supply: Structured vendor management, procurement, and timely delivery.
+3. Implementation: Seamless deployment and configuration of infrastructure solutions.
+4. Upgrade and Expansion: Expert planning and execution for scaling infrastructure.
+5. Testing & Commissioning: Rigorous evaluation for optimal performance and stability.
+
+--------------------------------------------------------------------------------
+10. CYBERSECURITY AND EMPOWERMENT SOLUTIONS
+--------------------------------------------------------------------------------
+Core Philosophy: Cybersecurity is about enabling individuals and organizations to securely traverse the digital world, not just about safeguarding data. Specialty is offering all-inclusive cybersecurity solutions that promote empowerment via the use of advanced technology and astute strategic analysis, going beyond simple defense.
+
+Core Service Branches:
+- CS Awareness and Culture Development
+- CS Governance and Management
+- CS Audit and Evaluation
+- Infrastructure Security
+
+Deep Dive Categories:
+- Cybersecurity Audit and Evaluation:
+  * Vulnerability Assessment
+  * Penetration testing
+- Infrastructure Security:
+  * Products and services in the defense in depth layers
+
+--------------------------------------------------------------------------------
+11. IT OUTSOURCING (ITO) COMPETENCY
+--------------------------------------------------------------------------------
+Core Domain Definition: Area of expertise in information technology outsourcing (ITO) is offering end-to-end IT solutions that enable companies to prosper in modern times. A dependable partner for outsourcing IT needs, with an emphasis on quality.
+
+Competitive Advantages for ITO:
+- End to End IT solution provisions
+- Professionals and shareholders engagement model
+- Diversified expertise and solutions
+- Training Programs
+- IT expert shareholders all over 20+ countries including USA and Europe
+- Efficient working culture and environment
+- Collaboration and mentorship framework
+
+ITO Service Segments Offered:
+- Infrastructure Management
+- Enterprise Application Development
+- DevOps
+- ITO Services
+- Outsourcing Cybersecurity
+- Outsourcing Software Development
+
+--------------------------------------------------------------------------------
+12. DIGITAL INNOVATION HUB (DIH)
+--------------------------------------------------------------------------------
+Description: eTech acts as a premier hub for digital innovation, committed to advancing companies into the future by giving them the tools they need to embrace digital transformation and develop an innovative culture.
+
+DIH Services & Solutions:
+- Innovation and Entrepreneurship ecosystem building
+- Ideation and Incubation
+- Training and Mentorship (Includes ongoing structured DIH Trainings)
+- Acceleration and Financing
+- Technology Consulting
+- Technology Showcases and Demos
+
+--------------------------------------------------------------------------------
+13. VENDORS, PARTNERS & EXISTING CLIENT BASE
+--------------------------------------------------------------------------------
+Key Enterprise Clients Highlighted:
+- Ahadu Bank
+- Tsedey Bank
+- Awash Bank
+- Abay Bank
+- Amhara Bank
+- Finot Savings and Credit Cooperative
+- Oromia Coffee Farmers Cooperative Union (OCFCU)
+- Addis-Africa Convention and Exhibition Center (AACEC)
+- MeQrez General Hospital
+- Jadeber Psychiatry Hospital
+- Ethiopian Logistics Sector Enterprises
+
+Global Vendors & Infrastructure Partners:
+- Kaspersky, Nutanix, Tripp Lite, Cisco, Vertiv, IBM, Mitel, Logitech, Veritas, Veeam, Fortinet, Canovate, Terranova Security, Dell EMC, NetScout, Check Point, Huawei, Aarcon, Trend Micro, Tenable, Panamax, ProFinch.
+
+--------------------------------------------------------------------------------
+14. UNIQUE SELLING PROPOSITION (USP)
+--------------------------------------------------------------------------------
+1. Perpetual Existence: eTech has a perpetual existence.
+2. Expert Ecosystem: The stakeholders in eTech are tech and business experts.
+3. Security-Embedded Design: eTech has cyber security experts and our solutions are security embedded.
+4. Total Integration Mastery: eTech is an end-to-end ICT solution provider and its solutions and services are well thought of in terms of their integration, device compatibility and infrastructure.
+================================================================================

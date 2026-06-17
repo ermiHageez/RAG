@@ -1,0 +1,1454 @@
+{
+  "name": "AI email Automation",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "5685de30-2c49-4ba8-8375-22beaceefd77",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1312,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1692eb1d-a513-477f-bbcc-c071f48db70d",
+              "name": "Customer Name",
+              "value": "={{ $json['Customer Name'] }}",
+              "type": "string"
+            },
+            {
+              "id": "da8a664d-9123-4add-ac4b-dd303166676b",
+              "name": "Email",
+              "value": "={{ $json.Email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cf76e44b-2501-4460-9584-0857bc438af8",
+      "name": "Prepare HTML Template3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1QwbwU_hYVVlwCMqbEK72Vs0z1m4VzX5kptw0sScGiUk",
+          "mode": "list",
+          "cachedResultName": "Customer Email Status Tracking",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QwbwU_hYVVlwCMqbEK72Vs0z1m4VzX5kptw0sScGiUk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1686142100,
+          "mode": "list",
+          "cachedResultName": "Customer Email Status Tracking",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QwbwU_hYVVlwCMqbEK72Vs0z1m4VzX5kptw0sScGiUk/edit#gid=1686142100"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1120,
+        320
+      ],
+      "id": "03d385f5-66e5-4c64-9b9e-9b676c2bd49f",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CegMMC6KxJchxw3M",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -128,
+        304
+      ],
+      "id": "120c4556-2336-4cad-aba4-718e796f827c",
+      "name": "Loop Over Items3"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        832,
+        288
+      ],
+      "id": "903b3a54-8b69-4e15-91fd-247c300115ed",
+      "name": "Wait3",
+      "webhookId": "224ee8df-8a27-46fa-949a-3c03c845bd4d"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>eTech S.C. | Enterprise Solutions</title>\n\n    <style>\n        body {\n            margin: 0;\n            padding: 0;\n            background: #edf2f7;\n        }\n\n        table {\n            border-spacing: 0;\n            border-collapse: collapse;\n        }\n\n        img {\n            border: 0;\n            display: block;\n            max-width: 100%;\n        }\n\n        @media only screen and (max-width:620px) {\n            .container {\n                width: 100% !important;\n            }\n\n            .mobile-padding {\n                padding-left: 22px !important;\n                padding-right: 22px !important;\n            }\n\n            .stack-column,\n            .stack-column td {\n                display: block !important;\n                width: 100% !important;\n            }\n\n            .hero-title {\n                font-size: 42px !important;\n                line-height: 52px !important;\n            }\n\n            .hero-text {\n                font-size: 15px !important;\n                line-height: 28px !important;\n            }\n\n            .button {\n                width: 100% !important;\n            }\n\n            .service-space {\n                padding-bottom: 20px !important;\n            }\n        }\n    </style>\n</head>\n\n<body style=\"margin:0;padding:0;background:#edf2f7;\">\n\n    <center style=\"width:100%;background:#edf2f7;\">\n\n        <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n            <tr>\n                <td align=\"center\" style=\"padding:20px 10px;\">\n\n                    <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"container\"\n                        style=\"width:600px;max-width:600px;background:#ffffff;\">\n\n                        <tr>\n                            <td background=\"https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1600&auto=format&fit=crop\"\n                                bgcolor=\"#0d3ea9\" style=\"\n                                    background-image: linear-gradient(rgba(13, 62, 169, 0.85), rgba(13, 62, 169, 0.85)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1600&auto=format&fit=crop');\n                                    background-size:cover;\n                                    background-position:center;\n                                    padding:55px 45px 70px 45px;\n                                \">\n\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                    <tr>\n                                        <td>\n                                            <img src=\"https://etechsc.com/wp-content/uploads/2024/11/Logo-White@2x.png\"\n                                                width=\"170\" alt=\"eTech S.C.\" style=\"width:170px;padding-bottom:30px;\">\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td class=\"hero-title\" style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:54px;\n                                                line-height:66px;\n                                                font-weight:bold;\n                                                color:#ffffff;\n                                                letter-spacing:-2px;\n                                                padding-bottom:28px;\n                                            \">\n                                            Together We Build Smart & Integrated Enterprises!\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td class=\"hero-text\" style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:18px;\n                                                line-height:34px;\n                                                color:#ffffff;\n                                                padding-bottom:38px;\n                                            \">\n                                            Transform operations with eTech’s in-house ERP and eFIN solutions. Centralize multiple departments into a unified environment to enhance control, reduce errors, and accelerate corporate decision-making.\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td>\n                                            <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"button\">\n                                                <tr>\n                                                    <td bgcolor=\"#ffffff\" style=\"\n                                                            padding:17px 30px;\n                                                            font-family:Arial,Helvetica,sans-serif;\n                                                            font-size:16px;\n                                                            font-weight:bold;\n                                                        \">\n                                                        <a href=\"https://etechsc.com/\" style=\"\n                                                                color:#0d3ea9;\n                                                                text-decoration:none;\n                                                                display:block;\n                                                            \">\n                                                            Explore ERP Solutions →\n                                                        </a>\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n                                    </tr>\n                                </table>\n\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td style=\"padding:48px 42px 20px 42px;\" class=\"mobile-padding\">\n\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                    <tr>\n                                        <td style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:34px;\n                                                line-height:46px;\n                                                font-weight:bold;\n                                                color:#003087;\n                                                padding-bottom:22px;\n                                            \">\n                                            Centralize & Scale Systems\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:16px;\n                                                line-height:30px;\n                                                color:#475569;\n                                                padding-bottom:16px;\n                                            \">\n                                            Dear {{ $('Get row(s) in sheet').item.json['Company Name'] }},\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:16px;\n                                                line-height:30px;\n                                                color:#475569;\n                                                padding-bottom:18px;\n                                            \">\n                                            <strong>eTech S.C.</strong>, {{ $('AI Agent2').item.json.output }}\n                                        </td>\n                                    </tr>\n\n                                    <tr>\n                                        <td bgcolor=\"#f8fbff\" style=\"padding:30px; border:1px solid #dbeafe;\">\n                                            <div style=\"\n                                                    font-family:Arial,Helvetica,sans-serif;\n                                                    font-size:26px;\n                                                    font-weight:bold;\n                                                    color:#003087;\n                                                    padding-bottom:22px;\n                                                \">\n                                                Core Enterprise Systems\n                                            </div>\n\n                                            <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155; padding-bottom:10px;\">\n                                                        ✓ eFIN: Integrated Enterprise Financial Management\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155; padding-bottom:10px;\">\n                                                        ✓ Inventory Management & Store Control (ቅምጃ/Gimja Tracking)\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155; padding-bottom:10px;\">\n                                                        ✓ Supply Chain Platforms & Procurement Modules\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155; padding-bottom:10px;\">\n                                                        ✓ Localized HR, Attendance & Payroll Modules\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155;\">\n                                                        ✓ Business Intelligence Analytics & Dashboard Reporting\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n                                    </tr>\n                                </table>\n\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td style=\"padding:18px 25px 10px 25px;\" class=\"mobile-padding\">\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                    <tr class=\"stack-column\">\n                                        <td width=\"33.33%\" valign=\"top\" style=\"padding:8px;\" class=\"service-space\">\n                                            <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border:1px solid #e2e8f0;background:#ffffff;\">\n                                                <tr>\n                                                    <td>\n                                                        <img src=\"https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1200&auto=format&fit=crop\" alt=\"Financials\">\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"padding:20px;\">\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:18px; line-height:24px; font-weight:bold; color:#0f172a; padding-bottom:12px;\">\n                                                            eFIN Financials\n                                                        </div>\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:22px; color:#64748b;\">\n                                                            Automated general ledgers, accounts handling, and strategic cash workflows.\n                                                        </div>\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n\n                                        <td width=\"33.33%\" valign=\"top\" style=\"padding:8px;\" class=\"service-space\">\n                                            <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border:1px solid #e2e8f0;background:#ffffff;\">\n                                                <tr>\n                                                    <td>\n                                                        <img src=\"https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200&auto=format&fit=crop\" alt=\"Logistics\">\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"padding:20px;\">\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:18px; line-height:24px; font-weight:bold; color:#0f172a; padding-bottom:12px;\">\n                                                            Supply Control\n                                                        </div>\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:22px; color:#64748b;\">\n                                                            Granular management of assets, procurement lanes, and store balances.\n                                                        </div>\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n\n                                        <td width=\"33.33%\" valign=\"top\" style=\"padding:8px;\">\n                                            <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border:1px solid #e2e8f0;background:#ffffff;\">\n                                                <tr>\n                                                    <td>\n                                                        <img src=\"https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1200&auto=format&fit=crop\" alt=\"HR/Payroll\">\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"padding:20px;\">\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:18px; line-height:24px; font-weight:bold; color:#0f172a; padding-bottom:12px;\">\n                                                            HR & Payroll\n                                                        </div>\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:22px; color:#64748b;\">\n                                                            Fully compliant local tax computations, employee matrices, and tracking loops.\n                                                        </div>\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td style=\"padding:35px 42px 0 42px;\" class=\"mobile-padding\">\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" bgcolor=\"#0047b3\">\n                                    <tr>\n                                        <td align=\"center\" style=\"padding:34px 20px;\">\n                                            <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:28px; line-height:40px; font-weight:bold; color:#ffffff; padding-bottom:18px;\">\n                                                Driving Strategic Operations\n                                            </div>\n                                            <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:16px; line-height:34px; color:#ffffff;\">\n                                                Oromia Coffee Farmers Cooperative Union<br>\n                                                And prominent industrial enterprises across sectors.\n                                            </div>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td align=\"center\" style=\"padding:45px 25px 0 25px;\">\n                                <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                    <tr>\n                                        <td bgcolor=\"#0052cc\" style=\"padding:18px 34px; font-family:Arial,Helvetica,sans-serif; font-size:16px; font-weight:bold;\">\n                                            <a href=\"https://etechsc.com/\" style=\"color:#ffffff; text-decoration:none; display:block;\">\n                                                Visit Our Website →\n                                            </a>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td style=\"padding:45px 42px 45px 42px;\" class=\"mobile-padding\">\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" bgcolor=\"#f8fafc\">\n                                    <tr>\n                                        <td style=\"padding:30px;\">\n                                            <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:24px; font-weight:bold; color:#0f172a; padding-bottom:18px;\">\n                                                Contact Us\n                                            </div>\n                                            <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#475569;\">\n                                                <strong>Ahadu Gebresenbet</strong><br>\n                                                Junior Software Sales<br>\n                                                eTech S.C.<br><br>\n                                                📍 Ethiopian ICT Park, BPO Building, 7th Floor, Addis Ababa<br>\n                                                📞 <a href=\"tel:+251992900007\" style=\"color:#0052cc;text-decoration:none;\">+251 992 900 007</a><br>\n                                                🌐 <a href=\"https://etechsc.com/\" style=\"color:#0052cc;text-decoration:none;\">www.etechsc.com</a>\n                                            </div>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td bgcolor=\"#0f172a\" align=\"center\" style=\"padding:38px 20px;\">\n                                <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:14px; line-height:28px; color:#cbd5e1; padding-bottom:18px;\">\n                                    <a href=\"https://et.linkedin.com/company/etechsc\" style=\"color:#60a5fa;text-decoration:none;\">LinkedIn</a>\n                                    &nbsp;&nbsp;|&nbsp;&nbsp;\n                                    <a href=\"https://www.facebook.com/etechsharecompany/\" style=\"color:#60a5fa;text-decoration:none;\">Facebook</a>\n                                    &nbsp;&nbsp;|&nbsp;&nbsp;\n                                    <a href=\"https://www.instagram.com/etech_s.c/\" style=\"color:#60a5fa;text-decoration:none;\">Instagram</a>\n                                </div>\n                                <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:26px; color:#94a3b8;\">\n                                    Technology | Innovation | Digital Transformation<br>\n                                    © 2026 eTech S.C. — Proudly Ethiopian\n                                </div>\n                            </td>\n                        </tr>\n\n                    </table>\n\n                </td>\n            </tr>\n        </table>\n\n    </center>\n\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        608,
+        288
+      ],
+      "id": "d1b812e2-f19c-464e-a5fc-cfa7b4cd2805",
+      "name": "HTML3"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get row(s) in sheet').item.json['Contact Email'] }}",
+        "subject": "=etech : {{ $('Get row(s) in sheet').item.json['Company Name'] }}",
+        "message": "={{ $('HTML3').item.json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1072,
+        288
+      ],
+      "id": "4c5cc179-b968-4732-b445-f8fd38f26c76",
+      "name": "Send a message3",
+      "webhookId": "66b51baa-c7fc-4e61-8b24-613960c258cf",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "07oVChrO49QOy3Hq",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a specialized enterprise systems consultant at eTech S.C. Write a single, highly professional paragraph explaining how eTech helps organizations unify their operations. Focus on supply chain visibility, centralizing finance/accounting, automating payroll, and eliminating data silos. Do not include greetings or sign-offs.{{ $('Get row(s) in sheet').item.json['Description/Details'] }}{{ $('Get row(s) in sheet').item.json['Company Name'] }} this are client information",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        80,
+        288
+      ],
+      "id": "0ac60b1c-fe0a-473b-a691-22cc940088dc",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        64,
+        496
+      ],
+      "id": "71441498-e9d4-4d8b-9a11-b9f37de01f6e",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "4OvApEIWNNr2aMJ3",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.product }}",
+                    "rightValue": "Ehealth",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "d93cad18-673e-439c-beae-7dbda16c073a"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Ehealth"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "18c50c41-1613-4790-a737-53d02c6ab3aa",
+                    "leftValue": "={{ $json.product }}",
+                    "rightValue": "ERP",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ERP"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c9e3c184-0795-42da-9473-7a83c77f9b87",
+                    "leftValue": "={{ $json.product }}",
+                    "rightValue": "SCCO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "SCCO"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -624,
+        288
+      ],
+      "id": "6684cccc-df2b-4c80-8f6c-6f2cb8b80671",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1692eb1d-a513-477f-bbcc-c071f48db70d",
+              "name": "Customer Name",
+              "value": "={{ $json['Customer Name'] }}",
+              "type": "string"
+            },
+            {
+              "id": "da8a664d-9123-4add-ac4b-dd303166676b",
+              "name": "Email",
+              "value": "={{ $json.Email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "19128add-16cb-4960-bbb0-fc8730793565",
+      "name": "Prepare HTML Template4",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        352,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -192,
+        -160
+      ],
+      "id": "b70fc210-ad8e-462e-aa6f-2ab6b7532a8d",
+      "name": "Loop Over Items4"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        800,
+        -176
+      ],
+      "id": "f14a9e72-b924-4915-b69c-450294fb15b7",
+      "name": "Wait4",
+      "webhookId": "224ee8df-8a27-46fa-949a-3c03c845bd4d"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>eTech S.C. | Digital Health Solutions</title>\n\n    <style>\n        body {\n            margin: 0;\n            padding: 0;\n            background: #edf2f7;\n        }\n\n        table {\n            border-spacing: 0;\n            border-collapse: collapse;\n        }\n\n        img {\n            border: 0;\n            display: block;\n            max-width: 100%;\n        }\n\n        @media only screen and (max-width:620px) {\n            .container {\n                width: 100% !important;\n            }\n\n            .mobile-padding {\n                padding-left: 22px !important;\n                padding-right: 22px !important;\n            }\n\n            .stack-column,\n            .stack-column td {\n                display: block !important;\n                width: 100% !important;\n            }\n\n            .hero-title {\n                font-size: 42px !important;\n                line-height: 52px !important;\n            }\n\n            .hero-text {\n                font-size: 15px !important;\n                line-height: 28px !important;\n            }\n\n            .button {\n                width: 100% !important;\n            }\n\n            .service-space {\n                padding-bottom: 20px !important;\n            }\n        }\n    </style>\n</head>\n\n<body style=\"margin:0;padding:0;background:#edf2f7;\">\n\n    <center style=\"width:100%;background:#edf2f7;\">\n\n        <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n            <tr>\n                <td align=\"center\" style=\"padding:20px 10px;\">\n\n                    <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"container\"\n                        style=\"width:600px;max-width:600px;background:#ffffff;\">\n\n                        <tr>\n                            <td background=\"https://images.unsplash.com/photo-1538108149393-fbbd81895907?q=80&w=1600&auto=format&fit=crop\"\n                                bgcolor=\"#0d3ea9\" style=\"\n                                    background-image: linear-gradient(rgba(13, 62, 169, 0.85), rgba(13, 62, 169, 0.85)), url('https://images.unsplash.com/photo-1538108149393-fbbd81895907?q=80&w=1600&auto=format&fit=crop');\n                                    background-size:cover;\n                                    background-position:center;\n                                    padding:55px 45px 70px 45px;\n                                \">\n\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                    <tr>\n                                        <td>\n                                            <img src=\"https://etechsc.com/wp-content/uploads/2024/11/Logo-White@2x.png\"\n                                                width=\"170\" alt=\"eTech S.C.\" style=\"width:170px;padding-bottom:30px;\">\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td class=\"hero-title\" style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:54px;\n                                                line-height:66px;\n                                                font-weight:bold;\n                                                color:#ffffff;\n                                                letter-spacing:-2px;\n                                                padding-bottom:28px;\n                                            \">\n                                            Together We Build Smart & Ethical Healthcare!\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td class=\"hero-text\" style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:18px;\n                                                line-height:34px;\n                                                color:#ffffff;\n                                                padding-bottom:38px;\n                                            \">\n                                            eTech S.C. delivers reliable and secure eHealth platforms that help clinical facilities automate workflows, eliminate administrative overhead, and protect critical patient data.\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td>\n                                            <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"button\">\n                                                <tr>\n                                                    <td bgcolor=\"#ffffff\" style=\"\n                                                            padding:17px 30px;\n                                                            font-family:Arial,Helvetica,sans-serif;\n                                                            font-size:16px;\n                                                            font-weight:bold;\n                                                        \">\n                                                        <a href=\"https://etechsc.com/\" style=\"\n                                                                color:#0d3ea9;\n                                                                text-decoration:none;\n                                                                display:block;\n                                                            \">\n                                                            Explore Health Solutions →\n                                                        </a>\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n                                    </tr>\n                                </table>\n\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td style=\"padding:48px 42px 20px 42px;\" class=\"mobile-padding\">\n\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                    <tr>\n                                        <td style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:34px;\n                                                line-height:46px;\n                                                font-weight:bold;\n                                                color:#003087;\n                                                padding-bottom:22px;\n                                            \">\n                                            Transforming Clinical Operations\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:16px;\n                                                line-height:30px;\n                                                color:#475569;\n                                                padding-bottom:16px;\n                                            \">\n                                            Dear {{ $('Get row(s) in sheet').item.json['Company Name'] }},\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:16px;\n                                                line-height:30px;\n                                                color:#475569;\n                                                padding-bottom:18px;\n                                            \">\n                                            <strong>eTech S.C.</strong>, {{ $('AI Agent4').item.json.output }}\n                                        </td>\n                                    </tr>\n\n                                    <tr>\n                                        <td bgcolor=\"#f8fbff\" style=\"padding:30px; border:1px solid #dbeafe;\">\n                                            <div style=\"\n                                                    font-family:Arial,Helvetica,sans-serif;\n                                                    font-size:26px;\n                                                    font-weight:bold;\n                                                    color:#003087;\n                                                    padding-bottom:22px;\n                                                \">\n                                                Our eHealth Architecture\n                                            </div>\n\n                                            <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155; padding-bottom:10px;\">\n                                                        ✓ Integrated eHealth Systems (EHRS)\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155; padding-bottom:10px;\">\n                                                        ✓ Smart Ambulance Management Platforms\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155; padding-bottom:10px;\">\n                                                        ✓ Outpatient & Inpatient Records Tracking\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155; padding-bottom:10px;\">\n                                                        ✓ Medical Supply & Pharmacy Point of Sale\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155;\">\n                                                        ✓ Cybersecurity-Embedded Healthcare Infrastructure\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n                                    </tr>\n                                </table>\n\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td style=\"padding:18px 25px 10px 25px;\" class=\"mobile-padding\">\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                    <tr class=\"stack-column\">\n                                        <td width=\"33.33%\" valign=\"top\" style=\"padding:8px;\" class=\"service-space\">\n                                            <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border:1px solid #e2e8f0;background:#ffffff;\">\n                                                <tr>\n                                                    <td>\n                                                        <img src=\"https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1200&auto=format&fit=crop\" alt=\"EHRS\">\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"padding:20px;\">\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:18px; line-height:24px; font-weight:bold; color:#0f172a; padding-bottom:12px;\">\n                                                            Patient Registry & EMR\n                                                        </div>\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:22px; color:#64748b;\">\n                                                            Centralized electronic histories ensuring accurate treatment paths.\n                                                        </div>\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n\n                                        <td width=\"33.33%\" valign=\"top\" style=\"padding:8px;\" class=\"service-space\">\n                                            <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border:1px solid #e2e8f0;background:#ffffff;\">\n                                                <tr>\n                                                    <td>\n                                                        <img src=\"https://images.unsplash.com/photo-1587745416684-47953f16f02f?q=80&w=1200&auto=format&fit=crop\" alt=\"Ambulance\">\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"padding:20px;\">\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:18px; line-height:24px; font-weight:bold; color:#0f172a; padding-bottom:12px;\">\n                                                            Emergency Tracking\n                                                        </div>\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:22px; color:#64748b;\">\n                                                            Smart dispatch setups accelerating critical emergency response metrics.\n                                                        </div>\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n\n                                        <td width=\"33.33%\" valign=\"top\" style=\"padding:8px;\">\n                                            <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border:1px solid #e2e8f0;background:#ffffff;\">\n                                                <tr>\n                                                    <td>\n                                                        <img src=\"https://images.unsplash.com/photo-1563213126-a4273aed2016?q=80&w=1200&auto=format&fit=crop\" alt=\"Pharmacy\">\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"padding:20px;\">\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:18px; line-height:24px; font-weight:bold; color:#0f172a; padding-bottom:12px;\">\n                                                            Pharmacy & Supplies\n                                                        </div>\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:22px; color:#64748b;\">\n                                                            Real-time controls covering medications, stocks, and clinical billing loops.\n                                                        </div>\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td style=\"padding:35px 42px 0 42px;\" class=\"mobile-padding\">\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" bgcolor=\"#0047b3\">\n                                    <tr>\n                                        <td align=\"center\" style=\"padding:34px 20px;\">\n                                            <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:28px; line-height:40px; font-weight:bold; color:#ffffff; padding-bottom:18px;\">\n                                                Trusted Healthcare Providers\n                                            </div>\n                                            <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:16px; line-height:34px; color:#ffffff;\">\n                                                MeQrez General Hospital<br>\n                                                And leading modern medical centers across the region.\n                                            </div>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td align=\"center\" style=\"padding:45px 25px 0 25px;\">\n                                <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                    <tr>\n                                        <td bgcolor=\"#0052cc\" style=\"padding:18px 34px; font-family:Arial,Helvetica,sans-serif; font-size:16px; font-weight:bold;\">\n                                            <a href=\"https://etechsc.com/\" style=\"color:#ffffff; text-decoration:none; display:block;\">\n                                                Visit Our Website →\n                                            </a>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td style=\"padding:45px 42px 45px 42px;\" class=\"mobile-padding\">\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" bgcolor=\"#f8fafc\">\n                                    <tr>\n                                        <td style=\"padding:30px;\">\n                                            <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:24px; font-weight:bold; color:#0f172a; padding-bottom:18px;\">\n                                                Contact Us\n                                            </div>\n                                            <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#475569;\">\n                                                <strong>Ahadu Gebresenbet</strong><br>\n                                                Junior Software Sales<br>\n                                                eTech S.C.<br><br>\n                                                📍 Ethiopian ICT Park, BPO Building, 7th Floor, Addis Ababa<br>\n                                                📞 <a href=\"tel:+251992900007\" style=\"color:#0052cc;text-decoration:none;\">+251 992 900 007</a><br>\n                                                🌐 <a href=\"https://etechsc.com/\" style=\"color:#0052cc;text-decoration:none;\">www.etechsc.com</a>\n                                            </div>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td bgcolor=\"#0f172a\" align=\"center\" style=\"padding:38px 20px;\">\n                                <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:14px; line-height:28px; color:#cbd5e1; padding-bottom:18px;\">\n                                    <a href=\"https://et.linkedin.com/company/etechsc\" style=\"color:#60a5fa;text-decoration:none;\">LinkedIn</a>\n                                    &nbsp;&nbsp;|&nbsp;&nbsp;\n                                    <a href=\"https://www.facebook.com/etechsharecompany/\" style=\"color:#60a5fa;text-decoration:none;\">Facebook</a>\n                                    &nbsp;&nbsp;|&nbsp;&nbsp;\n                                    <a href=\"https://www.instagram.com/etech_s.c/\" style=\"color:#60a5fa;text-decoration:none;\">Instagram</a>\n                                </div>\n                                <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:26px; color:#94a3b8;\">\n                                    Technology | Innovation | Digital Transformation<br>\n                                    © 2026 eTech S.C. — Proudly Ethiopian\n                                </div>\n                            </td>\n                        </tr>\n\n                    </table>\n\n                </td>\n            </tr>\n        </table>\n\n    </center>\n\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        576,
+        -176
+      ],
+      "id": "3fb54902-43b5-4e30-97de-65a43780424d",
+      "name": "HTML4"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get row(s) in sheet').item.json['Contact Email'] }}",
+        "subject": "=etech : {{ $('Get row(s) in sheet').item.json['Company Name'] }}",
+        "message": "={{ $('HTML4').item.json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1024,
+        -176
+      ],
+      "id": "ef286c4f-c729-43b7-b0a7-eca6006c3bea",
+      "name": "Send a message4",
+      "webhookId": "66b51baa-c7fc-4e61-8b24-613960c258cf",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "07oVChrO49QOy3Hq",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a specialized health-tech solutions consultant at eTech S.C. Write a single, highly professional paragraph connecting eTech's capabilities to the healthcare sector. Focus on solving clinical inefficiencies, modernizing hospital workflows, protecting patient data, and streamlining healthcare administration. Do not include greetings or sign-offs.use this us information {{ $json['Description/Details'] }}{{ $json['Company Name'] }}  this are client information",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        32,
+        -176
+      ],
+      "id": "24c03f2a-c3a0-4876-abab-18bbb50e481c",
+      "name": "AI Agent4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        16,
+        64
+      ],
+      "id": "533db1bb-b884-45e1-9e90-c184cd5eaeec",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "4OvApEIWNNr2aMJ3",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1692eb1d-a513-477f-bbcc-c071f48db70d",
+              "name": "Customer Name",
+              "value": "={{ $json['Customer Name'] }}",
+              "type": "string"
+            },
+            {
+              "id": "da8a664d-9123-4add-ac4b-dd303166676b",
+              "name": "Email",
+              "value": "={{ $json.Email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "63c577d0-cf20-4231-b8e7-3cea7888fba1",
+      "name": "Prepare HTML Template6",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -128,
+        720
+      ],
+      "id": "7a517656-03b0-401d-b8a8-11910cbf5450",
+      "name": "Loop Over Items6"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        704
+      ],
+      "id": "51576ff1-dd58-4665-9a07-5c149fd32a1a",
+      "name": "Wait6",
+      "webhookId": "224ee8df-8a27-46fa-949a-3c03c845bd4d"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>eTech S.C. | Financial & Share Corporate Systems</title>\n\n    <style>\n        body {\n            margin: 0;\n            padding: 0;\n            background: #edf2f7;\n        }\n\n        table {\n            border-spacing: 0;\n            border-collapse: collapse;\n        }\n\n        img {\n            border: 0;\n            display: block;\n            max-width: 100%;\n        }\n\n        @media only screen and (max-width:620px) {\n            .container {\n                width: 100% !important;\n            }\n\n            .mobile-padding {\n                padding-left: 22px !important;\n                padding-right: 22px !important;\n            }\n\n            .stack-column,\n            .stack-column td {\n                display: block !important;\n                width: 100% !important;\n            }\n\n            .hero-title {\n                font-size: 42px !important;\n                line-height: 52px !important;\n            }\n\n            .hero-text {\n                font-size: 15px !important;\n                line-height: 28px !important;\n            }\n\n            .button {\n                width: 100% !important;\n            }\n\n            .service-space {\n                padding-bottom: 20px !important;\n            }\n        }\n    </style>\n</head>\n\n<body style=\"margin:0;padding:0;background:#edf2f7;\">\n\n    <center style=\"width:100%;background:#edf2f7;\">\n\n        <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n            <tr>\n                <td align=\"center\" style=\"padding:20px 10px;\">\n\n                    <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"container\"\n                        style=\"width:600px;max-width:600px;background:#ffffff;\">\n\n                        <tr>\n                            <td background=\"https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=1600&auto=format&fit=crop\"\n                                bgcolor=\"#0d3ea9\" style=\"\n                                    background-image: linear-gradient(rgba(13, 62, 169, 0.85), rgba(13, 62, 169, 0.85)), url('https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=1600&auto=format&fit=crop');\n                                    background-size:cover;\n                                    background-position:center;\n                                    padding:55px 45px 70px 45px;\n                                \">\n\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                    <tr>\n                                        <td>\n                                            <img src=\"https://etechsc.com/wp-content/uploads/2024/11/Logo-White@2x.png\"\n                                                width=\"170\" alt=\"eTech S.C.\" style=\"width:170px;padding-bottom:30px;\">\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td class=\"hero-title\" style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:54px;\n                                                line-height:66px;\n                                                font-weight:bold;\n                                                color:#ffffff;\n                                                letter-spacing:-2px;\n                                                padding-bottom:28px;\n                                            \">\n                                            Together We Build Secure & Scalable Corporate Solutions!\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td class=\"hero-text\" style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:18px;\n                                                line-height:34px;\n                                                color:#ffffff;\n                                                padding-bottom:38px;\n                                            \">\n                                            eTech S.C. redefines corporate finance and equity architectures through platforms like eShare. Modernize share tracking, dividend reporting, and investor systems with complete regulatory precision.\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td>\n                                            <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"button\">\n                                                <tr>\n                                                    <td bgcolor=\"#ffffff\" style=\"\n                                                            padding:17px 30px;\n                                                            font-family:Arial,Helvetica,sans-serif;\n                                                            font-size:16px;\n                                                            font-weight:bold;\n                                                        \">\n                                                        <a href=\"https://etechsc.com/\" style=\"\n                                                                color:#0d3ea9;\n                                                                text-decoration:none;\n                                                                display:block;\n                                                            \">\n                                                            Explore Corporate Tech →\n                                                        </a>\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n                                    </tr>\n                                </table>\n\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td style=\"padding:48px 42px 20px 42px;\" class=\"mobile-padding\">\n\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                    <tr>\n                                        <td style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:34px;\n                                                line-height:46px;\n                                                font-weight:bold;\n                                                color:#003087;\n                                                padding-bottom:22px;\n                                            \">\n                                            Securing Shareholder Landscapes\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:16px;\n                                                line-height:30px;\n                                                color:#475569;\n                                                padding-bottom:16px;\n                                            \">\n                                            Dear {{ $('Get row(s) in sheet').item.json['Company Name'] }},\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td style=\"\n                                                font-family:Arial,Helvetica,sans-serif;\n                                                font-size:16px;\n                                                line-height:30px;\n                                                color:#475569;\n                                                padding-bottom:18px;\n                                            \">\n                                            <strong>eTech S.C.</strong>, {{ $('AI Agent8').item.json.output }}\n                                        </td>\n                                    </tr>\n\n                                    <tr>\n                                        <td bgcolor=\"#f8fbff\" style=\"padding:30px; border:1px solid #dbeafe;\">\n                                            <div style=\"\n                                                    font-family:Arial,Helvetica,sans-serif;\n                                                    font-size:26px;\n                                                    font-weight:bold;\n                                                    color:#003087;\n                                                    padding-bottom:22px;\n                                                \">\n                                                Financial Platform Offerings\n                                            </div>\n\n                                            <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155; padding-bottom:10px;\">\n                                                        ✓ eShare: Advanced Shareholder & Registry Management\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155; padding-bottom:10px;\">\n                                                        ✓ Automated Dividend Compute & Allocation Modules\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155; padding-bottom:10px;\">\n                                                        ✓ Core Banking Integrations & Ledger Setups\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155; padding-bottom:10px;\">\n                                                        ✓ Microfinance & Savings / Credit Cooperative Systems\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#334155;\">\n                                                        ✓ Compliant Voting, Reporting & Audit Dashboards\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n                                    </tr>\n                                </table>\n\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td style=\"padding:18px 25px 10px 25px;\" class=\"mobile-padding\">\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                    <tr class=\"stack-column\">\n                                        <td width=\"33.33%\" valign=\"top\" style=\"padding:8px;\" class=\"service-space\">\n                                            <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border:1px solid #e2e8f0;background:#ffffff;\">\n                                                <tr>\n                                                    <td>\n                                                        <img src=\"https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=1200&auto=format&fit=crop\" alt=\"Share Management\">\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"padding:20px;\">\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:18px; line-height:24px; font-weight:bold; color:#0f172a; padding-bottom:12px;\">\n                                                            eShare Registry\n                                                        </div>\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:22px; color:#64748b;\">\n                                                            Fully optimized records eliminates manual logging overhead completely.\n                                                        </div>\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n\n                                        <td width=\"33.33%\" valign=\"top\" style=\"padding:8px;\" class=\"service-space\">\n                                            <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border:1px solid #e2e8f0;background:#ffffff;\">\n                                                <tr>\n                                                    <td>\n                                                        <img src=\"https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop\" alt=\"Dividends\">\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"padding:20px;\">\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:18px; line-height:24px; font-weight:bold; color:#0f172a; padding-bottom:12px;\">\n                                                            Dividend Processing\n                                                        </div>\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:22px; color:#64748b;\">\n                                                            Secure distribution pipelines executing computations across user tiers.\n                                                        </div>\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n\n                                        <td width=\"33.33%\" valign=\"top\" style=\"padding:8px;\">\n                                            <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border:1px solid #e2e8f0;background:#ffffff;\">\n                                                <tr>\n                                                    <td>\n                                                        <img src=\"https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?q=80&w=1200&auto=format&fit=crop\" alt=\"Banking Infrastructure\">\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td style=\"padding:20px;\">\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:18px; line-height:24px; font-weight:bold; color:#0f172a; padding-bottom:12px;\">\n                                                            Banking Systems\n                                                        </div>\n                                                        <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:22px; color:#64748b;\">\n                                                            High-integrity transaction ledgers built for scaling institutions.\n                                                        </div>\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td style=\"padding:35px 42px 0 42px;\" class=\"mobile-padding\">\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" bgcolor=\"#0047b3\">\n                                    <tr>\n                                        <td align=\"center\" style=\"padding:34px 20px;\">\n                                            <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:28px; line-height:40px; font-weight:bold; color:#ffffff; padding-bottom:18px;\">\n                                                Trusted By Financial Leaders\n                                            </div>\n                                            <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:16px; line-height:34px; color:#ffffff;\">\n                                                Zemen Bank S.C.<br>\n                                                Ahadu Bank S.C.<br>\n                                                Tsedey Bank S.C.<br>\n                                                Finot Savings and Credit Cooperative\n                                            </div>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td align=\"center\" style=\"padding:45px 25px 0 25px;\">\n                                <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                                    <tr>\n                                        <td bgcolor=\"#0052cc\" style=\"padding:18px 34px; font-family:Arial,Helvetica,sans-serif; font-size:16px; font-weight:bold;\">\n                                            <a href=\"https://etechsc.com/\" style=\"color:#ffffff; text-decoration:none; display:block;\">\n                                                Visit Our Website →\n                                            </a>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td style=\"padding:45px 42px 45px 42px;\" class=\"mobile-padding\">\n                                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" bgcolor=\"#f8fafc\">\n                                    <tr>\n                                        <td style=\"padding:30px;\">\n                                            <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:24px; font-weight:bold; color:#0f172a; padding-bottom:18px;\">\n                                                Contact Us\n                                            </div>\n                                            <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:30px; color:#475569;\">\n                                                <strong>Ahadu Gebresenbet</strong><br>\n                                                Junior Software Sales<br>\n                                                eTech S.C.<br><br>\n                                                📍 Ethiopian ICT Park, BPO Building, 7th Floor, Addis Ababa<br>\n                                                📞 <a href=\"tel:+251992900007\" style=\"color:#0052cc;text-decoration:none;\">+251 992 900 007</a><br>\n                                                🌐 <a href=\"https://etechsc.com/\" style=\"color:#0052cc;text-decoration:none;\">www.etechsc.com</a>\n                                            </div>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td bgcolor=\"#0f172a\" align=\"center\" style=\"padding:38px 20px;\">\n                                <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:14px; line-height:28px; color:#cbd5e1; padding-bottom:18px;\">\n                                    <a href=\"https://et.linkedin.com/company/etechsc\" style=\"color:#60a5fa;text-decoration:none;\">LinkedIn</a>\n                                    &nbsp;&nbsp;|&nbsp;&nbsp;\n                                    <a href=\"https://www.facebook.com/etechsharecompany/\" style=\"color:#60a5fa;text-decoration:none;\">Facebook</a>\n                                    &nbsp;&nbsp;|&nbsp;&nbsp;\n                                    <a href=\"https://www.instagram.com/etech_s.c/\" style=\"color:#60a5fa;text-decoration:none;\">Instagram</a>\n                                </div>\n                                <div style=\"font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:26px; color:#94a3b8;\">\n                                    Technology | Innovation | Digital Transformation<br>\n                                    © 2026 eTech S.C. — Proudly Ethiopian\n                                </div>\n                            </td>\n                        </tr>\n\n                    </table>\n\n                </td>\n            </tr>\n        </table>\n\n    </center>\n\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        672,
+        704
+      ],
+      "id": "0870e28c-e8a3-425c-bb6e-a7d80e3f996a",
+      "name": "HTML6"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get row(s) in sheet').item.json['Contact Email'] }}",
+        "subject": "=etech : {{ $('Get row(s) in sheet').item.json['Company Name'] }}",
+        "message": "={{ $('HTML6').item.json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1136,
+        704
+      ],
+      "id": "00f69799-bd6f-44ad-b21b-b777f42006a5",
+      "name": "Send a message6",
+      "webhookId": "66b51baa-c7fc-4e61-8b24-613960c258cf",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "07oVChrO49QOy3Hq",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a specialized corporate operations and financial sector consultant at eTech S.C. Write a single, highly professional paragraph explaining how eTech empowers financial institutions and share companies. Focus on core banking stability, secure shareholder tracking, corporate governance transparency, and National Bank compliance frameworks. Do not include greetings or sign-offs.\"{{ $('Get row(s) in sheet').item.json['Description/Details'] }}{{ $('Get row(s) in sheet').item.json['Company Name'] }}  This are client information",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        128,
+        704
+      ],
+      "id": "9bcad074-bc4c-41ac-8994-da280bdd86b1",
+      "name": "AI Agent8"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        96,
+        960
+      ],
+      "id": "11c69382-6bc6-4f72-b525-d62650737049",
+      "name": "Google Gemini Chat Model4",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "4OvApEIWNNr2aMJ3",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d5ff493e-d58d-4d72-8029-d8e33c322aab",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "New",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -912,
+        320
+      ],
+      "id": "bead3609-1b9a-49c8-a753-7a4b1875f12d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "id": "4ad89a2d-b6e0-4b2a-842e-a0a65c7ed7f5",
+      "name": "Gmail Trigger",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        1328
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "07oVChrO49QOy3Hq",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  json: {\n    from: $json.from,\n    subject: $json.subject,\n    body: $json.textPlain || $json.snippet || '',\n    threadId: $json.threadId\n  }\n}];"
+      },
+      "id": "ec239146-c97d-4c75-8f1c-81ebabef8484",
+      "name": "Prepare Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -320,
+        1328
+      ]
+    },
+    {
+      "parameters": {
+        "text": "=Reply professionally to customer emails using company knowledge. say thank you to {{ $json.from.text }}",
+        "options": {}
+      },
+      "id": "30f4468d-2a47-4a6e-abd7-0ac4062e1b23",
+      "name": "AI Agent1",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        1328
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -80,
+        1504
+      ],
+      "id": "45bdf122-1b41-4a8c-9dd0-841420c16232",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "4OvApEIWNNr2aMJ3",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "ermihageez@gmail.com",
+        "subject": "=Re:{{ $('Gmail Trigger').item.json.subject }}",
+        "message": "={{$json.output}}",
+        "options": {}
+      },
+      "id": "96c1d1e2-7251-4361-83eb-26e4e0e1ba0f",
+      "name": "Send Gmail Reply2",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [
+        304,
+        1328
+      ],
+      "webhookId": "377cb294-3dad-432b-bc75-15487deac457",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "07oVChrO49QOy3Hq",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "81b58bcd11d106f1e839635947a16b1646a2ff775b706464c0e38257a8cc21ac@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "n8n test "
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        528,
+        1328
+      ],
+      "id": "bcf095ad-735b-48e3-95c6-b9af556ef158",
+      "name": "Get availability in a calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "4u3yhqcCAuqPEnYp",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "81b58bcd11d106f1e839635947a16b1646a2ff775b706464c0e38257a8cc21ac@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "n8n test "
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        736,
+        1328
+      ],
+      "id": "2d14de72-b521-451a-b3c9-22cbab86b755",
+      "name": "Create an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "4u3yhqcCAuqPEnYp",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1QwbwU_hYVVlwCMqbEK72Vs0z1m4VzX5kptw0sScGiUk",
+          "mode": "list",
+          "cachedResultName": "Customer Email Status Tracking",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QwbwU_hYVVlwCMqbEK72Vs0z1m4VzX5kptw0sScGiUk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1686142100,
+          "mode": "list",
+          "cachedResultName": "Customer Email Status Tracking",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QwbwU_hYVVlwCMqbEK72Vs0z1m4VzX5kptw0sScGiUk/edit#gid=1686142100"
+        },
+        "options": {}
+      },
+      "id": "593fa2df-4165-40ab-ae95-a3754055ac82",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        -176,
+        1952
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CegMMC6KxJchxw3M",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "50dc11e9-799c-4d52-8489-bd1a384b3e06",
+      "name": "Split Out",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 3,
+      "position": [
+        16,
+        1952
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "embedding",
+        "requestOptions": {}
+      },
+      "id": "3988c591-ef52-4d62-99aa-c514d24e3572",
+      "name": "OpenAI Embedding",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        224,
+        1952
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "http://localhost:6333/collections/google_sheet_ai/points",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"points\": [\n    {\n      \"id\": $json[\"id\"],\n      \"vector\": $json[\"embedding\"],\n      \"payload\": {\n        \"title\": $json[\"title\"],\n        \"content\": $json[\"content\"]\n      }\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "67a1966d-e688-4651-aaa6-b1e0c9868dd1",
+      "name": "Save to Qdrant",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        480,
+        1952
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -400,
+        1952
+      ],
+      "id": "f5dc9ba9-0558-4e71-a516-546e871763b7",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "formTitle": "Upload your data to test RAG",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Upload your file(s)",
+              "fieldType": "file",
+              "acceptFileTypes": ".pdf, .csv",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -560,
+        2336
+      ],
+      "id": "0cbec1a4-6a14-43f6-9e98-a7eb9f0626f5",
+      "name": "Upload your file here",
+      "webhookId": "10eacf39-3e18-41d7-b144-a93dd9292824"
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -112,
+        2496
+      ],
+      "id": "fa564fed-c060-462a-96f0-e157004f669e",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "content": "### 📚 Load Data Flow",
+        "height": 460,
+        "width": 700,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -608,
+        2272
+      ],
+      "typeVersion": 1,
+      "id": "a95abbc3-6c1a-4a30-98f0-30840c218b1f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "memoryKey": {
+          "__rl": true,
+          "value": "vector_store_key",
+          "mode": "list",
+          "cachedResultName": "vector_store_key"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.2,
+      "position": [
+        -368,
+        2336
+      ],
+      "id": "4557d748-bf2b-4fc0-a62c-5eed747cbacc",
+      "name": "Insert Data to Store"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "knowledge_base",
+        "toolDescription": "Use this knowledge base to answer questions from the user",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.2,
+      "position": [
+        512,
+        2544
+      ],
+      "id": "3c6ff5bd-b302-4b32-88ce-bf8820aa9474",
+      "name": "Query Data Tool"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        512,
+        2320
+      ],
+      "id": "8066a1f7-e255-45ad-a47b-af307d08a280",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        288,
+        2320
+      ],
+      "id": "9815c7ef-94ba-4e87-8f0c-755972674c2e",
+      "name": "When chat message received",
+      "webhookId": "4091fa09-fb9a-4039-9411-7104d213f601"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-audio-mini-2025-12-15",
+          "mode": "list",
+          "cachedResultName": "gpt-audio-mini-2025-12-15"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        288,
+        2544
+      ],
+      "id": "7234793c-b145-4bd0-b20c-024c774afa99",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "oC1VbyLYggaM0R7i",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### 🐕 2. Retriever Flow",
+        "height": 460,
+        "width": 680,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        176,
+        2272
+      ],
+      "typeVersion": 1,
+      "id": "f55115ec-72b8-4b12-8cac-b392b99df52a",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "model": "gemma2:2b"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        0,
+        2832
+      ],
+      "id": "372d6709-4da2-4021-8e37-3ba685e922c2",
+      "name": "Embeddings Ollama",
+      "credentials": {
+        "ollamaApi": {
+          "id": "IXQObkvm7W4SqZHA",
+          "name": "Ollama account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking \"Execute Workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare HTML Template3": {
+      "main": [
+        [
+          {
+            "node": "HTML3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "Send a message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML3": {
+      "main": [
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Prepare HTML Template3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare HTML Template4": {
+      "main": [
+        [
+          {
+            "node": "HTML4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items4": {
+      "main": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "Send a message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML4": {
+      "main": [
+        [
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent4": {
+      "main": [
+        [
+          {
+            "node": "Prepare HTML Template4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare HTML Template6": {
+      "main": [
+        [
+          {
+            "node": "HTML6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items6": {
+      "main": [
+        [
+          {
+            "node": "AI Agent8",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait6": {
+      "main": [
+        [
+          {
+            "node": "Send a message6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML6": {
+      "main": [
+        [
+          {
+            "node": "Wait6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent8": {
+      "main": [
+        [
+          {
+            "node": "Prepare HTML Template6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent8",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Prepare Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Email": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Send Gmail Reply2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Gmail Reply2": {
+      "main": [
+        [
+          {
+            "node": "Get availability in a calendar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get availability in a calendar": {
+      "main": [
+        [
+          {
+            "node": "Create an event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Embedding",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Embedding": {
+      "main": [
+        [
+          {
+            "node": "Save to Qdrant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload your file here": {
+      "main": [
+        [
+          {
+            "node": "Insert Data to Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert Data to Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Data Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert Data to Store",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Query Data Tool",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "174ac0db-11fe-4eec-b935-f37d2f485bf8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "580779ed08bed6231373d206666b4a0f940e78fff4e700ce6db310a3486a4dbc"
+  },
+  "id": "0K7GPvRbkC4ENbVx",
+  "tags": []
+}

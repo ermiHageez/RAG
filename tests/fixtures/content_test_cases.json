@@ -1,0 +1,39 @@
+[
+    {
+        "name": "professional_email",
+        "input": {
+            "company": "Sample Bank SC",
+            "sector": "Finance",
+            "needs": "ERP system for core banking operations"
+        },
+        "output": {
+            "to": "info@samplebank.et",
+            "subject": "ERP Solutions for Sample Bank SC",
+            "body": "Dear Sample Bank SC,\n\neTech S.C. is pleased to present our ERP solution tailored for financial institutions. Our system automates core banking operations including general ledger, inventory, and HR modules. We have successfully deployed similar solutions for Zemen Bank and Ahadu Bank.\n\nWould you be available for a demonstration this week?\n\nBest regards,\nAhadu Gebresenbet\neTech S.C."
+        },
+        "expected": {
+            "has_greeting": true,
+            "has_signature": true,
+            "min_length_chars": 200
+        }
+    },
+    {
+        "name": "email_with_hallucination",
+        "input": {
+            "company": "Unknown Corp",
+            "sector": "Retail",
+            "needs": "Inventory management"
+        },
+        "output": {
+            "to": "info@unknown.et",
+            "subject": "Partnership Opportunity",
+            "body": "Dear Unknown Corp,\n\neTech S.C. has deployed solutions for 500+ Fortune 500 companies globally. Our AI-powered blockchain inventory system guarantees 99.9% uptime.\n\nBest regards,\nSales Team"
+        },
+        "expected": {
+            "hallucinated_claims": [
+                "500+ Fortune 500 companies",
+                "AI-powered blockchain inventory"
+            ]
+        }
+    }
+]

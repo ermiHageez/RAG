@@ -1,0 +1,32 @@
+[
+    {
+        "name": "bank_leads_query",
+        "input": "Find banking leads in Addis Ababa",
+        "output": {"route": ["lead"]},
+        "expected": ["lead"]
+    },
+    {
+        "name": "tender_query",
+        "input": "Find active tenders for security systems",
+        "output": {"route": ["tender"]},
+        "expected": ["tender"]
+    },
+    {
+        "name": "company_info_query",
+        "input": "What does eTech do?",
+        "output": {"route": ["knowledge"]},
+        "expected": ["knowledge"]
+    },
+    {
+        "name": "combined_query",
+        "input": "Find ICT tenders and company information for ERP bidding",
+        "output": {"route": ["tender", "knowledge"]},
+        "expected": ["tender", "knowledge"]
+    },
+    {
+        "name": "full_pipeline_query",
+        "input": "Find banks and tender opportunities in Ethiopia for ERP systems",
+        "output": {"route": ["lead", "tender", "knowledge"]},
+        "expected": ["lead", "tender", "knowledge"]
+    }
+]

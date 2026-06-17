@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.git/
+.gitignore
+.python-version
+uv.lock
+.DS_Store
+README.md
+symphony/
+typings/
+n8nemail/*.html
+*.md
+.env
