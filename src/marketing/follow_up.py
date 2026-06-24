@@ -6,6 +6,7 @@ from src.marketing.sheets_tracker import SheetsTracker
 from src.marketing.content_generator import ContentGenerator
 from src.marketing.template_engine import TemplateEngine
 from mcp_server.tools.n8n_hook import trigger_n8n_marketing_pipeline
+from app.ml.training_sink import record_training_event
 
 
 @dataclass
@@ -85,17 +86,29 @@ class FollowUpManager:
             "email_body": email_body,
         }
 
-        result = trigger_n8n_marketing_pipeline(payload)
+        n8n_result = trigger_n8n_marketing_pipeline(payload)
 
         new_status = f"FollowUp_{follow_up_number}"
         self.tracker.update_status(session_id, new_status)
 
-        return {
-            "success": result.get("success", False),
+        result = {
+            "success": n8n_result.get("success", False),
             "follow_up_number": follow_up_number,
             "email_body": email_body,
-            "n8n_response": result.get("response"),
+            "n8n_response": n8n_result.get("response"),
         }
+        try:
+            record_training_event(
+                "marketing.follow_up.send",
+                session_id=session_id,
+                input={"follow_up_number": follow_up_number, "lead_name": lead["customer_name"]},
+                output=result,
+                source="marketing",
+                metadata={"status": new_status},
+            )
+        except Exception:
+            pass
+        return result
 
     def get_follow_up_schedule(self, session_id: str) -> dict:
         leads = self.tracker.get_all_leads()

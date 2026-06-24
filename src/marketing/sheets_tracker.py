@@ -3,6 +3,8 @@ import os
 from datetime import datetime
 from typing import Optional
 
+from app.ml.training_sink import record_training_event
+
 TRACKING_FILE = "data/campaign_tracking.json"
 
 VALID_STATUSES = ["New", "Sent", "Opened", "Replied", "Meeting Booked"]
@@ -50,6 +52,17 @@ class SheetsTracker:
             "created_at": datetime.now().isoformat(),
         })
         self._save(data)
+        try:
+            record_training_event(
+                "marketing.campaign.add_lead",
+                session_id=session_id,
+                input={"customer_name": customer_name, "email": email, "product": product, "status": status},
+                output={"success": True},
+                source="marketing",
+                metadata={"product": product},
+            )
+        except Exception:
+            pass
         return True
 
     def update_status(self, session_id: str, new_status: str) -> bool:
@@ -71,6 +84,17 @@ class SheetsTracker:
                     lead["follow_up_count"] = lead.get("follow_up_count", 0) + 1
                     lead["last_follow_up_date"] = datetime.now().isoformat()
                 self._save(data)
+                try:
+                    record_training_event(
+                        "marketing.campaign.update_status",
+                        session_id=session_id,
+                        input={"new_status": new_status},
+                        output={"success": True},
+                        source="marketing",
+                        metadata={"current_status": current},
+                    )
+                except Exception:
+                    pass
                 return True
         return False
 

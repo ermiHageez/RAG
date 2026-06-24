@@ -4,6 +4,8 @@ from ddgs import DDGS
 import requests
 from bs4 import BeautifulSoup
 
+from app.ml.training_sink import record_training_event
+
 
 def primary_duckduckgo_search(query: str, max_results: int = 5) -> List[Dict[str, str]]:
     """Primary search engine: DuckDuckGo."""
@@ -100,4 +102,14 @@ def discover_ethiopian_enterprises(query: str) -> List[Dict[str, Any]]:
             "contact": "",
             "link": item.get("url", ""),
         })
+    try:
+        record_training_event(
+            "mcp.search",
+            input={"query": query},
+            output=results,
+            source="mcp",
+            metadata={"tool": "discover_ethiopian_enterprises", "result_count": len(results)},
+        )
+    except Exception:
+        pass
     return results

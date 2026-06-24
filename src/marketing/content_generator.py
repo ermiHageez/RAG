@@ -1,4 +1,5 @@
 from src.agents.llm import get_content_llm
+from app.ml.training_sink import record_training_event
 
 PRODUCT_PROMPTS = {
     "Ehealth": (
@@ -53,4 +54,20 @@ class ContentGenerator:
             customer_needs=customer_needs,
         )
         response = self.llm.invoke(prompt)
-        return response.content.strip()
+        body = response.content.strip()
+        try:
+            record_training_event(
+                "marketing.email.generate",
+                input={
+                    "product": product,
+                    "customer_name": customer_name,
+                    "customer_sector": customer_sector,
+                    "customer_needs": customer_needs,
+                },
+                output={"email_body": body},
+                source="marketing",
+                metadata={"product": product},
+            )
+        except Exception:
+            pass
+        return body

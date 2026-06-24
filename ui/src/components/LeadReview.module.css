@@ -1,0 +1,162 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transition: border-color 0.15s ease;
+}
+
+.card:hover {
+  border-color: rgba(255,255,255,0.15);
+}
+
+.cardSelected {
+  border-color: #00c853;
+  background: rgba(0,200,83,0.04);
+}
+
+.checkbox {
+  margin-top: 2px;
+}
+
+.cardBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.companyName {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e8eaed;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.companyNameInput {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e8eaed;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 3px;
+  padding: 2px 6px;
+  outline: none;
+  font-family: inherit;
+}
+
+.companyNameInput:focus {
+  border-color: #00c853;
+}
+
+.metadata {
+  font-size: 11px;
+  color: #5f6368;
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.description {
+  font-size: 12px;
+  color: #9aa0a6;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.contact {
+  font-size: 11px;
+  color: #2979ff;
+  margin-top: 4px;
+}
+
+.score {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.scoreHigh {
+  background: rgba(0,200,83,0.1);
+  color: #00c853;
+  border: 1px solid rgba(0,200,83,0.3);
+}
+
+.scoreMid {
+  background: rgba(255,145,0,0.1);
+  color: #ff9100;
+  border: 1px solid rgba(255,145,0,0.3);
+}
+
+.scoreLow {
+  background: rgba(255,255,255,0.04);
+  color: #5f6368;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.source {
+  font-size: 10px;
+  color: #5f6368;
+  margin-top: 6px;
+}
+
+.sourceTag {
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.empty {
+  font-size: 12px;
+  color: #5f6368;
+  font-style: italic;
+  padding: 12px 0;
+}
+
+.addLeadForm {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.addLeadInput {
+  flex: 1;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #e8eaed;
+  outline: none;
+  font-family: inherit;
+}
+
+.addLeadInput:focus {
+  border-color: #00c853;
+}
+
+.addLeadBtn {
+  background: #00c853;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.addLeadBtn:hover {
+  background: #00e676;
+}

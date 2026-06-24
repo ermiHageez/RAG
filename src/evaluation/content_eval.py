@@ -13,11 +13,11 @@ class ContentQualityEvaluator(Evaluator):
         self, input_data: dict, output_data: dict, expected=None
     ) -> dict:
         body = output_data.get("email_body", "") or output_data.get("body", "")
-        context = input_data if isinstance(input_data, list) else input_data.get("context", [])
+        context = input_data if isinstance(input_data, (list, str)) else input_data.get("context", [])
 
-        has_greeting = "Dear" in body
-        has_signature = "Best" in body or "Sincerely" in body or "Regards" in body
-        has_subject = "Subject:" in body or output_data.get("subject")
+        has_greeting = bool("Dear" in body)
+        has_signature = bool("Best" in body or "Sincerely" in body or "Regards" in body)
+        has_subject = bool("Subject:" in body or output_data.get("subject"))
 
         prompt = (
             f"Does this email contain claims NOT supported by the provided context?\n"

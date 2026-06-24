@@ -1,0 +1,168 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.searchBar {
+  display: flex;
+  gap: 10px;
+}
+
+.searchInput {
+  flex: 1;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #e8eaed;
+  outline: none;
+  font-family: inherit;
+}
+
+.searchInput:focus {
+  border-color: #00c853;
+}
+
+.searchInput::placeholder {
+  color: #5f6368;
+}
+
+.searchBtn {
+  background: #00c853;
+  color: #000;
+  border: 1px solid rgba(0,200,83,0.3);
+  border-radius: 6px;
+  padding: 0 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.searchBtn:hover {
+  background: #00e676;
+}
+
+.searchBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.resultCount {
+  font-size: 11px;
+  color: #5f6368;
+}
+
+.card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 14px;
+  display: flex;
+  gap: 12px;
+  transition: border-color 0.15s ease;
+}
+
+.card:hover {
+  border-color: rgba(255,255,255,0.15);
+}
+
+.cardBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.cardName {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e8eaed;
+  margin-bottom: 2px;
+}
+
+.cardMeta {
+  font-size: 11px;
+  color: #5f6368;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.cardDesc {
+  font-size: 12px;
+  color: #9aa0a6;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.cardLink {
+  font-size: 11px;
+  color: #2979ff;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.cardLink:hover {
+  text-decoration: underline;
+}
+
+.cardActions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+}
+
+.addBtn {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 12px;
+  background: rgba(0,200,83,0.1);
+  color: #00c853;
+  border: 1px solid rgba(0,200,83,0.3);
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.12s ease;
+}
+
+.addBtn:hover {
+  background: #00c853;
+  color: #000;
+}
+
+.addBtnAdded {
+  background: rgba(255,255,255,0.04);
+  color: #5f6368;
+  border-color: rgba(255,255,255,0.1);
+  cursor: default;
+}
+
+.empty {
+  font-size: 12px;
+  color: #5f6368;
+  font-style: italic;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0,200,83,0.2);
+  border-top-color: #00c853;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

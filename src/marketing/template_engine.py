@@ -2,6 +2,8 @@ import enum
 import os
 from pathlib import Path
 
+from app.ml.training_sink import record_training_event
+
 
 TEMPLATES_DIR = Path("n8nemail")
 
@@ -24,7 +26,7 @@ PRODUCT_TEMPLATE_MAP = {
 
 
 class TemplateEngine:
-    def __init__(self, templates_dir: str = None):
+    def __init__(self, templates_dir: str | None = None):
         self.templates_dir = Path(templates_dir) if templates_dir else TEMPLATES_DIR
 
     def get_template_file(self, product: str) -> str:
@@ -68,4 +70,14 @@ class TemplateEngine:
         filepath = self.get_template_file(product)
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(html)
+        try:
+            record_training_event(
+                "marketing.template.update",
+                input={"product": product, "html_length": len(html)},
+                output={"success": True, "path": str(filepath)},
+                source="marketing",
+                metadata={"product": product},
+            )
+        except Exception:
+            pass
         return True
