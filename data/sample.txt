@@ -161,7 +161,7 @@ A. eHealth
   * Mobile Application bases appointment scheduling and reminders
   * Provide a paperless electronic health record
   * Prescription Management
-  * Telemedicine and Remote Monitoring
+  * Telemedicine  and Remote Monitoring
   * Simplify the pharmacy and inventory management
 - Advantages:
   * Improve patient care by enabling healthcare providers to access comprehensive electronic health records (EHR).
@@ -347,4 +347,3 @@ Global Vendors & Infrastructure Partners:
 2. Expert Ecosystem: The stakeholders in eTech are tech and business experts.
 3. Security-Embedded Design: eTech has cyber security experts and our solutions are security embedded.
 4. Total Integration Mastery: eTech is an end-to-end ICT solution provider and its solutions and services are well thought of in terms of their integration, device compatibility and infrastructure.
-================================================================================

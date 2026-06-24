@@ -1,0 +1,103 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card:hover {
+  border-color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.04);
+}
+
+.cardSelected {
+  border-color: #00c853;
+  background: rgba(0,200,83,0.04);
+}
+
+.cardLayout {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #2979ff;
+  background: rgba(41,121,255,0.1);
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  align-self: flex-start;
+}
+
+.cardName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e8eaed;
+}
+
+.cardDesc {
+  font-size: 11px;
+  color: #9aa0a6;
+  line-height: 1.4;
+}
+
+.cardCategories {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.cardCategory {
+  font-size: 9px;
+  padding: 1px 6px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 3px;
+  color: #5f6368;
+}
+
+.cardEffectiveness {
+  font-size: 11px;
+  color: #00c853;
+  font-weight: 500;
+  margin-top: auto;
+}
+
+.selectBtn {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 14px;
+  background: #00c853;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+.selectBtn:hover {
+  background: #00e676;
+}
+
+.empty {
+  font-size: 12px;
+  color: #5f6368;
+  font-style: italic;
+  padding: 12px 0;
+}

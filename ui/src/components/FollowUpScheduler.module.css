@@ -1,0 +1,100 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rules {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.ruleCard {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ruleLabel {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #5f6368;
+}
+
+.ruleValue {
+  font-size: 22px;
+  font-weight: 700;
+  color: #00c853;
+}
+
+.ruleUnit {
+  font-size: 11px;
+  color: #9aa0a6;
+}
+
+.exclusions {
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.exclusionsHeader {
+  font-size: 11px;
+  font-weight: 600;
+  color: #e8eaed;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.exclusionsCount {
+  font-size: 10px;
+  color: #5f6368;
+  font-weight: 400;
+}
+
+.exclusionsList {
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.exclusionTag {
+  font-size: 10px;
+  padding: 3px 8px;
+  background: rgba(255,23,68,0.08);
+  border: 1px solid rgba(255,23,68,0.2);
+  border-radius: 4px;
+  color: #ff1744;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.exclusionRemove {
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  opacity: 0.6;
+}
+
+.exclusionRemove:hover {
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .rules {
+    grid-template-columns: 1fr;
+  }
+}

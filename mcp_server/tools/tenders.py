@@ -2,6 +2,8 @@ import os
 from typing import Any, Dict, List, Optional
 from dotenv import load_dotenv
 
+from app.ml.training_sink import record_training_event
+
 load_dotenv()
 
 PPA_URL = os.getenv("PPA_URL", "https://www.2merkato.com").rstrip("/")
@@ -86,4 +88,14 @@ def fetch_active_tenders(sector: Optional[str] = None) -> List[Dict[str, Any]]:
     results = []
     results.extend(_scrape_2merkato_news(sector))
     results.extend(_scrape_addisbiz_opportunities(sector))
+    try:
+        record_training_event(
+            "mcp.tenders",
+            input={"sector": sector},
+            output=results,
+            source="mcp",
+            metadata={"tool": "fetch_active_tenders", "result_count": len(results)},
+        )
+    except Exception:
+        pass
     return results

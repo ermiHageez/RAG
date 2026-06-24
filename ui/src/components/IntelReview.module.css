@@ -1,0 +1,142 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.summaryBox {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 14px;
+}
+
+.stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.stat {
+  font-size: 11px;
+  font-weight: 600;
+  color: #9aa0a6;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.statValue {
+  color: #00c853;
+}
+
+.summaryText {
+  font-size: 12px;
+  color: #9aa0a6;
+  line-height: 1.5;
+}
+
+.dualPanel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.sourcePanel {
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.sourceHeader {
+  font-size: 11px;
+  font-weight: 600;
+  color: #e8eaed;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+}
+
+.sourceList {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.sourceItem {
+  font-size: 11px;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.12s;
+}
+
+.sourceItem:hover {
+  border-color: rgba(255,255,255,0.15);
+}
+
+.sourceItemTitle {
+  font-weight: 500;
+  color: #e8eaed;
+  margin-bottom: 2px;
+}
+
+.sourceItemSnippet {
+  color: #5f6368;
+  line-height: 1.4;
+}
+
+.sourceItemSource {
+  color: #2979ff;
+  margin-top: 2px;
+}
+
+.notesPanel {
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.notesHeader {
+  font-size: 11px;
+  font-weight: 600;
+  color: #e8eaed;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+}
+
+.notesArea {
+  width: 100%;
+  min-height: 200px;
+  background: rgba(255,255,255,0.02);
+  border: none;
+  padding: 12px;
+  font-size: 12px;
+  color: #e8eaed;
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.notesArea:focus {
+  background: rgba(255,255,255,0.04);
+}
+
+.notesHint {
+  font-size: 10px;
+  color: #5f6368;
+  padding: 6px 12px 10px;
+}
+
+@media (max-width: 720px) {
+  .dualPanel {
+    grid-template-columns: 1fr;
+  }
+}

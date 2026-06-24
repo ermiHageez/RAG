@@ -1,0 +1,135 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cardBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e8eaed;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.category {
+  font-size: 11px;
+  color: #5f6368;
+  margin-top: 2px;
+}
+
+.description {
+  font-size: 12px;
+  color: #9aa0a6;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.deadline {
+  font-size: 11px;
+  color: #9aa0a6;
+  margin-top: 4px;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.score {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.scoreHigh {
+  background: rgba(0,200,83,0.1);
+  color: #00c853;
+  border: 1px solid rgba(0,200,83,0.3);
+}
+
+.scoreMid {
+  background: rgba(255,145,0,0.1);
+  color: #ff9100;
+  border: 1px solid rgba(255,145,0,0.3);
+}
+
+.scoreLow {
+  background: rgba(255,255,255,0.04);
+  color: #5f6368;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.urgencyBadge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.urgencyRed {
+  background: rgba(255,23,68,0.15);
+  color: #ff1744;
+  border: 1px solid rgba(255,23,68,0.3);
+}
+
+.urgencyAmber {
+  background: rgba(255,145,0,0.15);
+  color: #ff9100;
+  border: 1px solid rgba(255,145,0,0.3);
+}
+
+.urgencyGreen {
+  background: rgba(0,200,83,0.12);
+  color: #00c853;
+  border: 1px solid rgba(0,200,83,0.3);
+}
+
+.orderBtns {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.orderBtn {
+  font-size: 10px;
+  padding: 2px 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 3px;
+  color: #9aa0a6;
+  cursor: pointer;
+}
+
+.orderBtn:hover {
+  background: rgba(255,255,255,0.08);
+  color: #e8eaed;
+}
+
+.empty {
+  font-size: 12px;
+  color: #5f6368;
+  font-style: italic;
+  padding: 12px 0;
+}

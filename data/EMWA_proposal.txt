@@ -1,0 +1,1454 @@
+
+   Technical Proposal
+
+Design, Development, and Operationalization
+ of a Modern, Interactive, & Sustainable
+Organizational Website
+
+Proposed By: Proposed To:
+
+Company Name: eTech S.C
+
+Company Address: IT park BPO building 7th floor
+  Submitted to:  Ethiopian Media Women
+      Association (EMWA)
+Contact Person: Ahadu G/senbet
+Email: Ahadu.G@etechsc.com
+Phone: 0992969607
+
+            MAY 2026
+
+etechsc.com ii
+
+Company Background
+
+eTech is an end-to-end ICT solutions provision company setup by highly skilled
+technical and business professionals from around the world. These diverse experience
+skills make eTech uniquely equipped to be a leading participant in the technology
+accelerated transformation Ethiopia has envisioned.
+With a mission to create a border less ICT expertise Eco -system to do ethical end to
+end business anywhere,  vision to be a pioneer in providing Integrated Ethical
+Technology Solutions in Ethiopia and noticeable player in the world by 2030 and value
+of Quality, Customer satisfaction, Loyalty, Trust, and Integrity, Technological
+excellence, and Empowering partners. Below are the pillars eTech SC stands:
+
+etechsc.com iii
+
+TABLE OF CONTENTS
+
+1.EXECUTIVE SUMMARY ................................ ................................ ................................ ... 1
+2.INTRODUCTION................................ ................................ ................................ ............. 3
+3. UNDERSTANDING OF THE ASSIGNMENT ................................ ................................ ........ 4
+4. PROJECT OBJECTIVES ................................ ................................ ................................ ... 6
+5. Project Scope and Deliverables ................................ ................................ ...................... 7
+      5.1 Project Scope ................................ ................................ ................................ ......... 7
+6. Proposed Technical Solution ................................ ................................ ....................... 10
+7. FUNCTIONAL SCOPE & DELIVERABLES ................................ ................................ ........ 16
+8. System Architecture & Technology Stack ................................ ................................ ...... 17
+9. UI/UX & Accessibility Strategy ................................ ................................ ...................... 18
+10. SEO & Digital Visibility Strategy................................ ................................ ................... 20
+11. Security & Compliance Framework ................................ ................................ ............. 20
+12. Hosting & Infrastructure Strategy ................................ ................................ ................ 21
+13. Content Management Strategy ................................ ................................ ................... 23
+14. Training & Capacity Building ................................ ................................ ....................... 24
+15. Project Methodology ................................ ................................ ................................ .. 25
+16. Implementation Plan & Timeline ................................ ................................ ................. 26
+17. Team Composition ................................ ................................ ................................ .... 30
+18. Quality Assurance & Testing ................................ ................................ ....................... 32
+19. Risk Management Strategy ................................ ................................ .........................  33
+20. SUPPORT & WARRANTY ................................ ................................ .............................  34
+21. Mockups................................ ................................ ................................ ................... 36
+22. Relevant Experience ................................ ................................ ................................ .. 38
+23. Source Code Handover ................................ ................................ ..............................  43
+24. Declarations, Confirmations & NDA................................ ................................ ............ 44
+
+etechsc.com 1
+
+1.EXECUTIVE SUMMARY
+
+The Ethiopian Media Women Association (EMWA) is undertaking the development of a modern,
+interactive, and sustainable digital platform to strengthen its role in advocacy, knowledge -sharing,
+and public engagement. In line with this objective, EMWA seeks to establish a centralized web-based
+platform that enhances visibility, accessibility, and operational efficiency across its programs and
+services.
+
+eTech S.C. is pleased to submit this technical proposal for the design, development, and deployment
+of a comprehensive organizational website that aligns with EMWA’s strategic mission and
+operational needs. The proposed solution delivers a fully responsive, user-friendly, and scalable web
+platform supported by a robust Content Management System (CMS), enabling efficient content
+management and long-term sustainability.
+
+The proposed platform will incorporate all required modules, including Homepage, About Us,
+Updates, Membership Section, Resources Hub, Programs/Projects, Women Experts’ Directory, and
+Contact interface. The system will be designed with a strong emphasis on  accessibility, usability,
+structured content delivery, and inclusive design principles to ensure engagement with diverse user
+groups.
+
+eTech S.C. will implement the solution using modern web technologies and best practices in UI/UX
+design, Search Engine Optimization (SEO), and web accessibility standards. The platform will ensure
+optimal performance across devices, secure system architect ure, and scalability to support future
+growth.
+
+In alignment with the project requirements, eTech S.C. will facilitate the identification and
+configuration of a reliable hosting environment while ensuring that EMWA maintains a direct
+contractual relationship with the hosting provider. This approach guarantees institutional ownership,
+transparency, and long-term operational independence.
+
+etechsc.com 2
+
+The project will be delivered following a structured implementation approach, including requirement
+validation, system design, development, testing, deployment, and capacity building. Comprehensive
+training will be provided to empower EMWA staff with the necessary skills to manage and maintain
+the platform independently.
+
+With proven experience in digital platform development, infrastructure solutions, and secure system
+deployment, eTech S.C. is well -positioned to deliver a high -quality, sustainable, and future -ready
+web platform that supports EMWA’s advocacy, outreach, and knowledge-sharing objectives.
+
+etechsc.com 3
+
+2.INTRODUCTION
+
+eTech S.C . is pleased to present this technical proposal in response to the Ethiopian Media
+Women Association (EMWA) request for the design, development, and deployment of a modern,
+interactive, and sustainable organizational website.
+
+The Ethiopian Media Women Association (EMWA) is a well -established organization in Ethiopia
+dedicated to advancing gender equality and supporting the professional development of women
+media practitioners. Through its advocacy initiatives, programs, and kno wledge-sharing activities,
+EMWA plays a critical role in promoting inclusive media representation and strengthening the voice
+of women in the media sector.
+
+To enhance its digital presence and improve engagement with members, partners, and the public,
+EMWA seeks to develop a modern and user -friendly website that serves as a central platform for
+communication, resource sharing, and public outreach. The platform  is expected to effectively
+present the organization’s activities, programs, resources, and expertise, while ensuring accessibility
+and ease of use across different user groups.
+
+In response to these requirements, eTech S.C. proposes a comprehensive solution that includes
+website design, development, content structuring, CMS implementation, hosting support, and staff
+training. The proposed platform will be responsive, secure, and e asy to manage, enabling EMWA
+staff to update and maintain content independently.
+
+As a technology solutions provider with experience in developing professional and institutional
+websites, eTech S.C. is committed to delivering a high -quality digital platform that aligns with
+EMWA’s mission and supports its long-term digital and organizational objectives.
+
+etechsc.com 4
+
+3. UNDERSTANDING OF THE ASSIGNMENT
+
+EMWA requires a modern, interactive, and sustainable website that serves as a central digital
+platform for advocacy, knowledge -sharing, and public outreach. The platform is expected to
+strengthen the organization’s visibility, improve communication, and support structured engagement
+with members, stakeholders, and the wider public.
+Beyond the stated requirements, our analysis of the Terms of Reference identifies three core strategic
+needs that the platform must address:
+
+1. Visibility and Credibility
+EMWA requires a strong digital presence that positions the organization and its members as
+leading professionals in the media sector. The website should highlight achievements,
+showcase expertise, and strengthen credibility while addressing gaps in representation.
+
+2. Community and Resource Hub
+The platform should act as a structured and accessible space for members to access
+resources, tools, and information. It should support knowledge-sharing, provide organized
+content, and enable ongoing engagement among members and stakeholders.
+
+3. Advocacy Amplification
+The website should function as a public-facing communication engine that promotes
+EMWA’s campaigns, programs, and impact. It must effectively present updates, success
+stories, and key initiatives to partners, stakeholders, and donors.
+
+In addition to these strategic pillars, the website must include key functional components such as
+organizational information, updates, membership engagement, resources, programs, and a women
+experts’ directory. These components should be structured in a clear, user-friendly, and accessible
+layout.
+
+etechsc.com 5
+
+The system must also include an intuitive Content Management System (CMS), enabling EMWA
+staff to independently manage and update content, ensuring long-term sustainability.
+Furthermore, the platform should be fully responsive, accessible across different devices, and
+aligned with modern web usability and accessibility standards.
+
+The requirement also highlights the need for a reliable hosting solution with a direct contractual
+relationship between EMWA and the hosting provider, ensuring transparency, ownership, and long-
+term operational independence.
+
+Based on this understanding, eTech S.C. proposes a solution structured around these three pillars to
+deliver a platform that is both technically robust and strategically aligned with EMWA’s mission
+and long-term objectives.
+
+etechsc.com 6
+
+4. PROJECT OBJECTIVES
+
+4.1 General Objective
+
+The overall objective of this project is to design, develop, and deploy a modern, user -friendly, and
+sustainable website for the Ethiopian Media Women Association (EMWA) that enhances its digital
+presence and supports its mission in advocacy, knowledge-sharing, and public engagement.
+
+4.2 Specific Objectives
+
+The specific objectives of the project are:
+
+1. Strengthen Visibility and Credibility
+To develop a professional and engaging website that effectively showcases EMWA’s
+mission, programs, and impact, positioning the organization and its members as leaders in
+promoting gender equality in the media sector.
+
+2. Enhance Advocacy and Public Outreach
+To provide a dynamic platform for publishing updates, campaigns, success stories, and
+institutional content, enabling EMWA to effectively communicate with stakeholders,
+partners, and the public.
+
+3. Establish a Knowledge and Resource Hub
+To create an organized and easily accessible repository of resources, publications, and
+documents that supports knowledge-sharing and capacity building.
+
+4. Improve Member Engagement and Accessibility
+To develop a structured platform that facilitates access to information, promotes interaction,
+and supports EMWA members through dedicated sections such as membership and experts
+directory.
+
+etechsc.com 7
+
+5. Enable Efficient Content Management
+To implement a user-friendly Content Management System (CMS) that allows EMWA staff
+to update and manage website content independently without requiring technical expertise.
+
+6. Ensure Accessibility and User-Friendly Experience
+To design a responsive and accessible website that provides a seamless user experience
+across devices and aligns with modern web usability and accessibility standards.
+
+7. Deliver a Secure, Scalable, and Sustainable Platform
+To ensure the website is secure, reliable, and scalable, allowing it to grow with EMWA’s
+future needs and digital expansion.
+
+6. Project Scope and Deliverables
+
+ 5.1 Project Scope
+
+The scope of this project covers the design, development, and deployment of a modern, interactive,
+and user-friendly website for the Ethiopian Media Women Association (EMWA), in line with the
+requirements outlined in the Terms of Reference.
+
+The project involves the development of a fully functional digital platform that supports EMWA’s
+core activities in advocacy, knowledge -sharing, and public engagement. The platform will be
+designed to provide structured access to information, promote organ izational visibility, and enable
+efficient content management.
+
+The scope includes the development of a responsive and accessible website that incorporates key
+sections such as homepage, organizational information, updates, membership, resources,
+programs/projects, women experts’ directory, and contact interface. The s ystem will be designed
+with a focus on usability, accessibility, performance, and scalability.
+
+etechsc.com 8
+
+The project also includes the implementation of a Content Management System (CMS) to allow
+EMWA staff to easily manage and update content, as well as the configuration of a secure and
+reliable hosting environment with a direct contractual relationship between EMWA and the hosting
+provider.
+
+In addition, the scope covers testing, deployment, staff training, and initial system support to ensure
+a smooth transition to full operational use.
+
+5.2 Key Deliverables
+The project will deliver the following key outputs:
+
+1. Fully Functional Website Platform
+A complete and responsive website aligned with EMWA’s structure and requirements,
+accessible across desktop, tablet, and mobile devices.
+
+2. Website Modules and Sections
+Development of all required sections including:
+✓ Homepage
+✓ About Us
+✓ Updates (News and Announcements)
+✓ Membership Section
+✓ Resources Hub
+✓ Programs/Projects
+✓ Women Experts’ Directory
+✓ Contact Us
+
+3. Content Management System (CMS)
+An easy-to-use CMS that enables EMWA staff to:
+• Create and edit pages
+• Upload and manage documents
+
+etechsc.com 9
+
+• Publish updates and content
+• Manage resources and sections independently
+
+4. Content Structuring and Upload Support
+Initial content organization, formatting, and uploading to ensure the website is operational
+and properly structured at launch.
+
+5. Hosting Setup and Deployment
+Configuration and deployment of the website on a secure hosting environment, with
+EMWA maintaining direct ownership and contractual agreement with the hosting provider.
+
+6. Website Security and Optimization
+Implementation of security measures, performance optimization, and basic SEO setup to
+ensure reliability and visibility.
+
+7. Training and Knowledge Transfer
+Training sessions for EMWA staff on CMS usage, content management, and basic system
+administration.
+
+8. Documentation and Handover
+Provision of user guidelines and documentation to support ongoing website management.
+
+etechsc.com 10
+
+6. Proposed Technical Solution
+
+        6.1 Solution Overview
+
+eTech S.C. proposes the development of a secure, responsive, and scalable institutional website for
+the Ethiopian Media Women Association (EMWA), built using modern web technologies and a
+robust content management framework.
+
+The proposed platform is designed to serve as a central digital system that supports EMWA’s core
+functions in advocacy, knowledge-sharing, and public communication.
+The solution integrates the following key elements:
+
+• Modern and responsive UI/UX design
+• Enterprise-level Content Management System (CMS)
+• Search Engine Optimization (SEO)
+• Accessibility compliance
+• Secure hosting and infrastructure
+• Structured content management workflows
+• Modular and scalable architecture
+• Centralized administrative control
+
+This integrated approach ensures that EMWA benefits from a high-performance, secure, and
+sustainable platform aligned with its operational and strategic needs.
+
+6.2 Core Solution Components
+Responsive Institutional Website
+
+The platform will be developed as a fully responsive website optimized for:
+• Desktop devices
+• Tablets
+• Mobile phones
+• Modern web browsers
+
+This ensures consistent performance and usability across all user environments.
+
+etechsc.com 11
+
+Enterprise Content Management System (CMS)
+
+The proposed solution will incorporate a secure, user -friendly, and scalable Enterprise Content
+Management System (CMS) that enables EMWA to efficiently manage and control all website
+content without requiring advanced technical expertise.
+
+The CMS will serve as the core administrative engine of the platform, providing structured tools for
+content creation, organization, publication, and management across all website modules.
+
+Key Capabilities
+
+The CMS will enable EMWA staff to:
+
+• Create, edit, and publish web pages and content sections
+• Manage news, updates, and announcements
+• Upload and organize documents, publications, and media files
+• Maintain structured data such as the Women Experts’ Directory
+• Manage programs, projects, and resource content
+• Control user roles, permissions, and access levels
+
+User Roles and Access Control
+
+The system will include role-based access management to ensure secure and organized operation:
+
+• Administrators: Full system control, including content publishing and user management
+• Editors: Ability to create and manage content
+• Contributors (optional): Content submission with controlled publishing rights
+
+This ensures proper governance, accountability, and structured content management.
+
+Content Workflow Management
+
+To support quality control and consistency, the CMS will allow:
+
+• Drafting and reviewing content before publication
+• Scheduled publishing of updates and announcements
+• Editing and updating existing content
+• Structured organization of website sections
+
+etechsc.com 12
+
+Usability and Sustainability
+
+The CMS will be designed with simplicity and usability as a priority, ensuring that:
+
+• EMWA staff can manage content independently
+• Minimal technical support is required for routine updates
+• The platform remains sustainable for long-term use
+
+Resource & Knowledge Hub
+
+The Resource and Knowledge Hub will be developed as a centralized digital repository designed to
+store, organize, and provide easy access to EMWA’s knowledge assets, publications, and advocacy
+materials.
+
+This module will serve as a key component in supporting knowledge-sharing, capacity building, and
+public access to information.
+
+                                     Core Features
+
+The hub will provide structured access to a wide range of content, including:
+
+• Reports and publications
+• Research documents and policy briefs
+• Advocacy materials and campaigns
+• Media resources and communication materials
+• Training manuals and reference documents
+
+All resources will be organized in a clear and structured format for easy navigation and usability.
+
+Content Organization and Access
+
+The system will ensure efficient organization and retrieval of resources through:
+• Categorization by topic, program, or content type
+• Search functionality for quick access to documents
+• Structured listing of resources with descriptions and metadata
+• Download and viewing capabilities for multiple file formats
+This ensures that users can easily locate relevant information with minimal effort.
+
+etechsc.com 13
+
+User Access and Management
+
+The Resource Hub will support controlled content management by EMWA administrators:
+
+• Uploading and updating documents
+• Organizing and categorizing resources
+• Editing and maintaining content over time
+• Managing visibility of sensitive or public materials
+
+This ensures that the hub remains accurate, updated, and aligned with EMWA’s communication
+needs.
+
+Strategic Value
+
+The Resource and Knowledge Hub will:
+
+• Support knowledge-sharing across EMWA programs
+• Improve accessibility of institutional resources
+• Enhance transparency and information dissemination
+• Provide a reliable reference platform for stakeholders, researchers, and the public
+
+Membership & Engagement Module
+
+The Membership and Engagement Module will be designed to support interaction between EMWA,
+its members, and external stakeholders. This component will provide structured access to
+membership information and facilitate communication and engagement through the website.
+
+Core Features
+
+The module will include:
+
+• Membership information pages outlining benefits, categories, and requirements
+• Online inquiry and application forms
+• Contact and communication forms for stakeholders
+• Structured presentation of membership-related content
+
+etechsc.com 14
+
+User Interaction
+
+The system will enable:
+• Prospective members to access information and submit inquiries
+• Stakeholders and partners to communicate with EMWA through web forms
+• Easy access to relevant membership resources and updates
+
+Content Management
+
+EMWA administrators will be able to:
+• Manage membership-related content
+• Update information on joining procedures and requirements
+• Monitor and respond to inquiries submitted through the website
+• Maintain structured engagement content
+
+Programs & Projects Module
+
+A dedicated section to showcase EMWA’s programs, projects, and initiatives.
+
+Key Features
+
+• Display ongoing and completed programs
+• Highlight campaigns and advocacy activities
+• Present impact stories and key results
+• Include project documents, images, and media
+• Show donor and partner information
+
+SEO & Analytics Integration
+
+The platform will include essential SEO and analytics features to improve visibility and
+performance.
+
+Key Features
+
+• On-page SEO optimization (meta titles, descriptions, clean URLs)
+• Image optimization with alt tags
+
+etechsc.com 15
+
+• XML sitemap for search engine indexing
+• Integration with analytics tools (e.g., website traffic monitoring)
+
+Purpose
+
+• Improve search engine visibility
+• Enable performance tracking and reporting
+• Support data-driven decision making
+
+Security & Backup Framework
+
+The platform will include essential security and backup mechanisms to ensure data protection,
+system reliability, and continuous availability.
+
+Key Features
+
+• SSL encryption (HTTPS secure access)
+• Role-based user access control
+• Firewall and basic threat protection
+• Automated backups and recovery setup
+• Protection against common web vulnerabilities
+
+Purpose
+• Ensure platform security and data integrity
+• Prevent unauthorized access and system risks
+• Enable fast recovery in case of data loss or failure
+
+etechsc.com 16
+
+7. FUNCTIONAL SCOPE & DELIVERABLES
+
+7.1 Website Structure
+
+The proposed website will include the following structured sections:
+
+1. Homepage
+
+✓ Institutional overview
+✓ Hero banners and highlights
+✓ Featured updates and announcements
+✓ Quick access navigation
+✓ Highlighted resources and projects
+
+2. About Us
+
+✓ Organization history
+✓ Vision, mission, and objectives
+✓ Governance structure
+✓ Leadership profiles
+✓ Organizational values
+
+3. Programs & Projects
+
+✓ Program and project listings
+✓ Detailed project descriptions
+✓ Outcomes and impact highlights
+✓ Donor and partner information
+✓ Media attachments
+
+4. Updates & News
+
+✓ News and announcements publishing
+✓ Press releases and media updates
+✓ Events and activities
+✓ Archived updates
+       4. Membership Section
+
+✓ Membership information
+✓ Inquiry and registration forms
+✓ Member-related resources
+✓ Engagement opportunities
+
+        5. Women Experts’ Directory
+
+✓ Searchable expert directory
+✓ Categorized expertise areas
+✓ Individual professional profiles
+✓ Contact request functionality
+
+         6. Resources Hub
+
+✓ Downloadable publications
+✓ Reports and research
+documents
+✓ Media and communication
+materials
+✓ Knowledge-sharing resources
+
+          7. Contact Us
+
+✓ Contact and inquiry forms
+✓ Office and location details
+✓ Map integration
+✓ Communication channels
+
+etechsc.com 17
+
+8. System Architecture & Technology Stack
+
+8.1 Frontend Technologies
+
+The user interface will be developed using modern web technologies to ensure responsiveness,
+usability, and accessibility:
+
+• HTML5 and CSS3 for structured and styled content
+• JavaScript for dynamic interactions
+• Bootstrap or Tailwind framework for responsive layout
+• Mobile-first responsive UI architecture
+
+8.2 Backend Technologies
+
+The backend system will be built using a scalable and maintainable architecture:
+
+• PHP (with Laravel framework where applicable)
+• CMS integration for content management (WordPress-based/optional)
+• RESTful architecture for structured data handling
+• Modular administration for flexibility and scalability
+
+8.3 Database
+The system will utilize a reliable relational database for structured data storage:
+
+• MySQL or MariaDB
+• Secure and optimized data management
+• Support for scalable content and user data
+
+8.4 Hosting Environment
+
+The platform will be deployed in a secure and stable hosting environment:
+
+• Linux-based hosting infrastructure
+• SSL-enabled secure access (HTTPS)
+• Backup-enabled system configuration
+
+etechsc.com 18
+
+8.5 Third-Party Integrations
+
+The system will integrate with standard tools to enhance functionality:
+• Google Analytics for traffic monitoring
+• SEO tools for search optimization
+• SMTP email integration for communication forms
+• Social media integration
+• Google Search Console for indexing and performance tracking
+
+8.6 Scalability Considerations
+
+The system architecture will be designed to support future growth and expansion, including:
+
+• Addition of new modules and features
+• Integration with external systems via APIs
+• Multi-language support
+• Handling increasing user traffic
+• Expansion of content and resource repositories
+
+9. UI/UX & Accessibility Strategy
+
+9.1 Design Philosophy
+
+The user interface will be designed based on the following principles:
+
+• Simplicity and clarity
+• Accessibility and inclusivity
+• Professional and institutional design
+• Consistent branding
+• User-centered navigation
+• Fast and easy information access
+
+etechsc.com 19
+
+9.2 UX Objectives
+
+The design approach aims to:
+
+• Improve user engagement
+• Simplify navigation and content access
+• Enhance overall usability
+• Optimize experience for mobile users
+• Improve readability of content
+
+9.3 Accessibility Standards
+
+The platform will follow accessibility best practices to ensure inclusive use:
+
+• WCAG-aligned accessibility standards
+• Clear and readable typography
+• Accessible color schemes and contrast
+• Keyboard navigation support
+• Mobile accessibility optimization
+
+9.4 Mobile Responsiveness
+
+The platform will be fully responsive and optimized for:
+
+• Smartphones
+• Tablets
+• Laptops
+• Desktop systems
+
+etechsc.com 20
+
+10. SEO & Digital Visibility Strategy
+
+10.1 SEO Objectives
+
+To enhance EMWA’s online visibility, improve search engine ranking, and expand digital reach to
+stakeholders, partners, and the public.
+
+10.2 SEO Deliverables
+
+The platform will incorporate:
+
+• SEO-friendly URL structures
+• Metadata optimization (titles and descriptions)
+• Structured content hierarchy (headings)
+• Search engine indexing setup
+• Website performance optimization
+• XML sitemap generation
+• Mobile SEO optimization
+• Image optimization (alt tags, sizes)
+• Keyword-oriented content structure
+
+10.3 Analytics & Monitoring
+
+The system will integrate tools for performance tracking and insights, including:
+
+• Google Analytics for traffic analysis
+• Search Console for indexing and performance monitoring
+• Website performance monitoring tools
+• Visitor behavior and engagement tracking
+
+11. Security & Compliance Framework
+
+11.1 Security Objectives
+
+The proposed platform will be designed to ensure the protection of EMWA’s organizational data,
+maintain system integrity, and secure all user interactions across the website.
+
+etechsc.com 21
+
+11.2 Security Approach
+
+eTech S.C. will implement a layered security approach covering infrastructure, application, and
+operational levels to ensure a secure and reliable system.
+
+At the infrastructure level, the platform will operate within a secure hosting environment configured
+with SSL encryption to ensure protected data transmission. The system will be supported by
+appropriate firewall configurations and secure server setup to mitigate external threats.
+
+At the application level, the website will incorporate controlled access mechanisms, including role-
+based user permissions and secure authentication processes. The CMS will be configured following
+security best practices, including input validation and protection against common vulnerabilities.
+To ensure data reliability, an automated backup mechanism will be implemented, supported by
+defined recovery procedures. This will allow restoration of the system in case of data loss or system
+failure.
+
+In addition, continuous monitoring and maintenance practices will be applied, including system
+updates, basic security monitoring, and vulnerability management to ensure the platform remains
+secure over time.
+
+11.3 Expected Outcome
+
+This framework ensures:
+
+• Protection of sensitive data and system integrity
+• Reliable system availability and recovery capability
+• Secure and controlled access to administrative functions
+
+12. Hosting & Infrastructure Strategy
+
+12.1 Hosting Approach
+
+eTech S.C. proposes a secure, reliable, and scalable hosting strategy that ensures optimal
+performance, system availability, and long-term sustainability of the EMWA platform.
+
+etechsc.com 22
+
+In alignment with the Terms of Reference, the hosting model will be structured to ensure that
+EMWA retains full ownership and direct contractual control  over the hosting environment, while
+eTech S.C. provides technical guidance, configuration, and deployment support.
+
+12.2 Infrastructure Design
+
+The platform will be deployed on a secure Linux-based hosting infrastructure configured to support
+performance, security, and scalability requirements. The environment will be optimized for web
+application hosting and structured to ensure consistent uptime and system reliability.
+The hosting configuration will include essential components such as secure HTTPS access (SSL -
+enabled), optimized server resources, and automated backup mechanisms to ensure data protection
+and continuity.
+
+12.3 Performance and Reliability
+
+The infrastructure will be configured to provide stable and efficient system performance across all
+user interactions. This includes optimized server configuration, efficient content delivery, and
+resource management to support varying traffic levels.
+Backup and recovery mechanisms will be implemented to ensure system availability and protect
+against data loss, supporting continuous operation of the platform.
+
+12.4 Security Integration
+
+The hosting environment will be integrated with core security measures, including secure
+communication protocols, controlled access configurations, and protection against common web -
+based threats. This ensures that both data and system operations remain protected at all times.
+
+12.5 Scalability and Future Growth
+
+The infrastructure will be designed with scalability in mind, allowing EMWA to expand the
+platform as needed. This includes the ability to accommodate increased traffic, additional content,
+and future system enhancements without requiring major reconfiguration.
+
+etechsc.com 23
+
+13. Content Management Strategy
+
+13.1 CMS Objectives
+
+The Content Management System (CMS) is designed to enable EMWA staff to independently
+manage, update, and control all website content efficiently, ensuring long -term sustainability and
+minimal reliance on technical support.
+
+13.2 CMS Capabilities
+
+The platform will include a user-friendly administrative interface that simplifies content operations
+across all website sections.
+
+It will support structured content management, including page creation, media handling, publication
+management, and organized categorization of content. Built -in workflow functionality will allow
+content to move through draft, review, and publishing stages, ensuring quality and consistency.
+In addition, the system will include integrated tools to support search optimization, enabling EMWA
+to maintain well-structured and discoverable digital content.
+
+13.3 Administrative Roles and Access Control
+
+The CMS will implement a role -based access model to ensure controlled and secure content
+management:
+
+• Super Administrator : Full system control, including user management and platform
+configuration
+• Content Administrator: Responsible for managing and publishing content across the
+platform
+• Editor: Reviews and refines content prior to publication
+• Contributor: Creates and submits draft content for approval
+
+etechsc.com 24
+
+14. Training & Capacity Building
+
+14.1 Objective
+
+The objective of this component is to ensure that EMWA staff are fully equipped to manage, operate,
+and maintain the website independently, enabling long -term sustainability and effective use of the
+platform.
+
+14.2 Training Approach
+
+eTech S.C. will deliver structured training sessions tailored to the needs of EMWA staff, focusing
+on both practical usage and basic system understanding.
+
+The training will cover key areas such as content creation and management, updating website
+sections, uploading publications, and managing resources through the CMS. Staff will also be
+guided on how to handle routine administrative tasks, including managing updates and maintaining
+content consistency.
+
+The approach will be hands-on and practical, ensuring participants gain direct experience using the
+system in real scenarios.
+
+14.3 Capacity Building
+
+Beyond initial training, the engagement will include knowledge transfer to ensure EMWA builds
+internal capacity to sustain the platform over time.
+
+Supporting materials, including user guidelines and reference documents, will be provided to assist
+staff in ongoing system use and management. This ensures that knowledge is retained within the
+organization and can be shared internally as needed.
+
+14.4 Outcome
+This approach ensures that EMWA:
+
+• Has full operational control of the platform
+• Can independently manage and update content
+• Reduces reliance on external technical support
+• Maintains long-term sustainability of the system
+
+etechsc.com 25
+
+15. Project Methodology
+
+15.1 Approach
+
+eTech S.C. will adopt a structured and collaborative project methodology designed to ensure timely
+delivery, quality assurance, and full alignment with EMWA’s requirements.
+The approach follows a phased implementation model, enabling continuous validation, stakeholder
+engagement, and controlled execution throughout the project lifecycle.
+
+15.2 Implementation Phases
+
+The project will be executed through the following phases:
+
+Phase 1: Inception & Requirement Validation
+Project kickoff, stakeholder engagement, and confirmation of functional and technical
+requirements. This phase ensures clear alignment on scope, expectations, and deliverables.
+
+Phase 2: Design & Planning
+Development of the website structure, information architecture, and UI/UX design, aligned with
+EMWA’s branding and usability requirements.
+
+Phase 3: Development & Configuration
+Implementation of the website, CMS setup, and configuration of all modules, including content
+structures, directories, and resource management components.
+
+Phase 4: Testing & Quality Assurance
+Comprehensive testing of all system components, including functionality, usability, performance,
+and compatibility across devices and browsers.
+
+Phase 5: Deployment & Go-Live
+Deployment of the system to the hosting environment, final system validation, and preparation for
+live operation.
+
+etechsc.com 26
+
+Phase 6: Training & Handover
+Training of EMWA staff, system handover, and knowledge transfer to ensure independent
+operation and content management.
+
+15.3 Quality Assurance
+
+Quality control will be maintained throughout all phases of the project to ensure that deliverables
+meet defined standards. Each phase will include validation, issue resolution, and alignment with
+agreed requirements.
+
+15.4 Client Engagement
+
+The implementation process will include continuous coordination with EMWA through regular
+updates, feedback sessions, and milestone approvals, ensuring transparency and alignment at all
+stages.
+
+16. Implementation Plan & Timeline
+
+16.1 Project Delivery Approach
+
+eTech S.C. will implement the EMWA website using an Agile, sprint-based delivery methodology
+designed to ensure rapid development, continuous stakeholder engagement, and strict adherence to
+the defined project timeline.
+
+Unlike traditional delivery approaches, this methodology enables EMWA stakeholders to actively
+participate throughout the project lifecycle through structured sprint reviews, milestone validations,
+and demonstration sessions.
+
+This ensures early feedback, fast issue resolution, and continuous alignment with EMWA’s
+expectations.
+
+The approach supports:
+• Continuous progress tracking and transparency
+• Early identification and resolution of issues
+
+etechsc.com 27
+
+• Structured quality control at every stage
+• Timely and controlled project delivery
+
+16.2 Official Project Timeline
+
+The implementation will follow the agreed schedule:
+
+Project Start Date: May 25, 2026
+Project Completion & Go-Live: June 20, 2026
+Total Duration: 19 Working Days
+
+16.3 Phase-Based Implementation Plan
+
+The project will be executed in four structured phases:
+
+Week 1: Discovery, Planning & Design (May 25 – May 29)
+
+This phase focuses on project initiation, requirement validation, and design preparation.
+Key activities include stakeholder workshops, user journey mapping, information architecture
+development, and UI/UX design creation. Wireframes and homepage concepts will be developed
+and refined through feedback sessions.
+
+Key Deliverables:
+Approved sitemap, validated wireframes, UI/UX design approval, and finalized technical
+approach.
+
+Week 2: Core Platform Development (June 1 – June 5)
+This phase focuses on establishing the foundation of the system. Core website components and CMS
+configuration will be implemented, including primary pages such as Home, About, Updates, and
+Contact.
+
+etechsc.com 28
+
+Key Deliverables:
+Functional homepage, CMS environment setup, core navigation structure, and responsive layout.
+
+Week 3: Advanced Features & Integration (June 8 – June 12)
+During this phase, advanced modules such as Membership, Women Experts’ Directory, Programs
+& Projects, and Resource Hub will be developed and integrated. SEO, accessibility, and system
+optimization activities will also be applied.
+
+Key Deliverables:
+Operational directory module, search functionality, optimized content structure, and accessibility
+compliance.
+
+Week 4: Testing, Training & Go-Live (June 15 – June 20)
+The final phase focuses on validation, refinement, and deployment. The platform will undergo full
+testing, including functional, performance, and user acceptance testing (UAT). Training sessions
+will be delivered, followed by final deployment and launch.
+
+Key Deliverables:
+Fully tested system, trained EMWA staff, configured backup system, and live website
+deployment.
+
+16.4 Detailed Work Plan
+
+A detailed implementation schedule will guide execution across all phases, covering activities such
+as requirement validation, design, development, content migration, testing, training, and
+deployment.
+
+Responsibilities will be assigned across project teams including project management, UI/UX,
+development, QA, and training to ensure accountability and coordinated delivery throughout the
+project timeline.
+
+etechsc.com 29
+
+16.5 Delivery Commitment
+
+eTech S.C. formally commits to delivering the EMWA website platform within the defined timeline
+of May 25 – June 20, 2026.
+
+The implementation plan has been carefully structured to ensure:
+
+• Timely and efficient delivery
+• Continuous stakeholder engagement
+• Controlled quality assurance
+• Smooth transition to live operation
+• Long-term sustainability and usability
+
+16.7 Detailed Work Plan
+
+The table below presents the complete implementation schedule with clearly defined activities,
+responsibilities, and timelines.
+
+Task
+ID
+Activity Lead Start
+Date
+End
+Date
+Duration
+1.0 Project Inception & Requirement
+Gathering
+Project Manager May 25 May 26 2 Days
+1.1 Kick-off Meeting with EMWA
+Stakeholders
+Project Team May 25 May 25 1 Day
+1.2 UX/UI Workshop & Wireframe Planning UI/UX Lead May 25 May 26 2 Days
+2.0 UI/UX Design & Approval UI/UX Team May 27 May 29 3 Days
+2.1 Homepage & Layout Mockups Design Team May 27 May 28 2 Days
+2.2 Design Validation & Sign-off EMWA & eTech May 29 May 29 1 Day
+3.0 Core Website Development Development
+Team
+June 1 June 12 10 Days
+
+etechsc.com 30
+
+3.1 Homepage, About & Contact
+Development
+Frontend Team June 1 June 3 3 Days
+3.2 CMS Configuration & User Roles Backend Team June 2 June 4 3 Days
+3.3 Membership & Experts Directory
+Development
+Senior Developers June 5 June 10 4 Days
+3.4 Content Migration & Upload Content Team June 5 June 12 6 Days
+3.5 SEO & Accessibility Optimization SEO Specialist June 10 June 12 3 Days
+4.0 Testing & Quality Assurance QA Team June 12 June 16 3 Days
+4.1 Functional & Security Testing QA & Security
+Team
+June 12 June 14 2 Days
+4.2 User Acceptance Testing (UAT) EMWA & eTech June 15 June 16 2 Days
+5.0 Training, Launch & Handover Project Manager June 17 June 20 4 Days
+5.1 CMS & Website Administration Training Training Team June 18 June 18 1 Day
+5.2 Final Security & Backup Configuration Security Team June 19 June 19 1 Day
+5.3 Production Deployment & Go-Live Project Team June 20 June 20 1 Day
+
+17. Team Composition
+
+17.1 Overview
+
+eTech S.C. will assign a dedicated and multidisciplinary project team to ensure the successful
+delivery of the EMWA website. The team structure covers all critical areas of the project including
+project management, system design, development, security, quality assurance, content management,
+and training.
+
+Each role is clearly defined to ensure accountability, efficient coordination, and high -quality
+delivery across all implementation phases.
+
+etechsc.com 31
+
+17.2 Proposed Project Team
+
+Role Name Key Responsibilities Experience / Expertise
+Project Manager
+Million
+Yitbarek
+Overall coordination, stakeholder
+communication, timeline and
+delivery management
+Project leadership and
+delivery oversight
+Technical Lead /
+Solution
+Architect
+Endashaw
+Aweke
+System architecture design,
+technical strategy, and integration
+oversight
+System design, CMS
+architecture, and scalability
+UI/UX Designer
+Kalkidan
+Getenet
+User interface design, user
+experience optimization, and
+design consistency
+UI/UX design and usability
+principles
+Web Developer
+(Full Stack)
+
+Meseret
+
+Frontend and backend
+development, CMS
+implementation
+HTML, CSS, JavaScript,
+modern frameworks, CMS
+development
+Security &
+System Support
+Makda
+Mihret
+Security configuration,
+vulnerability mitigation, and
+system protection
+Security assessment and
+compliance
+QA & Testing
+Specialist
+Ayana
+Ferede
+Functional testing, validation, and
+system quality assurance
+QA processes and testing
+methodologies
+Content & SEO
+Specialist
+Tewodros
+Mulie
+Content structuring, SEO
+optimization, and content
+migration
+SEO strategy and digital
+content management
+
+etechsc.com 32
+
+17.3 Team Structure and Coordination
+
+The project team will operate under a structured coordination model led by the Project Manager,
+who will serve as the primary liaison with EMWA.
+The team will follow a collaborative workflow aligned with the implementation methodology,
+ensuring:
+
+• Continuous stakeholder engagement
+• Clear communication across all phases
+• Coordinated execution between design, development, and testing teams
+• Timely delivery of milestones and outputs
+
+17.4 Resource Commitment
+
+eTech S.C. commits to assigning qualified and dedicated personnel to this project for its full
+duration. Each team member will contribute according to their area of expertise, ensuring efficient
+resource utilization and successful project delivery.
+
+17.5 Supporting Documentation
+
+Detailed CVs and professional profiles of key personnel will be provided in the annex section of
+this proposal.
+
+18. Quality Assurance & Testing
+
+18.1 QA Objectives
+
+The objective of this component is to ensure that the EMWA website is delivered as a stable, secure,
+reliable, and high-performing platform aligned with all functional and technical requirements.
+
+etechsc.com 33
+
+18.2 Testing Strategy
+
+eTech S.C. will apply a structured quality assurance approach covering all critical areas of system
+validation throughout the project lifecycle.
+Testing activities will include validation of system functionality, usability, performance, and
+security to ensure the platform operates efficiently across different environments and user scenarios.
+
+18.3 Key Testing Areas
+
+The quality assurance process will focus on the following:
+
+• Functional Testing: Verification of all website modules, content workflows, and system
+functionalities
+• Responsive Testing: Validation across devices and browsers to ensure consistent user
+experience
+• Security Testing : Verification of security measures and protection against common
+vulnerabilities
+• Performance Testing: Optimization of loading speed and system responsiveness
+• User Acceptance Testing (UAT): Final validation with EMWA stakeholders to ensure
+alignment with expectations
+
+19. Risk Management Strategy
+
+19.1 Overview
+
+eTech S.C. will adopt a proactive risk management approach to identify, assess, and mitigate
+potential risks that may impact project delivery, timelines, or quality.
+The strategy focuses on early identification and structured mitigation planning to ensure smooth
+project execution.
+
+etechsc.com 34
+
+19.2 Risk Identification and Mitigation
+
+20. SUPPORT & WARRANTY
+
+20.1 Warranty Period
+
+eTech S.C. shall provide a minimum one (1) year warranty commencing from the date of formal
+system commissioning and acceptance.
+
+Warranty Coverage Includes:
+
+• Correction of system defects or errors
+• Bug fixes related to delivered functionalities
+• Resolution of system stability and performance issues
+• Support for issues arising from normal system usage
+
+Warranty services will be provided at no additional cost during the warranty period.
+Risk Mitigation Strategy
+Content delays Early coordination with EMWA and structured content
+submission schedule
+Hosting delays Early engagement and pre-configuration of hosting
+environment
+Scope expansion Controlled change management and formal approval
+process
+Security
+vulnerabilities
+Implementation of security best practices, testing, and
+hardening
+User adoption
+challenges Comprehensive training and knowledge transfer
+
+etechsc.com 35
+
+Optional Maintenance Retainer (Proposed after Warranty): For Year 2, we offer a
+simple 10% of project fee annual retainer for security updates, plugin maintenance, and 10 hours of
+content changes.
+
+20.2 Support Services
+Following system go -live and during the warranty period, eTech S.C. shall provide structured
+application and technical support services.
+
+Support Scope Includes:
+
+• Application support for functional issues
+• Technical support for system availability and integrations
+• Assistance with configuration issues
+• Issue analysis, resolution, and escalation
+
+Support services shall be provided through agreed communication channels and response
+procedures.
+
+Support Response Time Matrix
+
+Severity
+Level Description
+Initial
+Response
+Time
+Resolution
+Target
+Critical
+(Severity 1)
+Complete system outage, major service
+unavailability, or critical issue impacting core
+insurance operations (e.g., policy issuance,
+claims processing, payments)
+≤ 2 hours ≤ 8 hours
+High
+(Severity 2)
+Significant functionality impairment with no
+immediate workaround; major impact on
+operations but system partially functional
+≤ 4 hours ≤ 24 hours
+Medium
+(Severity 3)
+Functional issues with workaround available;
+limited operational impact
+≤ 1 business
+day
+≤ 3 business
+days
+Low
+(Severity 4)
+Minor issues, cosmetic defects, or general
+inquiries with no operational impact
+≤ 2 business
+days
+As scheduled /
+Next release
+
+etechsc.com 36
+
+20.3 Post-Warranty Maintenance and Support
+
+Upon completion of the warranty period, eTech S.C. shall offer Annual Maintenance and
+Support (AMS) services under mutually agreed terms.
+Post-warranty support may include:
+
+• Continued application and technical support
+• System updates and patches
+• Performance monitoring and optimization
+• Support for future enhancements as required
+
+Commercial details for AMS shall be provided separately in the financial proposal, as required by
+the RFP.
+
+21. Mockups
+
+etechsc.com 37
+
+etechsc.com 38
+
+22. Relevant Experience
+
+                                                                           (Completed Website Projects)
+
+22.1 Overview
+eTech S.C. has successfully designed, developed, and deployed a wide range of institutional and
+corporate websites across multiple sectors in Ethiopia. These projects demonstrate our proven ability
+to deliver secure, scalable, and high-performing digital platforms tailored to organizational needs.
+
+22.2   Some Key Completed Projects
+The following are selected websites delivered by eTech S.C.:
+
+1. Zemen Insurance
+
+etechsc.com 39
+
+2. Addis International Convention Center (AICC)
+
+3. Awach Insurance
+
+etechsc.com 40
+
+4.  Addis Cardiac Center
+
+5. Sheger SACCO
+
+etechsc.com 41
+
+6. www.meqrezhealth.com
+
+etechsc.com 42
+
+7. eTech SC.
+
+etechsc.com 43
+
+23. Source Code Handover
+
+Upon successful completion of the project and formal acceptance by the Ethiopian Media Women
+Association (EMWA), eTech S.C. shall hand over the relevant source code for all software
+components developed or customized specifically for this project.
+
+The source code will be provided in accordance with the terms of the contract and applicable Non -
+Disclosure Agreement (NDA), and will be shared solely for the purposes of operating, maintaining,
+and further enhancing the implemented website platform.
+
+This handover applies exclusively to the deliverables developed under this project. All source code
+and related technical materials will be treated as confidential and subject to the agreed confidentiality
+and data protection provisions.
+
+etechsc.com 44
+
+24. Declarations, Confirmations & NDA
+Acknowledgement
+
+24.1 Declaration
+
+eTech S.C. hereby declares that all information provided in this proposal is accurate, complete, and
+submitted in good faith. We confirm that the proposed solution fully aligns with the requirements
+outlined in the EMWA Terms of Reference and that all services will be delivered in accordance with
+the agreed scope, timeline, and quality standards.
+
+24.2 Compliance Confirmation
+
+eTech S.C. confirms its full compliance with all applicable legal, technical, and operational
+requirements related to this project.
+We further confirm that:
+
+• The proposed solution adheres to relevant industry standards and best practices
+• All implementation activities will be conducted in a professional and ethical manner
+• The project will be delivered in accordance with agreed contractual obligations
+
+24.3 Confidentiality & NDA Acknowledgement
+
+eTech S.C. acknowledges the confidential nature of all information shared by EMWA during the
+course of this engagement.
+We commit to:
+
+• Treat all project-related information as confidential
+• Use such information solely for the purpose of project implementation
+• Not disclose any sensitive information to third parties without prior written consent from
+EMWA
+
+eTech S.C. agrees to comply with any Non-Disclosure Agreement (NDA) or confidentiality
+requirements specified by EMWA as part of this project.
+
+etechsc.com 45
+
+Deputy CEO
+22/05/2026
+eTech S.C.
+
+24.4 Non-Disclosure Commitment
+
+All data, documents, and information obtained during the project will be securely handled and
+protected against unauthorized access, disclosure, or misuse.
+Appropriate technical and organizational measures will be implemented to ensure data
+confidentiality and integrity throughout the project lifecycle.
+
+24.5 Authorization
+
+This proposal is submitted by eTech S.C. with full authority to undertake the responsibilities
+outlined herein.
+Authorized representative details:
+
+Name of Authorized Signatory: _______________________________
+Title: _________________________________________________
+Company: _________________________________________________
+Signature: _____________________________________________
+Date: _______________ _______________________________
+
+etechsc.com 46

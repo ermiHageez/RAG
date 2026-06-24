@@ -1,8 +1,12 @@
 {
   "files": {
+    "EMWA_proposal.txt": {
+      "size": 53840,
+      "mtime": 1782147459.3734567
+    },
     "sample.txt": {
-      "size": 348,
-      "mtime": 1781159685.8287373
+      "size": 20701,
+      "mtime": 1782128239.997229
     }
   }
 }

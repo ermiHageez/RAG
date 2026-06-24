@@ -1,0 +1,143 @@
+.root {
+  min-height: 100vh;
+  background: #121214;
+  display: flex;
+  flex-direction: column;
+}
+
+.appBar {
+  background: #1a1a1e !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 0 16px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  z-index: 1201;
+}
+
+.branding {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #e8eaed;
+  flex: 1;
+}
+
+.modeToggle {
+  display: flex;
+  background: rgba(255,255,255,0.06);
+  border-radius: 6px;
+  padding: 2px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.modeBtn {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 14px;
+  border: none;
+  background: transparent;
+  color: #9aa0a6;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.modeBtn:hover {
+  color: #e8eaed;
+}
+
+.modeBtnActive {
+  background: #00c853;
+  color: #000;
+}
+
+.body {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: #1a1a1e;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.navSection {
+  padding: 0 12px;
+  margin-bottom: 8px;
+}
+
+.navSectionTitle {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #5f6368;
+  padding: 8px 12px 6px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #9aa0a6;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+}
+
+.navItem:hover {
+  background: rgba(255,255,255,0.06);
+  color: #e8eaed;
+}
+
+.navItemActive {
+  background: rgba(0,200,83,0.1);
+  color: #00c853;
+}
+
+.navIcon {
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+.navItemActive .navIcon {
+  opacity: 1;
+}
+
+.content {
+  flex: 1;
+  padding: 24px;
+  max-width: 960px;
+  min-width: 0;
+}
+
+.footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 11px;
+  color: #5f6368;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin-top: auto;
+}
+
+.loadingBar {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  z-index: 1200;
+  height: 2px;
+  background: rgba(255,255,255,0.08);
+}

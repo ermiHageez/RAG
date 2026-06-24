@@ -1,0 +1,61 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  gap: 16px;
+  align-items: start;
+}
+
+.leftPanel,
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section {
+  background: #1a1a1e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.sectionTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: #9aa0a6;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.actionBar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 8px;
+}
+
+.actionBtn {
+  background: #2979ff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.actionBtn:hover {
+  background: #448aff;
+}

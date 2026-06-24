@@ -1,7 +1,15 @@
 import json
+import logging
 import os
 from datetime import datetime
-from fastapi import FastAPI, HTTPException
+from dotenv import load_dotenv
+from fastapi import FastAPI, HTTPException, UploadFile, File
+
+load_dotenv()
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
@@ -13,10 +21,22 @@ from src.marketing.content_generator import ContentGenerator
 from src.marketing.sheets_tracker import SheetsTracker
 from src.marketing.follow_up import FollowUpManager
 from src.marketing.analytics import Analytics
-from src.agents.llm import get_content_llm, get_reasoning_llm
+from src.agents.llm import get_content_llm, call_content_llm_with_fallback
 from mcp_server.tools.n8n_hook import trigger_n8n_marketing_pipeline
+from app.ml.training_sink import append_to_training_dataset, record_training_event
+from src.copilot.routes import router as copilot_router
 
 app = FastAPI(title="eTech Multi-Agent API", version="0.3.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(copilot_router)
 
 # ── Shared Instances ───────────────────────────────────────────────────
 
@@ -46,6 +66,16 @@ class RAGQueryResponse(BaseModel):
     success: bool
     results: list[dict] = []
     total: int = 0
+
+class RagChatRequest(BaseModel):
+    session_id: str
+    message: str
+    history: list[dict] = []
+
+class RagChatResponse(BaseModel):
+    session_id: str
+    response: str
+    sources: list[dict] = []
 
 class SearchRequest(BaseModel):
     query: str
@@ -119,7 +149,7 @@ class SalesApproveResponse(BaseModel):
 class SalesResetResponse(BaseModel):
     session_id: str
     phase: str = "DISCOVERY"
-    reset: bool = False
+    reset: bool = True
 
 # ── Marketing Models ──────────────────────────────────────────────────
 
@@ -158,6 +188,30 @@ def _read_etech_profile() -> str:
             return f.read()[:3000]
     return "eTech is an Ethiopian technology company providing ERP, eHealth, eShare, and other enterprise solutions."
 
+
+def _log_event(
+    event_type: str,
+    *,
+    session_id: str | None = None,
+    input: object = None,
+    output: object = None,
+    source: str = "api",
+    metadata: dict | None = None,
+    origin: str | None = None,
+) -> None:
+    try:
+        record_training_event(
+            event_type,
+            session_id=session_id,
+            input=input,
+            output=output,
+            source=source,
+            metadata=metadata,
+            origin=origin,
+        )
+    except Exception:
+        logger.exception("Failed to record training event %s", event_type)
+
 # ── Health & Config ───────────────────────────────────────────────────
 
 @app.get("/health")
@@ -171,7 +225,7 @@ def get_config():
             "router": "gemma3:4b",
             "reasoning": "qwen3:8b",
             "content": "llama3.1:8b",
-            "embedding": "qwen3-embedding:4b",
+            "embedding": os.getenv("EMBEDDING_MODEL", "nomic-embed-text"),
         },
         data_dir="data",
         faiss_dir="faiss_store",
@@ -187,6 +241,12 @@ def run_agent(req: QueryRequest):
         from src.agents.graph import build_agent
         agent = build_agent()
         result = agent.invoke({"query": req.query})
+        _log_event(
+            "agent.run",
+            input={"query": req.query},
+            output=result,
+            metadata={"endpoint": "/agent/run"},
+        )
         return QueryResponse(success=True, result=result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -197,6 +257,7 @@ def run_supervisor(req: QueryRequest):
         from src.agents.supervisor import supervisor_agent
         state = _default_state(query=req.query)
         result = supervisor_agent(state)
+        _log_event("agent.supervisor", input={"query": req.query}, output=result, metadata={"endpoint": "/agent/supervisor"})
         return QueryResponse(success=True, result=result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -207,6 +268,7 @@ def run_lead_search(req: QueryRequest):
         from src.agents.lead import lead_agent
         state = _default_state(query=req.query, route=["lead"])
         result = lead_agent(state)
+        _log_event("agent.leads", input={"query": req.query}, output=result, metadata={"endpoint": "/agent/leads"})
         return QueryResponse(success=True, result=result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -217,6 +279,7 @@ def run_tender_search(req: QueryRequest):
         from src.agents.tender import tender_agent
         state = _default_state(query=req.query, route=["tender"])
         result = tender_agent(state)
+        _log_event("agent.tenders", input={"query": req.query}, output=result, metadata={"endpoint": "/agent/tenders"})
         return QueryResponse(success=True, result=result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -227,6 +290,7 @@ def run_knowledge_search(req: QueryRequest):
         from src.agents.knowledge import run_knowledge_agent
         state = _default_state(query=req.query, route=["knowledge"])
         result = run_knowledge_agent(state)
+        _log_event("agent.knowledge", input={"query": req.query}, output=result, metadata={"endpoint": "/agent/knowledge"})
         return QueryResponse(success=True, result=result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -237,6 +301,7 @@ def run_sales_intelligence(req: QueryRequest):
         from src.agents.sales_intelligence import sales_intelligence_agent
         state = _default_state(query=req.query)
         result = sales_intelligence_agent(state)
+        _log_event("agent.sales_intel", input={"query": req.query}, output=result, metadata={"endpoint": "/agent/sales-intel"})
         return QueryResponse(success=True, result=result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -248,6 +313,7 @@ def run_content_drafting(req: QueryRequest):
         state = _default_state(query=req.query)
         state["sales_intelligence"] = {"insights": []}
         result = content_agent(state)
+        _log_event("agent.content", input={"query": req.query}, output=result, metadata={"endpoint": "/agent/content"})
         return QueryResponse(success=True, result=result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -258,25 +324,40 @@ def run_approval(req: QueryRequest):
         from src.agents.approval import approval_agent
         state = _default_state(query=req.query)
         result = approval_agent(state)
+        _log_event("agent.approval", input={"query": req.query}, output=result, metadata={"endpoint": "/agent/approval"})
         return QueryResponse(success=True, result=result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 # ── RAG Endpoints ─────────────────────────────────────────────────────
 
+@app.post("/rag/upload")
+def rag_upload(file: UploadFile = File(...)):
+    if not file.filename or not file.filename.endswith(".txt"):
+        raise HTTPException(status_code=400, detail="Only .txt files allowed")
+    os.makedirs("data", exist_ok=True)
+    content = file.file.read()
+    path = os.path.join("data", file.filename)
+    with open(path, "wb") as f:
+        f.write(content)
+    return {"success": True, "path": path, "size": len(content)}
+
 @app.get("/rag/status")
 def rag_status():
-    from src.rag.vectorstore import FaissVectorStore
-    store = FaissVectorStore("faiss_store")
-    store.load()
-    if store.index is None:
-        return {"active": False, "entries": 0, "dimension": 0, "path": "faiss_store"}
-    return {
-        "active": True,
-        "entries": store.index.ntotal,
-        "dimension": store.index.d,
-        "path": "faiss_store",
-    }
+    try:
+        from src.rag.vectorstore import FaissVectorStore
+        store = FaissVectorStore("faiss_store")
+        store.load()
+        if store.index is None:
+            return {"active": False, "entries": 0, "dimension": 0, "path": "faiss_store"}
+        return {
+            "active": True,
+            "entries": store.index.ntotal,
+            "dimension": store.index.d,
+            "path": "faiss_store",
+        }
+    except Exception as e:
+        return {"active": False, "entries": 0, "dimension": 0, "path": "faiss_store", "error": str(e)}
 
 @app.post("/rag/query", response_model=RAGQueryResponse)
 def rag_query(req: RAGQueryRequest):
@@ -285,8 +366,10 @@ def rag_query(req: RAGQueryRequest):
         store = FaissVectorStore("faiss_store")
         store.load()
         if store.index is None:
+            _log_event("rag.query", input={"query": req.query, "top_k": req.top_k}, output=[], metadata={"endpoint": "/rag/query", "empty": True})
             return RAGQueryResponse(success=True, results=[], total=0)
         results = store.query(req.query, top_k=req.top_k)
+        _log_event("rag.query", input={"query": req.query, "top_k": req.top_k}, output=results, metadata={"endpoint": "/rag/query", "total": len(results)})
         return RAGQueryResponse(success=True, results=results, total=len(results))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -304,10 +387,99 @@ def rag_rebuild():
         ok = store.build_from_documents(docs)
         if ok:
             store.load()
+            _log_event("rag.rebuild", input={"data_dir": "data"}, output={"entries": store.index.ntotal if store.index else 0}, metadata={"endpoint": "/rag/rebuild"})
             return {"success": True, "entries": store.index.ntotal if store.index else 0}
+        _log_event("rag.rebuild", input={"data_dir": "data"}, output={"success": False, "error": "No documents loaded"}, metadata={"endpoint": "/rag/rebuild"})
         return {"success": False, "error": "No documents loaded"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/rag/chat", response_model=RagChatResponse)
+def rag_chat(req: RagChatRequest):
+    try:
+        from src.rag.vectorstore import get_vectorstore
+        from src.rag.retriever import Retriever
+        from src.rag.reranker import NoOpReranker
+        from src.agents.llm import get_content_llm
+
+        store = get_vectorstore()
+        retriever = Retriever(vectorstore=store, reranker=NoOpReranker())
+        rag_results = retriever.retrieve(req.message, top_k=10, rerank_top_k=5)
+
+        context_parts = []
+        sources = []
+        for r in rag_results:
+            meta = r.get("metadata", {})
+            text = meta.get("text", "") if isinstance(meta, dict) else r.get("text", "")
+            source = meta.get("source", {}) if isinstance(meta, dict) else r.get("source", {})
+            if text:
+                context_parts.append(text)
+                sources.append({
+                    "title": source.get("title", source.get("source", "RAG source")) if isinstance(source, dict) else "RAG source",
+                    "snippet": text[:200],
+                    "url": source.get("url", "") if isinstance(source, dict) else "",
+                })
+
+        context = "\n\n---\n\n".join(context_parts[:5]) if context_parts else ""
+
+        history_lines = []
+        for h in req.history[-6:]:
+            role = h.get("role", "user")
+            content = h.get("content", "")
+            history_lines.append(f"{'User' if role == 'user' else 'Assistant'}: {content}")
+        history_str = "\n".join(history_lines)
+
+        system_prompt = (
+            "You are eTech Ethiopia's AI assistant for sales intelligence and market research. "
+            "Answer concisely and accurately using the provided context. "
+            "If the context doesn't contain the answer, say so politely "
+            "and offer to search for more information. "
+            "Keep responses informative but brief (2-4 paragraphs max)."
+        )
+
+        if context:
+            full_prompt = (
+                f"{system_prompt}\n\n"
+                f"Relevant context from knowledge base:\n{context}\n\n"
+                f"Conversation history:\n{history_str}\n\n"
+                f"User: {req.message}\n\nAssistant:"
+            )
+        else:
+            full_prompt = (
+                f"{system_prompt}\n\n"
+                f"Conversation history:\n{history_str}\n\n"
+                f"User: {req.message}\n\nAssistant:"
+            )
+
+        text = call_content_llm_with_fallback(full_prompt, ollama_timeout=15)
+        _log_event(
+            "rag.chat",
+            session_id=req.session_id,
+            input={"message": req.message, "history": req.history, "context_count": len(context_parts)},
+            output={"response": text, "sources": sources},
+            metadata={"endpoint": "/rag/chat", "source_count": len(sources), "status_code": 200},
+            origin="/rag/chat",
+        )
+        logger.info(
+            "AI chat 200 OK: endpoint=/rag/chat session=%s source_count=%s dataset=queued",
+            req.session_id,
+            len(sources),
+        )
+
+        return RagChatResponse(
+            session_id=req.session_id,
+            response=text,
+            sources=sources,
+        )
+    except Exception:
+        logger.exception("rag_chat failed — both Ollama and Groq fallback exhausted")
+        raise HTTPException(
+            status_code=503,
+            detail="LLM unavailable — local Ollama and Groq fallback both failed. "
+                   "Check that Ollama is running or GROQ_API_KEY is valid.",
+        )
+
 
 # ── MCP Tool Endpoints ────────────────────────────────────────────────
 
@@ -376,13 +548,20 @@ def save_memory(memory_type: str, req: MemoryRequest):
         if memory_type == "conversation":
             from src.memory.conversation_memory import ConversationMemory
             mem = ConversationMemory(store)
-            if req.query and req.response:
+            if req.query is not None and req.response is not None:
                 mem.add_interaction(req.session_id, req.query, req.response)
             history = mem.get_history(req.session_id)
         else:
-            data = store.load(f"{memory_type}_{req.session_id}") or []
-            data.append({"query": req.query, "response": req.response, "timestamp": datetime.now().isoformat()})
-            store.save(f"{memory_type}_{req.session_id}", data)
+            key = f"{memory_type}_{req.session_id}"
+            data = store.load(key) or []
+            if req.query is not None and req.response is not None:
+                data.append({
+                    "query": req.query,
+                    "response": req.response,
+                    "timestamp": datetime.now().isoformat(),
+                })
+                store.save(key, data)
+                append_to_training_dataset(req.session_id, req.query, req.response)
             history = data
         return MemoryResponse(session_id=req.session_id, history=history, count=len(history))
     except Exception as e:
@@ -442,6 +621,7 @@ def evaluate_content(req: EvaluateRequest):
 @app.post("/sales/start", response_model=SalesStartResponse)
 def sales_start():
     session_id = _sales_engine.create_session()
+    _log_event("sales.start", session_id=session_id, input={}, output={"phase": "DISCOVERY"}, metadata={"endpoint": "/sales/start"})
     return SalesStartResponse(session_id=session_id, phase="DISCOVERY")
 
 
@@ -451,95 +631,143 @@ def sales_chat(req: SalesChatRequest):
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
 
-    _sales_engine.add_message(req.session_id, "user", req.message)
-    llm = get_content_llm()
-    phase = session.phase
+    try:
+        _sales_engine.add_message(req.session_id, "user", req.message)
+        llm = get_content_llm()
+        phase = session.phase
 
-    if phase == SalesPhase.DISCOVERY:
-        existing = json.dumps(session.customer_info) if session.customer_info else "Nothing yet"
-        prompt = DISCOVERY_PROMPT.format(existing_info=existing, user_message=req.message)
-        response = llm.invoke(prompt)
-        text = response.content.strip()
+        if phase == SalesPhase.DISCOVERY:
+            existing = json.dumps(session.customer_info) if session.customer_info else "Nothing yet"
+            prompt = DISCOVERY_PROMPT.format(existing_info=existing, user_message=req.message)
+            response = llm.invoke(prompt)
+            text = response.content.strip()
 
-        session.customer_info["last_response"] = req.message
-        questions = []
-        try:
-            import json as j
-            parsed = j.loads(text)
-            questions = parsed.get("questions", [])
-            text = "Here are some questions to help me understand your needs better."
-        except Exception:
+            session.customer_info["last_response"] = req.message
             questions = []
+            try:
+                parsed = json.loads(text)
+                questions = parsed.get("questions", [])
+                text = "Here are some questions to help me understand your needs better."
+            except Exception:
+                questions = []
 
-        _sales_engine.add_message(req.session_id, "assistant", text)
-
-        if not questions and len(session.messages) >= 4:
-            _sales_engine.transition(req.session_id, SalesPhase.RESEARCH)
-            phase = SalesPhase.RESEARCH
-            text = "Great, I have enough information. Let me research your company and needs."
             _sales_engine.add_message(req.session_id, "assistant", text)
 
-        return SalesChatResponse(
+            if not questions and len(session.messages) >= 4:
+                _sales_engine.transition(req.session_id, SalesPhase.RESEARCH)
+                phase = SalesPhase.RESEARCH
+                text = "Great, I have enough information. Let me research your company and needs."
+                _sales_engine.add_message(req.session_id, "assistant", text)
+
+            result = SalesChatResponse(
+                session_id=req.session_id,
+                phase=phase.value,
+                response=text,
+                questions=questions,
+                customer_info=session.customer_info,
+            )
+            _log_event(
+                "sales.chat",
+                session_id=req.session_id,
+                input={"message": req.message},
+                output={"phase": result.phase, "response": result.response, "questions": questions},
+                metadata={"endpoint": "/sales/chat", "stage": "discovery"},
+            )
+            return result
+
+        elif phase == SalesPhase.RESEARCH:
+            try:
+                from mcp_server.tools.directory import discover_companies
+                sector = session.customer_info.get("sector", "")
+                mcp_results = discover_companies(sector=sector if sector else None, max_per_source=3)
+            except Exception:
+                mcp_results = []
+
+            research_prompt = RESEARCH_PROMPT.format(
+                customer_name=session.customer_info.get("company_name", "Customer"),
+                mcp_results=str(mcp_results[:5]),
+            )
+            response = llm.invoke(research_prompt)
+            text = response.content.strip()
+            try:
+                session.research_data = json.loads(text)
+            except Exception:
+                session.research_data = {"raw": text}
+
+            session.research_data["mcp_results"] = mcp_results[:5]
+            _sales_engine.add_message(req.session_id, "assistant", text)
+            _sales_engine.transition(req.session_id, SalesPhase.GENERATION)
+
+            result = SalesChatResponse(
+                session_id=req.session_id,
+                phase=SalesPhase.GENERATION.value,
+                response="Research complete. You can now generate the proposal with POST /sales/generate.",
+                customer_info=session.customer_info,
+            )
+            _log_event(
+                "sales.chat",
+                session_id=req.session_id,
+                input={"message": req.message},
+                output={"phase": result.phase, "response": result.response, "mcp_results": len(mcp_results)},
+                metadata={"endpoint": "/sales/chat", "stage": "research"},
+            )
+            return result
+
+        elif phase == SalesPhase.GENERATION:
+            result = SalesChatResponse(
+                session_id=req.session_id,
+                phase=phase.value,
+                response="Already in generation phase. Use POST /sales/generate to create the proposal.",
+                customer_info=session.customer_info,
+            )
+            _log_event(
+                "sales.chat",
+                session_id=req.session_id,
+                input={"message": req.message},
+                output={"phase": result.phase, "response": result.response},
+                metadata={"endpoint": "/sales/chat", "stage": "generation"},
+            )
+            return result
+
+        elif phase == SalesPhase.COMPLETE:
+            result = SalesChatResponse(
+                session_id=req.session_id,
+                phase=phase.value,
+                response="This session is complete. Start a new session with POST /sales/start.",
+                customer_info=session.customer_info,
+            )
+            _log_event(
+                "sales.chat",
+                session_id=req.session_id,
+                input={"message": req.message},
+                output={"phase": result.phase, "response": result.response},
+                metadata={"endpoint": "/sales/chat", "stage": "complete"},
+            )
+            return result
+
+        result = SalesChatResponse(
             session_id=req.session_id,
             phase=phase.value,
-            response=text,
-            questions=questions,
+            response="Continuing...",
             customer_info=session.customer_info,
         )
-
-    elif phase == SalesPhase.RESEARCH:
-        try:
-            from mcp_server.tools.directory import discover_companies
-            sector = session.customer_info.get("sector", "")
-            mcp_results = discover_companies(sector=sector if sector else None, max_per_source=3)
-        except Exception:
-            mcp_results = []
-
-        research_prompt = RESEARCH_PROMPT.format(
-            customer_name=session.customer_info.get("company_name", "Customer"),
-            mcp_results=str(mcp_results[:5]),
-        )
-        response = llm.invoke(research_prompt)
-        text = response.content.strip()
-        try:
-            import json as j
-            session.research_data = j.loads(text)
-        except Exception:
-            session.research_data = {"raw": text}
-
-        session.research_data["mcp_results"] = mcp_results[:5]
-        _sales_engine.add_message(req.session_id, "assistant", text)
-        _sales_engine.transition(req.session_id, SalesPhase.GENERATION)
-
-        return SalesChatResponse(
+        _log_event(
+            "sales.chat",
             session_id=req.session_id,
-            phase=SalesPhase.GENERATION.value,
-            response="Research complete. You can now generate the proposal with POST /sales/generate.",
-            customer_info=session.customer_info,
+            input={"message": req.message},
+            output={"phase": result.phase, "response": result.response},
+            metadata={"endpoint": "/sales/chat", "stage": "fallback"},
         )
-
-    elif phase == SalesPhase.GENERATION:
-        return SalesChatResponse(
+        return result
+    except Exception as e:
+        _log_event(
+            "sales.chat",
             session_id=req.session_id,
-            phase=phase.value,
-            response="Already in generation phase. Use POST /sales/generate to create the proposal.",
-            customer_info=session.customer_info,
+            input={"message": req.message},
+            output={"error": str(e)},
+            metadata={"endpoint": "/sales/chat", "stage": "error"},
         )
-
-    elif phase == SalesPhase.COMPLETE:
-        return SalesChatResponse(
-            session_id=req.session_id,
-            phase=phase.value,
-            response="This session is complete. Start a new session with POST /sales/start.",
-            customer_info=session.customer_info,
-        )
-
-    return SalesChatResponse(
-        session_id=req.session_id,
-        phase=phase.value,
-        response="Continuing...",
-        customer_info=session.customer_info,
-    )
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/sales/generate", response_model=SalesGenerateResponse)
@@ -550,40 +778,51 @@ def sales_generate(req: SalesGenerateRequest):
     if session.phase != SalesPhase.GENERATION:
         raise HTTPException(status_code=400, detail=f"Invalid phase: {session.phase.value}. Must be GENERATION.")
 
-    llm = get_content_llm()
-    etech_profile = _read_etech_profile()
-
     try:
-        from src.rag.vectorstore import FaissVectorStore
-        store = FaissVectorStore("faiss_store")
-        store.load()
-        rag_results = store.query("software documentation proposal template", top_k=3) if store.index else []
-        rag_style_refs = "\n".join([r.get("text", "") for r in rag_results])
-    except Exception:
-        rag_style_refs = ""
+        llm = get_content_llm()
+        etech_profile = _read_etech_profile()
 
-    gen_prompt = GENERATION_PROMPT.format(
-        customer_profile=json.dumps(session.research_data, indent=2) if session.research_data else "{}",
-        etech_profile=etech_profile,
-        rag_style_refs=rag_style_refs or "Standard business proposal format.",
-    )
+        try:
+            from src.rag.vectorstore import FaissVectorStore
+            store = FaissVectorStore("faiss_store")
+            store.load()
+            rag_results = store.query("software documentation proposal template", top_k=3) if store.index else []
+            rag_style_refs = "\n".join([r.get("text", "") for r in rag_results])
+        except Exception:
+            rag_style_refs = ""
 
-    response = llm.invoke(gen_prompt)
-    proposal_text = response.content.strip()
-    session.proposal_text = proposal_text
+        gen_prompt = GENERATION_PROMPT.format(
+            customer_profile=json.dumps(session.research_data, indent=2) if session.research_data else "{}",
+            etech_profile=etech_profile,
+            rag_style_refs=rag_style_refs or "Standard business proposal format.",
+        )
 
-    customer_name = session.research_data.get("company", session.customer_info.get("company_name", "Customer"))
-    pdf_path = _proposal_gen.generate(req.session_id, proposal_text, customer_name=customer_name)
-    session.proposal_pdf_path = pdf_path
-    _sales_engine.add_message(req.session_id, "assistant", "Proposal generated successfully.")
+        response = llm.invoke(gen_prompt)
+        proposal_text = response.content.strip()
+        session.proposal_text = proposal_text
 
-    preview = proposal_text[:500]
-    return SalesGenerateResponse(
-        session_id=req.session_id,
-        phase=session.phase.value,
-        proposal_preview=preview,
-        proposal_pdf_path=pdf_path,
-    )
+        research = session.research_data or {}
+        customer_name = research.get("company", session.customer_info.get("company_name", "Customer"))
+        pdf_path = _proposal_gen.generate(req.session_id, proposal_text, customer_name=customer_name)
+        session.proposal_pdf_path = pdf_path
+        _sales_engine.add_message(req.session_id, "assistant", "Proposal generated successfully.")
+        _log_event(
+            "sales.generate",
+            session_id=req.session_id,
+            input={"phase": session.phase.value, "customer_name": customer_name},
+            output={"proposal_preview": proposal_text[:500], "proposal_pdf_path": pdf_path},
+            metadata={"endpoint": "/sales/generate"},
+        )
+
+        preview = proposal_text[:500]
+        return SalesGenerateResponse(
+            session_id=req.session_id,
+            phase=session.phase.value,
+            proposal_preview=preview,
+            proposal_pdf_path=pdf_path,
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/sales/approve-send", response_model=SalesApproveResponse)
@@ -594,65 +833,75 @@ def sales_approve_send(req: SalesApproveRequest):
     if session.phase != SalesPhase.GENERATION:
         raise HTTPException(status_code=400, detail=f"Invalid phase: {session.phase.value}. Must be GENERATION.")
 
-    llm = get_content_llm()
-    customer_name = session.research_data.get("company", session.customer_info.get("company_name", "Customer"))
-
-    email_prompt = EMAIL_PROMPT.format(
-        proposal=session.proposal_text[:1500] if session.proposal_text else "",
-        customer_contact=json.dumps(session.research_data.get("contacts", {})),
-    )
-    email_response = llm.invoke(email_prompt)
-    email_text = email_response.content.strip()
-
     try:
-        import json as j
-        email_data = j.loads(email_text)
-        subject = email_data.get("subject", "Proposal from eTech")
-        email_body = email_data.get("body", email_text)
-    except Exception:
-        subject = "Proposal from eTech S.C."
-        email_body = email_text
+        llm = get_content_llm()
+        research = session.research_data or {}
+        customer_name = research.get("company", session.customer_info.get("company_name", "Customer"))
 
-    session.email_body = email_body
+        email_prompt = EMAIL_PROMPT.format(
+            proposal=session.proposal_text[:1500] if session.proposal_text else "",
+            customer_contact=json.dumps(research.get("contacts", {})),
+        )
+        email_response = llm.invoke(email_prompt)
+        email_text = email_response.content.strip()
 
-    product = "General"
-    sector = session.research_data.get("sector", session.customer_info.get("sector", ""))
-    if "health" in sector.lower():
-        product = "Ehealth"
-    elif "bank" in sector.lower() or "finance" in sector.lower():
-        product = "SCCO"
-    elif "erp" in sector.lower() or "enterprise" in sector.lower():
-        product = "ERP"
+        try:
+            email_data = json.loads(email_text)
+            subject = email_data.get("subject", "Proposal from eTech")
+            email_body = email_data.get("body", email_text)
+        except Exception:
+            subject = "Proposal from eTech S.C."
+            email_body = email_text
 
-    email_contact = ""
-    if isinstance(session.research_data.get("contacts"), dict):
-        email_contact = session.research_data["contacts"].get("email", "")
+        session.email_body = email_body
 
-    payload = {
-        "lead_name": customer_name,
-        "validated_email": email_contact or f"{customer_name.lower().replace(' ', '.')}@example.com",
-        "tender_requirements": f"Proposal generated via sales assistant. Product: {product}",
-        "email_body": email_body,
-    }
+        product = "General"
+        sector = research.get("sector", session.customer_info.get("sector", ""))
+        if "health" in sector.lower():
+            product = "Ehealth"
+        elif "bank" in sector.lower() or "finance" in sector.lower():
+            product = "SCCO"
+        elif "erp" in sector.lower() or "enterprise" in sector.lower():
+            product = "ERP"
 
-    n8n_result = trigger_n8n_marketing_pipeline(payload)
-    session.approved = True
-    _sales_engine.transition(req.session_id, SalesPhase.COMPLETE)
+        email_contact = ""
+        if isinstance(research.get("contacts"), dict):
+            email_contact = research["contacts"].get("email", "")
 
-    _tracker.add_lead(
-        session_id=req.session_id,
-        customer_name=customer_name,
-        email=email_contact or "unknown@example.com",
-        product=product,
-        status="Sent",
-    )
+        payload = {
+            "lead_name": customer_name,
+            "validated_email": email_contact or f"{customer_name.lower().replace(' ', '.')}@example.com",
+            "tender_requirements": f"Proposal generated via sales assistant. Product: {product}",
+            "email_body": email_body,
+        }
 
-    return SalesApproveResponse(
-        session_id=req.session_id,
-        status="sent",
-        email_body=email_body,
-        n8n_response=n8n_result.get("response", {}),
-    )
+        n8n_result = trigger_n8n_marketing_pipeline(payload)
+        session.approved = True
+        _sales_engine.transition(req.session_id, SalesPhase.COMPLETE)
+
+        _tracker.add_lead(
+            session_id=req.session_id,
+            customer_name=customer_name,
+            email=email_contact or "unknown@example.com",
+            product=product,
+            status="Sent",
+        )
+        _log_event(
+            "sales.approve_send",
+            session_id=req.session_id,
+            input={"customer_name": customer_name, "product": product},
+            output={"status": "sent", "email_body": email_body, "n8n_response": n8n_result.get("response") or {}},
+            metadata={"endpoint": "/sales/approve-send"},
+        )
+
+        return SalesApproveResponse(
+            session_id=req.session_id,
+            status="sent",
+            email_body=email_body,
+            n8n_response=n8n_result.get("response") or {},
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/sales/reset", response_model=SalesResetResponse)
@@ -660,6 +909,7 @@ def sales_reset(req: SalesGenerateRequest):
     ok = _sales_engine.reset_session(req.session_id)
     if not ok:
         raise HTTPException(status_code=404, detail="Session not found")
+    _log_event("sales.reset", session_id=req.session_id, input={"session_id": req.session_id}, output={"reset": True}, metadata={"endpoint": "/sales/reset"})
     return SalesResetResponse(session_id=req.session_id, phase="DISCOVERY", reset=True)
 
 
@@ -684,79 +934,169 @@ def doc_gen_download(session_id: str):
 
 @app.get("/marketing/templates")
 def marketing_list_templates():
-    return {"templates": _template_engine.list_templates()}
+    try:
+        return {"templates": _template_engine.list_templates()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/marketing/templates/{product}")
 def marketing_get_template(product: str):
-    html = _template_engine.get_template_html(product)
-    if not html:
-        raise HTTPException(status_code=404, detail=f"Template not found for product: {product}")
-    return {"product": product, "html": html}
+    try:
+        html = _template_engine.get_template_html(product)
+        if not html:
+            raise HTTPException(status_code=404, detail=f"Template not found for product: {product}")
+        return {"product": product, "html": html}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.put("/marketing/templates/{product}")
 def marketing_update_template(product: str, req: TemplateUpdateRequest):
-    ok = _template_engine.update_template_html(product, req.html)
-    if not ok:
-        raise HTTPException(status_code=404, detail=f"Template not found for product: {product}")
-    return {"success": True, "product": product}
+    try:
+        ok = _template_engine.update_template_html(product, req.html)
+        if not ok:
+            raise HTTPException(status_code=404, detail=f"Template not found for product: {product}")
+        _log_event(
+            "marketing.template.update",
+            input={"product": product},
+            output={"success": True},
+            metadata={"endpoint": "/marketing/templates/{product}", "product": product},
+        )
+        return {"success": True, "product": product}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # ── Campaign Tracking ─────────────────────────────────────────────────
 
 @app.get("/marketing/campaign/stats")
 def marketing_campaign_stats():
-    return _tracker.get_campaign_stats()
+    try:
+        return _tracker.get_campaign_stats()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/marketing/campaign/leads")
 def marketing_campaign_leads(status: str = ""):
-    if status:
-        return {"leads": _tracker.get_leads_by_status(status)}
-    return {"leads": _tracker.get_all_leads()}
+    try:
+        if status:
+            return {"leads": _tracker.get_leads_by_status(status)}
+        return {"leads": _tracker.get_all_leads()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.put("/marketing/campaign/leads/{session_id}/status")
 def marketing_update_lead_status(session_id: str, req: LeadStatusUpdateRequest):
-    ok = _tracker.update_status(session_id, req.status)
-    if not ok:
-        raise HTTPException(status_code=400, detail=f"Invalid status transition to '{req.status}'")
-    return {"success": True, "session_id": session_id, "new_status": req.status}
+    try:
+        ok = _tracker.update_status(session_id, req.status)
+        if not ok:
+            raise HTTPException(status_code=400, detail=f"Invalid status transition to '{req.status}'")
+        _log_event(
+            "marketing.campaign.lead_status",
+            session_id=session_id,
+            input={"status": req.status},
+            output={"success": True},
+            metadata={"endpoint": "/marketing/campaign/leads/{session_id}/status"},
+        )
+        return {"success": True, "session_id": session_id, "new_status": req.status}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # ── Follow-Up ─────────────────────────────────────────────────────────
 
 @app.post("/marketing/follow-up/check")
 def marketing_follow_up_check():
-    due = _follow_up.check_due_follow_ups()
-    results = []
-    for lead in due:
-        result = _follow_up.send_follow_up(lead["session_id"])
-        results.append(result)
-    return {"due_count": len(due), "results": results}
+    try:
+        due = _follow_up.check_due_follow_ups()
+        results = []
+        for lead in due:
+            result = _follow_up.send_follow_up(lead["session_id"])
+            results.append(result)
+        _log_event(
+            "marketing.follow_up.check",
+            input={"due_count": len(due)},
+            output={"results": results},
+            metadata={"endpoint": "/marketing/follow-up/check"},
+        )
+        return {"due_count": len(due), "results": results}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/marketing/follow-up/schedule/{session_id}")
 def marketing_follow_up_schedule(session_id: str):
-    return _follow_up.get_follow_up_schedule(session_id)
+    try:
+        return _follow_up.get_follow_up_schedule(session_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/marketing/follow-up/config")
+def marketing_follow_up_get_config():
+    try:
+        config = _follow_up.config
+        return {
+            "enabled": config.enabled,
+            "initial_delay_days": config.initial_delay_days,
+            "max_follow_ups": config.max_follow_ups,
+            "cadence_days": config.cadence_days,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.put("/marketing/follow-up/config")
 def marketing_follow_up_config(req: FollowUpConfigUpdate):
-    kwargs = req.model_dump(exclude_none=True)
-    _follow_up.set_config(**kwargs)
-    return {"success": True, "config": _follow_up.config}
+    try:
+        kwargs = req.model_dump(exclude_none=True)
+        _follow_up.set_config(**kwargs)
+        _log_event(
+            "marketing.follow_up.config",
+            input=kwargs,
+            output={"config": _follow_up.config.__dict__},
+            metadata={"endpoint": "/marketing/follow-up/config"},
+        )
+        return {"success": True, "config": _follow_up.config}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # ── Analytics ─────────────────────────────────────────────────────────
 
 @app.get("/marketing/analytics/summary")
 def marketing_analytics_summary(start_date: str = "", end_date: str = ""):
-    return _analytics.get_campaign_summary(
-        start_date=start_date if start_date else None,
-        end_date=end_date if end_date else None,
-    )
+    try:
+        result = _analytics.get_campaign_summary(
+            start_date= start_date if start_date else None,
+            end_date= end_date if end_date else None,
+        )
+        _log_event(
+            "marketing.analytics.summary",
+            input={"start_date": start_date, "end_date": end_date},
+            output=result,
+            metadata={"endpoint": "/marketing/analytics/summary"},
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/marketing/analytics/product-breakdown")
 def marketing_analytics_product_breakdown():
-    return {"products": _analytics.get_product_breakdown()}
+    try:
+        return {"products": _analytics.get_product_breakdown()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/marketing/analytics/timeline")
 def marketing_analytics_timeline(days: int = 30):
-    return {"timeline": _analytics.get_timeline(days=days)}
+    try:
+        return {"timeline": _analytics.get_timeline(days=days)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/marketing/analytics/export")
 def marketing_analytics_export(format: str = "json"):
-    return _analytics.export_report(format=format)
+    try:
+        return _analytics.export_report(format=format)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

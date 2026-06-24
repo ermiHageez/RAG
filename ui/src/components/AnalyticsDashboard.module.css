@@ -1,0 +1,136 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.kpiCard {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kpiLabel {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #5f6368;
+}
+
+.kpiValue {
+  font-size: 28px;
+  font-weight: 700;
+  color: #e8eaed;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.kpiUnit {
+  font-size: 12px;
+  font-weight: 400;
+  color: #5f6368;
+}
+
+.kpiTrend {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: 500;
+}
+
+.trendUp {
+  color: #00c853;
+}
+
+.trendDown {
+  color: #ff1744;
+}
+
+.trendStable {
+  color: #9aa0a6;
+}
+
+.chartSection {
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.chartHeader {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e8eaed;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+}
+
+.chartBody {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chartRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chartLabel {
+  font-size: 11px;
+  color: #9aa0a6;
+  min-width: 120px;
+}
+
+.chartBar {
+  flex: 1;
+  height: 10px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.chartBarFill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.6s ease;
+  background: linear-gradient(90deg, #00c853, #69f0ae);
+}
+
+.chartBarFillSecondary {
+  background: linear-gradient(90deg, #2979ff, #5393ff);
+}
+
+.chartBarFillAccent {
+  background: linear-gradient(90deg, #ff9100, #ffb74d);
+}
+
+.chartValue {
+  font-size: 11px;
+  font-weight: 600;
+  color: #e8eaed;
+  min-width: 40px;
+  text-align: right;
+}
+
+@media (max-width: 600px) {
+  .kpiGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

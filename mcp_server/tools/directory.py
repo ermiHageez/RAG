@@ -2,6 +2,8 @@ import os
 from typing import Any, Dict, List, Optional
 from dotenv import load_dotenv
 
+from app.ml.training_sink import record_training_event
+
 load_dotenv()
 
 MERKATO_URL = os.getenv("MERKATO_URL", "https://www.2merkato.com")
@@ -349,4 +351,14 @@ def discover_companies(sector: Optional[str] = None, max_per_source: int = 20) -
             if c["sector"] == "General":
                 c["sector"] = _guess_sector(c["name"], c["description"])
             unique.append(c)
+    try:
+        record_training_event(
+            "mcp.directory",
+            input={"sector": sector, "max_per_source": max_per_source},
+            output=unique[:max_per_source],
+            source="mcp",
+            metadata={"tool": "discover_companies", "result_count": len(unique[:max_per_source])},
+        )
+    except Exception:
+        pass
     return unique[:max_per_source]
