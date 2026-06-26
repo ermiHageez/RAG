@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from typing import Optional, Callable
+
 from src.rag.vectorstore import FaissVectorStore
 from src.rag.reranker import Reranker, NoOpReranker
 
@@ -22,13 +25,14 @@ class Retriever:
         if results:
             results = self.reranker.rerank(query, results)
             results = results[:rerank_top_k]
+        from app.ml.metrics import increment
+        increment("vector_query_count")
         return results
 
     @staticmethod
     def _merge_results(faiss_results: list[dict], pg_results: list[dict]) -> list[dict]:
         seen = set()
         merged = []
-
         for r in faiss_results:
             text = r.get("metadata", {}).get("text", "")
             if text and text not in seen:
@@ -38,7 +42,6 @@ class Retriever:
                     "source": r.get("metadata", {}).get("source", "faiss"),
                     "score": 1.0 / (1.0 + r.get("distance", 1.0)),
                 })
-
         for r in pg_results:
             text = r.get("content", "")
             if text and text not in seen:
@@ -48,6 +51,5 @@ class Retriever:
                     "source": "pgvector",
                     "score": r.get("similarity", 0.0),
                 })
-
         merged.sort(key=lambda x: x["score"], reverse=True)
         return merged

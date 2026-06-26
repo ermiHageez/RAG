@@ -3,7 +3,7 @@ import type { SearchResult } from '../types'
 
 const api = axios.create({
   baseURL: '/',
-  timeout: 30000,
+  timeout: 120000,
 })
 
 interface McpSearchResponse {

@@ -1,3 +1,4 @@
+import re
 import urllib.parse
 from typing import Any, Dict, List
 from ddgs import DDGS
@@ -87,6 +88,16 @@ def _guess_sector(title: str, snippet: str) -> str:
     return "General"
 
 
+def _extract_contacts(text: str) -> str:
+    """Extract Ethiopian phone numbers and email addresses from text."""
+    contacts = []
+    phones = re.findall(r'(?:\+251|0)\d{9}', text)
+    emails = re.findall(r'[\w.+-]+@[\w-]+\.[\w.]+', text)
+    contacts.extend(phones)
+    contacts.extend(emails)
+    return '; '.join(contacts) if contacts else ''
+
+
 def discover_ethiopian_enterprises(query: str) -> List[Dict[str, Any]]:
     """Compatibility wrapper used by lead_agent. Returns enriched result format."""
     raw = resilient_web_search(query, max_results=5)
@@ -94,13 +105,28 @@ def discover_ethiopian_enterprises(query: str) -> List[Dict[str, Any]]:
     for item in raw:
         title = item.get("title", "")
         snippet = item.get("snippet", "")
+        url = item.get("url", "")
+
+        contact = _extract_contacts(title + " " + snippet)
+
+        if not contact:
+            try:
+                secondary = primary_duckduckgo_search(f"{title} Ethiopia contact email phone", max_results=3)
+                for s in secondary:
+                    c = _extract_contacts(s.get("title", "") + " " + s.get("snippet", ""))
+                    if c:
+                        contact = c
+                        break
+            except Exception:
+                pass
+
         results.append({
             "name": title,
             "sector": _guess_sector(title, snippet),
             "location": "Ethiopia",
             "description": snippet,
-            "contact": "",
-            "link": item.get("url", ""),
+            "contact": contact,
+            "link": url,
         })
     try:
         record_training_event(

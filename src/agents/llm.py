@@ -1,8 +1,10 @@
+import asyncio
 import logging
 import multiprocessing
 import os
-from dotenv import load_dotenv
+from concurrent.futures import ThreadPoolExecutor
 
+from dotenv import load_dotenv
 import requests
 
 load_dotenv()
@@ -12,22 +14,17 @@ from langchain_ollama import ChatOllama, OllamaEmbeddings
 logger = logging.getLogger(__name__)
 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-
 OLLAMA_NUM_CTX = int(os.getenv("OLLAMA_NUM_CTX", "2048"))
+OLLAMA_NUM_THREADS = int(os.getenv("OLLAMA_NUM_THREADS", str(max(1, multiprocessing.cpu_count() - 1))))
 
-OLLAMA_NUM_THREADS = int(
-    os.getenv("OLLAMA_NUM_THREADS", str(max(1, multiprocessing.cpu_count() - 1)))
-)
-
-GROQ_API_KEY = os.getenv(
-    "GROQ_API_KEY",
-    "",
-)
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions"
 
 _OLLAMA_TIMEOUT = 45
 _EMBEDDING_TIMEOUT = 60
+
+_llm_executor = ThreadPoolExecutor(max_workers=1)
 
 
 def _llm_kwargs() -> dict:
@@ -69,6 +66,8 @@ class _FallbackLLM:
         self._ollama_kwargs = kwargs
 
     def invoke(self, prompt: str) -> AIMessage:
+        from app.ml.metrics import increment
+        increment("llm_call_count")
         try:
             llm = ChatOllama(
                 model=self._model,
@@ -80,8 +79,13 @@ class _FallbackLLM:
             return AIMessage(content=_normalize_content(response.content))
         except Exception:
             logger.warning("Ollama failed, falling back to Groq...")
+            increment("llm_fallback_count")
             text = _call_groq(prompt, temperature=self._temperature)
             return AIMessage(content=text)
+
+    async def async_invoke(self, prompt: str) -> AIMessage:
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(_llm_executor, self.invoke, prompt)
 
 
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "nomic-embed-text")
@@ -125,7 +129,6 @@ def get_content_llm():
 def _call_groq(prompt: str, temperature: float = 0.3) -> str:
     if not GROQ_API_KEY.strip():
         raise RuntimeError("GROQ_API_KEY is not configured")
-
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
         "Content-Type": "application/json",
@@ -143,6 +146,8 @@ def _call_groq(prompt: str, temperature: float = 0.3) -> str:
 
 
 def call_content_llm_with_fallback(prompt: str, ollama_timeout: int = 15) -> str:
+    from app.ml.metrics import increment
+    increment("llm_call_count")
     try:
         llm = ChatOllama(
             model="gemma2:2b",
@@ -156,4 +161,5 @@ def call_content_llm_with_fallback(prompt: str, ollama_timeout: int = 15) -> str
         return _normalize_content(response.content)
     except Exception:
         logger.warning("Ollama failed, falling back to Groq...")
+        increment("llm_fallback_count")
         return _call_groq(prompt, temperature=0.3)

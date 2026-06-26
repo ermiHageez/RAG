@@ -1,0 +1,4 @@
+{"query": "Who are the leads in the finance sector?", "expected_routing": "lead_agent", "expected_sources": []}
+{"query": "Find tenders for construction in Addis Ababa", "expected_routing": "tender_agent", "expected_sources": []}
+{"query": "What does eTech do?", "expected_routing": "knowledge_agent", "expected_sources": ["eTech provides ERP solutions"]}
+{"query": "Draft a sales email for a new lead", "expected_routing": "content_agent", "expected_sources": []}

@@ -23,7 +23,9 @@ from src.marketing.follow_up import FollowUpManager
 from src.marketing.analytics import Analytics
 from src.agents.llm import get_content_llm, call_content_llm_with_fallback
 from mcp_server.tools.n8n_hook import trigger_n8n_marketing_pipeline
-from app.ml.training_sink import append_to_training_dataset, record_training_event
+from app.ml.training_sink import append_to_training_dataset, record_training_event, get_metrics as get_sink_metrics
+from app.ml.metrics import get_metrics as get_pipeline_metrics, format_prometheus
+from app.ml.alerts import send_alert
 from src.copilot.routes import router as copilot_router
 
 app = FastAPI(title="eTech Multi-Agent API", version="0.3.0")
@@ -217,6 +219,94 @@ def _log_event(
 @app.get("/health")
 def health():
     return {"status": "ok", "timestamp": datetime.now().isoformat()}
+
+@app.get("/health/deep")
+def deep_health():
+    checks: dict[str, str | dict] = {}
+    overall = "healthy"
+
+    ollama_ok = False
+    try:
+        import httpx
+        base = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+        r = httpx.get(f"{base}/api/tags", timeout=5)
+        if r.status_code == 200:
+            models = [m["name"] for m in r.json().get("models", [])]
+            checks["ollama"] = {"status": "ok", "models": models}
+            ollama_ok = True
+        else:
+            checks["ollama"] = {"status": "degraded", "detail": f"HTTP {r.status_code}"}
+            overall = "degraded"
+    except Exception as e:
+        checks["ollama"] = {"status": "unhealthy", "detail": str(e)}
+        overall = "degraded"
+
+    try:
+        from src.rag.vectorstore import get_vectorstore
+        store = get_vectorstore()
+        if store.index:
+            checks["faiss"] = {"status": "ok", "vectors": store.index.ntotal}
+        else:
+            checks["faiss"] = {"status": "degraded", "detail": "No index loaded"}
+    except Exception as e:
+        checks["faiss"] = {"status": "unhealthy", "detail": str(e)}
+        overall = "degraded"
+
+    try:
+        from app.ml.training_sink import RAW_INTERACTIONS_PATH
+        if RAW_INTERACTIONS_PATH.exists():
+            checks["dataset"] = {"status": "ok", "size_bytes": RAW_INTERACTIONS_PATH.stat().st_size}
+        else:
+            checks["dataset"] = {"status": "ok", "detail": "No dataset yet"}
+    except Exception as e:
+        checks["dataset"] = {"status": "unhealthy", "detail": str(e)}
+        overall = "degraded"
+
+    status_code = 200 if overall == "healthy" else 503
+    from fastapi import HTTPException
+    from fastapi.responses import JSONResponse
+    return JSONResponse(
+        content={"status": overall, "checks": checks, "timestamp": datetime.now().isoformat()},
+        status_code=status_code,
+    )
+
+@app.get("/metrics")
+def metrics_endpoint():
+    sink = get_sink_metrics()
+    pipeline = get_pipeline_metrics()
+    return {"sink": sink, "pipeline": pipeline}
+
+@app.get("/metrics/prometheus")
+def metrics_prometheus():
+    from fastapi.responses import PlainTextResponse
+    return PlainTextResponse(format_prometheus())
+
+@app.get("/quality/report")
+def quality_report():
+    try:
+        from app.ml.dataset_builder import DatasetBuilder
+        return DatasetBuilder.get_quality_summary()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/quality/quarantine")
+def quality_quarantine(limit: int = 50):
+    from app.ml.dataset_builder import QUARANTINE_DIR
+    q_path = QUARANTINE_DIR / "quarantine.jsonl"
+    if not q_path.exists():
+        return {"records": [], "total": 0}
+    records = []
+    with q_path.open("r", encoding="utf-8") as f:
+        for i, line in enumerate(f):
+            if i >= limit:
+                break
+            stripped = line.strip()
+            if stripped:
+                try:
+                    records.append(json.loads(stripped))
+                except Exception:
+                    pass
+    return {"records": records, "total": len(records)}
 
 @app.get("/config", response_model=ConfigResponse)
 def get_config():

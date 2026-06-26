@@ -17,7 +17,9 @@
 | **Sprint 7** — Sales Assistant & Doc-Gen | 🟢 Complete | 6 | 6 |
 | **Sprint 8** — Marketing Pipeline | 🟢 Complete | 5 | 5 |
 | **Sprint 9** — pgvector Knowledge Base & Postgres Memory | 🟡 In Progress | 0 | 6 |
-| **Total** | **—** | **29** | **35** |
+| **Sprint 10** — Human-Centered Co-Pilot UI | 🟢 Complete | 4 | 4 |
+| **Sprint 11** — ML Pipeline Production Readiness | 🟢 Complete | 5 | 5 |
+| **Total** | **—** | **38** | **44** |
 
 ---
 
@@ -93,6 +95,23 @@
 | 9.4 | RAG Integration | [04-rag-integration.md](./sprint-09-pgvector-migration/04-rag-integration.md) | 🔴 Pending |
 | 9.5 | build_agent() Wiring | [05-build-agent-wiring.md](./sprint-09-pgvector-migration/05-build-agent-wiring.md) | 🔴 Pending |
 | 9.6 | Testing | [06-testing.md](./sprint-09-pgvector-migration/06-testing.md) | 🔴 Pending |
+
+### [Sprint 10: Human-Centered Co-Pilot UI](./sprint-10-human-centered-ui/)
+| # | Step | File | Status |
+|---|------|------|--------|
+| 10.1 | Human-Centered Architecture | [01-human-centered-architecture.md](./sprint-10-human-centered-ui/01-human-centered-architecture.md) | 🟢 Complete |
+| 10.2 | UI Demo | [02-ui-demo.md](./sprint-10-human-centered-ui/02-ui-demo.md) | 🟢 Complete |
+| 10.3 | Security | [03-security.md](./sprint-10-human-centered-ui/03-security.md) | 🟢 Complete |
+| 10.4 | Testing | [04-testing.md](./sprint-10-human-centered-ui/04-testing.md) | 🟢 Complete |
+
+### [Sprint 11: ML Pipeline Production Readiness](./sprint-11-ml-production/)
+| # | Step | File | Status |
+|---|------|------|--------|
+| 11.1 | Data Pipeline Hardening | [01-data-pipeline-hardening.md](./sprint-11-ml-production/01-data-pipeline-hardening.md) | 🟢 Complete |
+| 11.2 | Monitoring & Observability | [02-monitoring-observability.md](./sprint-11-ml-production/02-monitoring-observability.md) | 🟢 Complete |
+| 11.3 | Training Pipeline Automation | [03-training-pipeline-automation.md](./sprint-11-ml-production/03-training-pipeline-automation.md) | 🟢 Complete |
+| 11.4 | Performance & Scalability | [04-performance-scaling.md](./sprint-11-ml-production/04-performance-scaling.md) | 🟢 Complete |
+| 11.5 | Testing & Quality Assurance | [05-testing-quality.md](./sprint-11-ml-production/05-testing-quality.md) | 🟢 Complete |
 
 ---
 

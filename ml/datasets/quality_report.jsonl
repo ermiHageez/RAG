@@ -1,0 +1,117 @@
+{"query":"tell me all you know about etech","passed":true,"issues":[]}
+{"query":"what are the list of software product","passed":true,"issues":[]}
+{"query":"tell me about etech","passed":true,"issues":[]}
+{"query":"/eval-rag","passed":true,"issues":[]}
+{"query":"tell me about etech  /eval-rag","passed":true,"issues":[]}
+{"query":"/rag-status","passed":true,"issues":[]}
+{"query":"/new-deal","passed":true,"issues":[]}
+{"query":"tell me about etech all you know","passed":true,"issues":[]}
+{"query":"hi","passed":false,"issues":["query_too_short"]}
+{"query":"tell me what you know about etech","passed":true,"issues":[]}
+{"query":"{\"data_dir\": \"data\"}","passed":true,"issues":[]}
+{"query":"tell me about eTech","passed":true,"issues":[]}
+{"query":"give me what you know about etechsc","passed":true,"issues":[]}
+{"query":"ethiopia to host-international-cybersecurity","passed":true,"issues":[]}
+{"query":"ethiopia to host-international-cybersecurity","passed":true,"issues":[]}
+{"query":"{\"data_dir\": \"data\"}","passed":true,"issues":[]}
+{"query":"what did you know about AI","passed":true,"issues":[]}
+{"query":"what did you know about etech","passed":true,"issues":[]}
+{"query":"can you give me the dot list what are the software product in etech","passed":true,"issues":[]}
+{"query":"did they have ERP","passed":true,"issues":[]}
+{"query":"what about the ehealth","passed":true,"issues":[]}
+{"query":"{\"sector\": null}","passed":true,"issues":[]}
+{"query":"banking finance Ethiopia","passed":true,"issues":[]}
+{"query":"insurance company Ethiopia","passed":true,"issues":[]}
+{"query":"logistics transport Ethiopia","passed":true,"issues":[]}
+{"query":"manufacturing industry Ethiopia","passed":true,"issues":[]}
+{"query":"government ministry Ethiopia","passed":true,"issues":[]}
+{"query":"technology ICT Ethiopia","passed":true,"issues":[]}
+{"query":"search software campaign in Ethiopian in JUNE","passed":true,"issues":[]}
+{"query":"us markeing create Email templemte to marking approach to Bank and SCCO in EThiopia","passed":true,"issues":[]}
+{"query":"that was very good and can you find some Ethiopian bank and sccos and make it in dot list","passed":true,"issues":[]}
+{"query":"can you give me propmpt so I can make research on sccos in ethiopia that need etech product","passed":true,"issues":[]}
+{"query":"Identify SACCOs in Ethiopia that are currently using manual or outdated systems for savings and credit processing.","passed":true,"issues":[]}
+{"query":"Identify SACCOs in Ethiopia","passed":true,"issues":[]}
+{"query":"Dynamic Microfinance S.C. • CEO: Ato Bewketu Alamrew • Addis Ababa • +251-115156817/115577285/911246806 • NBE MFI No: 027 • Fax: +251-115157090 • Trade No: 04/2/25306/01 • Establishment Date: 12/05/2009 • P.O Box: 20943/1000 I get this and can you make reseach so this will be own target custmore if yes give me email to approch them","passed":true,"issues":[]}
+{"query":"/generate-proposal","passed":true,"issues":[]}
+{"query":"tell me all you know about eTech","passed":true,"issues":[]}
+{"query":"who is CEO in eTech","passed":true,"issues":[]}
+{"query":"what is the name of etech ceo","passed":true,"issues":[]}
+{"query":"what is the name of etech ceo","passed":true,"issues":[]}
+{"query":"tell me all you know about etech","passed":true,"issues":[]}
+{"query":"ceo of etech","passed":true,"issues":[]}
+{"query":"tell me about eShare","passed":true,"issues":[]}
+{"query":"Dynamic Microfinance S.C. • CEO: Ato Bewketu Alamrew • Addis Ababa • +251-115156817/115577285/911246806 • NBE MFI No: 027 • Fax: +251-115157090 • Trade No: 04/2/25306/01 • Establishment Date: 12/05/2009 • P.O Box: 20943/1000 I get this and can you make reseach so this will be own target custmore if yes give me email to approch them","passed":true,"issues":[]}
+{"query":"give me email","passed":false,"issues":["template_response"]}
+{"query":"no give me email templetes","passed":true,"issues":[]}
+{"query":"can you tell me the ceo of etech","passed":true,"issues":[]}
+{"query":"{\"data_dir\": \"data\"}","passed":true,"issues":[]}
+{"query":"Shimelis Gebremedhin but it is in data/sample.txt","passed":true,"issues":[]}
+{"query":"Chief Tech  & Product Officer name","passed":true,"issues":[]}
+{"query":"hi can you tell me all you know about etech in dot list","passed":true,"issues":[]}
+{"query":"ok who is the CTO","passed":true,"issues":[]}
+{"query":"what about the ceo","passed":true,"issues":[]}
+{"query":"ok what are the main product etech have?","passed":true,"issues":[]}
+{"query":"can you tell me about the software product only in dot list and detaild","passed":true,"issues":[]}
+{"query":"did etech have ERP","passed":true,"issues":[]}
+{"query":"new software campaigin in ethiopisn iin june 2026","passed":true,"issues":[]}
+{"query":"what about scco","passed":true,"issues":[]}
+{"query":"hi","passed":false,"issues":["query_too_short"]}
+{"query":"ceo name","passed":true,"issues":[]}
+{"query":"hi","passed":false,"issues":["query_too_short"]}
+{"query":"who ceo of etech","passed":true,"issues":[]}
+{"query":"software capmigne in ethiopian jub 2026","passed":true,"issues":[]}
+{"query":"ethiopia to host international cybersecurity ai conference","passed":true,"issues":[]}
+{"query":"can you tell all you know about etech","passed":true,"issues":[]}
+{"query":"did you know the shear of etech","passed":true,"issues":[]}
+{"query":"what are the list of etech software products","passed":true,"issues":[]}
+{"query":"eTech S.C. itself, I can provide you with details on their company profile, mission, vision, and services.","passed":true,"issues":[]}
+{"query":"like ERP","passed":true,"issues":[]}
+{"query":"give me the list of services or projects in etech","passed":true,"issues":[]}
+{"query":"Software Development list of etech","passed":true,"issues":[]}
+{"query":"did eTech have ERP?","passed":true,"issues":[]}
+{"query":"what did you get for the rag","passed":true,"issues":[]}
+{"query":"what about eTech","passed":true,"issues":[]}
+{"query":"what did you think I buy the shear from eTech","passed":true,"issues":[]}
+{"query":"I need all information about etech and I can make my desition so working with them and buy shaer","passed":true,"issues":[]}
+{"query":"what I need to say is I need all infromation like what they did in past year and what is there point in 2030 so I can buy share","passed":true,"issues":[]}
+{"query":"can you give me the steps and contact information","passed":true,"issues":[]}
+{"query":"is there any sales team and contact","passed":true,"issues":[]}
+{"query":"but I have put the sale preson information in  the RAG data","passed":true,"issues":[]}
+{"query":"can you make google search and give me","passed":true,"issues":[]}
+{"query":"/make-search","passed":true,"issues":[]}
+{"query":"/make-search on etech and give me contact information","passed":false,"issues":["response_unrelated_to_query"]}
+{"query":"/make-search etech Ethiopia","passed":true,"issues":[]}
+{"query":"/make-search etech Ethiopia","passed":true,"issues":[]}
+{"query":"etech Ethiopia","passed":true,"issues":[]}
+{"query":"can you give the contact of eTech","passed":true,"issues":[]}
+{"query":"can you give the contact of eTech","passed":true,"issues":[]}
+{"query":"can you give the contact of eTech","passed":true,"issues":[]}
+{"query":"about etechsc","passed":true,"issues":[]}
+{"query":"about eTech","passed":true,"issues":[]}
+{"query":"about eTech","passed":true,"issues":[]}
+{"query":"banking finance Ethiopia","passed":true,"issues":[]}
+{"query":"insurance company Ethiopia","passed":true,"issues":[]}
+{"query":"logistics transport Ethiopia","passed":true,"issues":[]}
+{"query":"about eTech sc ethiopian","passed":true,"issues":[]}
+{"query":"manufacturing industry Ethiopia","passed":true,"issues":[]}
+{"query":"eTech company profile","passed":true,"issues":[]}
+{"query":"government ministry Ethiopia","passed":true,"issues":[]}
+{"query":"technology ICT Ethiopia","passed":true,"issues":[]}
+{"query":"{\"sector\": null}","passed":true,"issues":[]}
+{"query":"that are live in ethiopia june 2026","passed":true,"issues":[]}
+{"query":"{\"sector\": \"ERP\"}","passed":false,"issues":["response_too_short"]}
+{"query":"{\"sector\": \"ERP\"}","passed":true,"issues":[]}
+{"query":"{\"sector\": null}","passed":false,"issues":["response_too_short"]}
+{"query":"{\"sector\": \"ICT\"}","passed":true,"issues":[]}
+{"query":"{\"max_per_source\": 5, \"sector\": \"tech\"}","passed":false,"issues":["response_too_short"]}
+{"query":"{\"max_per_source\": 5, \"sector\": \"tech\"}","passed":true,"issues":[]}
+{"query":"{\"max_per_source\": 10, \"sector\": \"tech\"}","passed":true,"issues":[]}
+{"query":"{\"max_per_source\": 10, \"sector\": \"tech\"}","passed":true,"issues":[]}
+{"query":"{\"max_per_source\": 10, \"sector\": \"tech\"}","passed":true,"issues":[]}
+{"query":"{\"max_per_source\": 2, \"sector\": \"tech\"}","passed":true,"issues":[]}
+{"query":"tech Ethiopia","passed":true,"issues":[]}
+{"query":"What does eTech do?","passed":true,"issues":[]}
+{"query":"What does eTech do?","passed":true,"issues":[]}
+{"query":"What does eTech do?","passed":true,"issues":[]}
+{"query":"Tell me more","passed":true,"issues":[]}

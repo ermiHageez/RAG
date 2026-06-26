@@ -50,6 +50,7 @@ export default function App() {
   const [pipelineAddedIds, setPipelineAddedIds] = useState<Set<string>>(new Set())
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
   const [chatLoading, setChatLoading] = useState(false)
+  const [loadingLabel, setLoadingLabel] = useState('')
   const chatSessionRef = useRef({ sales: '', marketing: '', ai: '' })
 
   const isSales = state.mode === 'sales'
@@ -140,11 +141,12 @@ const handleFollowUpUpdate = useCallback((_rule: FollowUpRule) => {
         case 'tenders': { const r = await mcpTenders(args); result = JSON.stringify(r, null, 2); break }
         case 'directory': { const r = await mcpDirectory(args); result = JSON.stringify(r, null, 2); break }
         case 'make-search': {
-          if (!args) { result = 'Usage: /make-search <company name or keyword>'; break }
-          const r = await searchMcp(args)
+          const q = args.trim()
+          if (!q) { result = 'Usage: /make-search <company name or keyword>'; break }
+          const r = await searchMcp(q)
           result = r.length === 0
-            ? `No results found for "${args}". Try different keywords.`
-            : `**Search results for "${args}"**\n\n` + r.map((item, i) =>
+            ? `No results found for "${q}". Try different keywords.`
+            : `**Search results for "${q}"**\n\n` + r.map((item, i) =>
                 `**${i+1}. ${item.name}**\n` +
                 `- Sector: ${item.sector}\n` +
                 `- Location: ${item.location}\n` +
@@ -201,8 +203,6 @@ const handleFollowUpUpdate = useCallback((_rule: FollowUpRule) => {
   }
 
   const handleChatSend = useCallback(async (message: string) => {
-    const isAiMode = state.mode === 'ai'
-
     const userMsg: ChatMessage = {
       id: `chat_user_${Date.now()}`,
       role: 'user',
@@ -212,10 +212,18 @@ const handleFollowUpUpdate = useCallback((_rule: FollowUpRule) => {
     setChatMessages(prev => [...prev, userMsg])
     setChatLoading(true)
 
+    let isSearchCmd = false
+    if (message.startsWith('/')) {
+      const spaceIdx = message.indexOf(' ')
+      const cmd = spaceIdx === -1 ? message.slice(1).toLowerCase() : message.slice(1, spaceIdx).toLowerCase()
+      if (cmd === 'make-search') isSearchCmd = true
+    }
+    setLoadingLabel(isSearchCmd ? 'AI is searching Ethiopian enterprises...' : 'Thinking...')
+
     try {
       let assistantMsg: ChatMessage
 
-      if (isAiMode && message.startsWith('/')) {
+      if (message.startsWith('/')) {
         const spaceIdx = message.indexOf(' ')
         const cmd = spaceIdx === -1 ? message.slice(1).toLowerCase() : message.slice(1, spaceIdx).toLowerCase()
         const args = spaceIdx === -1 ? '' : message.slice(spaceIdx + 1)
@@ -253,6 +261,7 @@ const handleFollowUpUpdate = useCallback((_rule: FollowUpRule) => {
       setChatMessages(prev => [...prev, errorMsg])
     } finally {
       setChatLoading(false)
+      setLoadingLabel('')
     }
   }, [state.mode, chatMessages, handleCommand])
 
@@ -517,7 +526,9 @@ const handleFollowUpUpdate = useCallback((_rule: FollowUpRule) => {
         messages={chatMessages}
         onSend={handleChatSend}
         loading={chatLoading}
+        loadingLabel={loadingLabel}
         showCommandHint={isAi}
+        commands={Object.keys(commandMap)}
       />
     </Box>
   )

@@ -1,0 +1,15 @@
+{
+  "versions": [
+    {
+      "tag": "etech-custom-agent:v1",
+      "base_model": "gemma2:2b",
+      "training_data": "processed_training.jsonl",
+      "training_date": "2026-06-24T19:56:00.505444+00:00",
+      "record_count": 111,
+      "eval_score": null,
+      "metadata": {},
+      "status": "active"
+    }
+  ],
+  "active": "etech-custom-agent:v1"
+}
